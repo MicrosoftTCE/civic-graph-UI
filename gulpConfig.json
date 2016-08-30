@@ -1,0 +1,14 @@
+{
+  "dev": {
+    "folder": "build/",
+    "src": {
+      "js":[
+        "civic-graph.module.js",
+        "js/**/*.js"
+      ],
+      "css":[
+        "css/**/*.css"
+      ]
+    }
+  }
+}
