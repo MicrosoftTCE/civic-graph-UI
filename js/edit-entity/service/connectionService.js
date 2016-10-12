@@ -24,6 +24,7 @@
             this.id = (objIsDef && isDef(obj.id) ? obj.id : null);
             this.details = (objIsDef && isDef(obj.details) ? obj.details : null);
             this.name = (objIsDef && isDef(obj.name) ? obj.name: null);
+            this.entity_id = (objIsDef && isDef(obj.entity_id) ? obj.entity_id: null);
         }
 
         this.getConnectionModel = function (obj) {
