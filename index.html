@@ -88,14 +88,16 @@
              ng-if='!editing && (clickedEntity.entity ||!mobile)'
              ng-class="{'details-panelMb bottomPopUpMb': mobile}"
              ng-show='(!mobile || (clickedEntity.entity && (!editing && !settingsEnabled && !showsearchMB))) || (!showAnalytics)'
-             ng-controller='detailsCtrl' ng-include="'js/detail/details.html?i='+random"></div>
+             ng-controller='detailsCtrl' ng-include="'js/detail/details.html?i='+random">
+
+        </div>
 
         <edit-entity entity="currentEntity"
                      entities="entities"
                      ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
                      ng-show="editing && !showAnalytics"
-                     is-open="editing"
-        ></edit-entity>
+                     is-open="editing">
+        </edit-entity>
         <analytics ng-hide="!showAnalytics"
                    ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>
         <div ng-hide="(!mobile) ||(showAnalytics)" class='bottomNavMb'>

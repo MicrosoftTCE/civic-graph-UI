@@ -52,6 +52,11 @@
                     .attr('class', 'arc')
                     .attr('transform', 'translate(' + center + ',' + center + ')');
 
+                // var map = L.mapbox.map('map', 'examples.map-9ijuk24y', {
+                //     minZoom: 1,
+                //     maxZoom: 2
+                // }).setView([40, -74.50], 9);
+
                 arcs.append('path')
                     .attr('d', arc)
                     .attr('class', function (d) {
@@ -80,11 +85,13 @@
                 );
 
                 map.invalidateSize();
+
                 new L.Control.Zoom({position: 'topright'}).addTo(map);
                 L.control.locate(
                     {position: 'topright', showPopup: false, icon: 'fa fa-location-arrow'}
                 )
                     .addTo(map);
+
                 function clusterIcon(cluster) {
                     var children       = cluster.getAllChildMarkers();
                     var total          = children.length;
