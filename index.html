@@ -80,7 +80,7 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
         <div ng-if='!(status.isNetworkShown)'
-             ng-class="mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10' "
+             ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"
              ng-hide="(editing && mobile) || (showAnalytics)"
              ng-include="'js/map/map.html?i='+random">
         </div>
