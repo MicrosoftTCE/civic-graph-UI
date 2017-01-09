@@ -68,6 +68,12 @@ p {
     width: 60%;
 }
 
+.ng-scope.display-panel.col-sm-8 {
+    position: relative;
+    padding-left:0;
+    padding-right:0;
+}
+
 .display-analytics {
     position: relative;
     margin-left: 0;
@@ -101,7 +107,7 @@ p {
 .caption {
     padding-left: 5px;
     color: #333333;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 300;
 }
 
@@ -124,7 +130,8 @@ hr {
     font-size: 0.95em;
     font-weight: bolder;
     text-align: left;
-    margin-top: 0 !important;
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
 }
 
 .switch {
@@ -157,7 +164,7 @@ h5 {
 }
 
 .control-panel-content {
-    margin:0 !important;
+    margin:0 10% !important;
 }
 
 .control-input {
@@ -370,7 +377,6 @@ h5 {
     width: 20% !important;
     float: right;
     border-left: 1px solid #CECECE;
-    /*background-color: #CECECE;*/
     height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -784,13 +790,13 @@ h5 {
 .analyticsButton {
     transition: opacity 0.1s linear;
     /*margin-top: 35px;*/
-    background-color: #f2c811;
+    background-color: #dddddd;
     text-align: left;
     vertical-align:center;
-    width: 90%;
+    width: 100%;
     z-index: 3;
     height: 7vh;
-    border: 2px solid #f2c811;
+    border: 2px solid #dddddd;
     font-size: 10pt;
     font-weight: 300;
     color: black;
@@ -1178,11 +1184,12 @@ img {
     /*opacity: 0.3;*/
     background-color: rgba(241, 242, 242, 0.25);
     height: 6vh;
-    position: fixed;
+    position: relative;
     bottom: 0;
     margin-left: 20%;
     font-size: 1.5em;
     width: 55.8%;
+    margin-top: 1em;
 
 }
 
@@ -1248,8 +1255,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .slider {
-    padding-bottom: 2em;
-    padding-top: .5em;
+    padding-top: .5em !important;
 }
 
 .search .glyphicon {
@@ -1645,7 +1651,7 @@ input.ng-valid.ng-dirty {
     width: 50%;
     padding-top: 5px;
     line-height: 26px;
-    font-size: 11px;
+    font-size: 0.9em;
     color: #333333;
     text-align: center;
     /* margin: 5px; */
@@ -1659,24 +1665,25 @@ input.ng-valid.ng-dirty {
 
 .switch-label-off {
     padding-left: 2px;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 300;
 }
 
 .switch-label-on {
     padding-right: 2px;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 300;
 }
 
 .switch-input {
     display: none;
+    font-size:0.9em;
 }
 
 .switch-input:checked + .switch-label {
     border-radius: 50%;
     color: white;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 300;
     /*text-shadow: 0 1px rgba(255, 255, 255, 0.25);*/
     -webkit-transition: 0.15s ease-out;
@@ -1844,10 +1851,6 @@ input.ng-valid.ng-dirty {
     /*background-color: white;*/
     /*width: 100%;*/
     height: auto;
-}
-
-.logo {
-    padding-bottom: 0;
 }
 
 .panel-heading {

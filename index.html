@@ -66,6 +66,8 @@
                  ng-hide="((editing && mobile || showView.Map) || (showAnalytics))"
                  ng-class="mobile ? 'display-panelMb' : 'display-panel'">
         </network>
+
+        <!--Search Bar-->
         <div ng-if='!mobile || showsearchMB'
              ng-class="mobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
              class="form-group has-feedback"
@@ -79,6 +81,7 @@
                    placeholder='Search'>
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
+
         <div ng-if='!(status.isNetworkShown)'
              ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"
              ng-hide="(editing && mobile) || (showAnalytics)"
@@ -102,12 +105,13 @@
                    ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>
         <div ng-hide="(!mobile) ||(showAnalytics)" class='bottomNavMb'>
             <div class="row">
-                <div class="col-xs-1"></div>
+                <div class="col-xs-1">
+                    <p>
+                    <i class="fa fa-search"></i>Search
+                    </p>
+                </div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': showsearchMB}"
                      ng-click='showSearch()'>
-                    <p>
-                        <i class="fa fa-search"></i>Search
-                    </p>
                 </div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': settingsEnabled}"
                      ng-click='toggleSettings()'>

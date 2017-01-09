@@ -9,58 +9,17 @@
     <div class='logo'>
         <img src="../../img/civicgraph.png" width="85%">
     </div>
-    <hr>
     <div class="control-panel-content">
-        <h3>Number of Connections: {{ control.minConnections }}</h3>
-        <input class="slider"
-               type="range"
-               title="Minimum Number of Connections"
-               ng-model="control.minConnections"
-               min="0"
-               max="60">
 
-        <!-- Types: Collapsible Panel -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse1">
-                            <div class="col-xs-9">
-                                <h3>Types</h3>
-                            </div>
-                            <div class="col-xs-1">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            </div>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse1" class="panel-collapse collapse">
+        <h3>Types</h3>
                     <div class='control-input' ng-repeat='(type, enabled) in control.entityTypes'>
                         <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
                             <input type='checkbox' ng-model='control.entityTypes[type]'
                                    ng-change='control.toggleNode(type)'></label>
                         <span class='caption'>{{type}}</span>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Connections: Collapsible Panel -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse2">
-                            <div class="col-xs-9">
-                                <h3>Connections</h3>
-                            </div>
-                            <div class="col-xs-1">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            </div>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse2" class="panel-collapse collapse">
+        <h3>Connections: {{ control.minConnections }}</h3>
 
                     <div class='control-input' ng-repeat='(type, enabled) in control.connectionTypes'>
                         <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
@@ -69,39 +28,22 @@
                         <span class='caption'>{{type}}</span>
                     </div>
 
-                </div>
-            </div>
-        </div>
+        <!--Number of Connections Slider-->
+        <input class="slider"
+               type="range"
+               title="Minimum Number of Connections"
+               ng-model="control.minConnections"
+               min="0"
+               max="60">
 
-        <!-- Size By: Collapsible Panel -->
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse3">
 
-                            <div class="col-xs-9">
-                                <h3>Size By</h3>
-                            </div>
-                            <div class="col-xs-1">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            </div>
-
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse3" class="panel-collapse collapse">
-
+                            <h3>Size By</h3>
                     <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
                         <label class='checkbox radio' ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
                                ng-model='control.sizeBy' btn-radio='sizeBy.value'
                                ng-change='control.changeSizeBy()'></label>
                         <span class='caption'>{{sizeBy.name}}</span>
                     </div>
-
-                </div>
-            </div>
-        </div>
 
         <h3>View</h3>
         <div class="switch switch-blue">
@@ -118,9 +60,9 @@
             <a target="_blank" href="/js/analytic/analytics.html">
                 <button class='analyticsButton'>
                     <div class="col-xs-1" id="row">
-                    <img class="PowerBI" src="../../img/powerBI.png" width="30">
+                    <img class="PowerBI" src="../../img/powerBI.png" width="20">
                     </div>
-                    <div class="col-xs-9" id="powerBI-label">
+                    <div class="col-xs-11" id="powerBI-label">
                     <h6>Power BI Analytics</h6>
                 </button>
             </a>
