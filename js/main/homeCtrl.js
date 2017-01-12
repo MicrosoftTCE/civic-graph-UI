@@ -8,10 +8,11 @@
         '_',
         'entityService',
         'connectionService',
+        'config',
         homeCtrl
     ];
 
-    function homeCtrl($scope, $http, _, entityService, connectionService) {
+    function homeCtrl($scope, $http, _, entityService, connectionService, config) {
         $scope.random                   = new Date().getTime();
         $scope.entities                 = [];
         $scope.searchItems              = null;
@@ -108,7 +109,7 @@
         $scope.settingsEnabled = !$scope.mobile;
 
         setTimeout(function () {
-            $http.get('api/entities')
+            $http.get(config.apiHost + 'api/entities')
                 .success(function (data) {
                     $scope.entities = data.nodes;
                     var locations   = _.uniq(

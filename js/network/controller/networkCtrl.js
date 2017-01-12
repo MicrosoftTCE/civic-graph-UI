@@ -7,6 +7,7 @@
         '$http',
         '_',
         '$filter',
+        'config',
         networkCtrl
     ];
 
@@ -14,7 +15,7 @@
         return o !== undefined && o !== null;
     }
 
-    function networkCtrl($scope, $http, _, $filter) {
+    function networkCtrl($scope, $http, _, $filter, config) {
         // TODO: Make a hashmap on the backend of id -> position, then use source:
         // entities[map[sourceid]] to get nodes. See http://stackoverflow.com/q/16824308
         $scope.isLoading   = true;
@@ -34,7 +35,7 @@
 
         $scope.$on('entitiesLoaded', function (event) {
             var targetScope = event.targetScope;
-            $http.get('api/connections').success(function (data) {
+            $http.get(config.apiHost + 'api/connections').success(function (data) {
                 var filteredEntities    = $filter('filter')($scope.entities,
                                                             function (entity) {
                                                                 return entity.collaborations.length

@@ -9,6 +9,7 @@
         '_',
         'entityService',
         'locationService',
+        'config',
         editCtrl
     ];
 
@@ -16,7 +17,7 @@
         return obj !== undefined && obj !== null;
     }
 
-    function editCtrl($scope, $http, $timeout, _, entityService, locationService) {
+    function editCtrl($scope, $http, $timeout, _, entityService, locationService, config) {
         $scope.isEditing = false;
         $scope.editEntity = entityService.getEntityModel($scope.entity);
         $scope.entityTypes = entityService.getEntityTypes();
@@ -140,7 +141,7 @@
             $scope.isSaving = true;
             console.log($scope.editEntity.generateDBModel());
 
-            $http.post('api/save', {'entity': $scope.editEntity.generateDBModel()})
+            $http.post(config.apiHost + 'api/save', {'entity': $scope.editEntity.generateDBModel()})
                 .success(function (response) {
                     $scope.isSaving = false;
                     $scope.$emit("editEntitySuccess", response);
@@ -208,7 +209,7 @@
         }
 
         // Retrieve Categories from DB
-        $http.get('api/categories')
+        $http.get(config.apiHost + 'api/categories')
             .success(function (data) {
                 categoryBackup = data.categories;
                 // Creates backup of data using Angular to prevent api data from being tampered
