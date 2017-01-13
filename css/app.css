@@ -744,9 +744,10 @@ h5 {
 
 .addInfoDesktopContainer {
     /*background-color: #1ea4eb; */
-    height: 12vh;
+    height: 8vh;
     /*border-top: 2px solid #CECECE;*/
     text-align: center;
+    padding: 7px 2em;
 }
 
 .addInfoDesktopContainer p {
@@ -834,9 +835,10 @@ h5 {
 }
 
 .details-panel {
-    float: right;
-    /*min-width: 230px;*/
-    padding: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1em 0 0 0;
     padding-bottom: 30px;
     height: 100vh;
     background-color: white;

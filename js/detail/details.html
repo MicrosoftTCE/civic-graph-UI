@@ -1,4 +1,10 @@
 <link rel="stylesheet" href="../../css/app.css">
+
+<!-- COLLABORATIONS -->
+<div ng-if='!mobile' class='addInfoDesktopContainer' ng-click='startEdit()'>
+  <button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New</button>
+</div>
+
 <div ng-class="mobile ? 'detailsMb' : 'details'">
     <div ng-if='!actions.interacted && !mobile' ng-include='overviewUrl'></div>
     <!--MOBILE TOP VIEW-->
@@ -136,11 +142,6 @@
     </div>
     <!--END DESKTOP TOP VIEW-->
 
-
-    <!-- COLLABORATIONS -->
-    <div ng-if='!mobile' class='addInfoDesktopContainer' ng-click='startEdit()'>
-        <button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New</button>
-    </div>
     <!--<hr>-->
     <div ng-if='currentEntity.collaborations.length'>
         <h5>Connections</h5>
