@@ -376,7 +376,9 @@ h5 {
 
 .edit-panel {
     width: 20% !important;
-    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
     border-left: 1px solid #CECECE;
     height: 100vh;
     overflow-y: scroll;
