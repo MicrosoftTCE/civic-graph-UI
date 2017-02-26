@@ -136,7 +136,9 @@
         }
 
         function getFromAPI() {
-            return $http.get(config.apiHost + 'api/entities');
+            return $http.get(config.apiHost + 'api/entities').then(function(response){
+                return response.data;
+            });
             // var defer = $q.defer();
             // defer.resolve({
             //     "nodes": [

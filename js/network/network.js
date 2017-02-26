@@ -35,6 +35,8 @@
         }
 
         function parseConnections(data) {
+            console.log(data);
+            console.log($scope.entities);
             if (!isObj(data.connections) || !Array.isArray($scope.entities)) {
                 return;
             }
