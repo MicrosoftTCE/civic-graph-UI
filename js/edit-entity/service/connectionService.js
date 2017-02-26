@@ -42,20 +42,20 @@
         }
 
         function getFromAPI() {
-            // return $http.get(config.apiHost + 'api/connections');
-            var deferred = $q.defer();
-            deferred.resolve(
-                {
-                    "connections": {
-                        "Collaboration": [],
-                        "Data": [],
-                        "Employment": [],
-                        "Funding": [],
-                        "Relation": []
-                    }
-                }
-            );
-            return deferred.promise;
+            return $http.get(config.apiHost + 'api/connections');
+            // var deferred = $q.defer();
+            // deferred.resolve(
+            //     {
+            //         "connections": {
+            //             "Collaboration": [],
+            //             "Data": [],
+            //             "Employment": [],
+            //             "Funding": [],
+            //             "Relation": []
+            //         }
+            //     }
+            // );
+            // return deferred.promise;
         }
 
         return {
