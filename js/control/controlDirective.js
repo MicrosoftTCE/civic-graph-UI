@@ -12,13 +12,12 @@
         return {
             templateUrl: '/js/control/controls.html',
             restrict   : 'E',
-            scope      : {
-                toggleNetwork : '=',
-            },
+            scope      : {},
             controller   : 'controlCtrl',
             controllerAs : 'control',
             bindToController : {
-                minConnections : "="
+                minConnections : "=",
+                toggleNetwork : '='
             }
         };
     }
