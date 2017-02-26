@@ -5,21 +5,27 @@
     <div class="control-panel-content">
 
         <h3>Types</h3>
-                    <div class='control-input' ng-repeat='(type, enabled) in control.entityTypes'>
-                        <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
-                            <input type='checkbox' ng-model='control.entityTypes[type]'
-                                   ng-change='control.toggleNode(type)'></label>
-                        <span class='caption'>{{type}}</span>
-                    </div>
+        <div class='control-input' ng-repeat='(type, enabled) in control.entityTypes'>
+            <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
+                <input type='checkbox'
+                       ng-model='control.entityTypes[type]'
+                       ng-change='control.toggleNode(type)'
+                />
+            </label>
+            <span class='caption'>{{type}}</span>
+        </div>
 
         <h3>Connections: {{ control.minConnections }}</h3>
 
-                    <div class='control-input' ng-repeat='(type, enabled) in control.connectionTypes'>
-                        <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
-                            <input type='checkbox' ng-model='control.connectionTypes[type]'
-                                   ng-change='control.toggleLink(type)'></label>
-                        <span class='caption'>{{type}}</span>
-                    </div>
+        <div class='control-input' ng-repeat='(type, enabled) in control.connectionTypes'>
+            <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
+                <input type='checkbox'
+                       ng-model='control.connectionTypes[type]'
+                       ng-change='control.toggleLink(type)'
+                />
+            </label>
+            <span class='caption'>{{type}}</span>
+        </div>
 
         <!--Number of Connections Slider-->
         <input class="slider"
@@ -29,23 +35,40 @@
                min="0"
                max="60">
 
-
-                            <h3>Size By</h3>
-                    <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
-                        <label class='checkbox radio' ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
-                               ng-model='control.sizeBy' btn-radio='sizeBy.value'
-                               ng-change='control.changeSizeBy()'></label>
-                        <span class='caption'>{{sizeBy.name}}</span>
-                    </div>
+        <h3>Size By</h3>
+        <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
+            <label class='checkbox radio'
+                   ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
+                   ng-model='control.sizeBy'
+                   btn-radio='sizeBy.value'
+                   ng-change='control.changeSizeBy()'
+            >
+            </label>
+            <span class='caption'>{{sizeBy.name}}</span>
+        </div>
 
         <h3>View</h3>
         <div class="switch switch-blue">
-            <input type="radio" class="switch-input" name="view2" ng-value="true"
-                   ng-model="toggleNetwork" id="week2" checked>
+            <input type="radio"
+                   class="switch-input"
+                   name="view2"
+                   ng-value="true"
+                   ng-model="control.toggleNetwork"
+                   ng-change="control.switchView()"
+                   id="week2"
+                   checked
+            >
             <label for="week2" class="switch-label switch-label-off">Network</label>
-            <input type="radio" class="switch-input" name="view2" ng-value="false"
-                   ng-model="toggleNetwork" id="month2">
+
+            <input type="radio"
+                   class="switch-input"
+                   name="view2"
+                   ng-value="false"
+                   ng-model="control.toggleNetwork"
+                   id="month2"
+            >
             <label for="month2" class="switch-label switch-label-on">Map</label>
+
             <span class="switch-selection"></span>
         </div>
 
@@ -53,10 +76,11 @@
             <a target="_blank" href="/js/analytic/analytics.html">
                 <button class='analyticsButton'>
                     <div class="col-xs-1" id="row">
-                    <img class="PowerBI" src="../../img/powerBI.png" width="20">
+                        <img class="PowerBI" src="../../img/powerBI.png" width="20">
                     </div>
                     <div class="col-xs-11" id="powerBI-label">
-                    <h6>Power BI Analytics</h6>
+                        <h6>Power BI Analytics</h6>
+                    </div>
                 </button>
             </a>
         </div>
