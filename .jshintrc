@@ -24,5 +24,6 @@
   "curly"     : false,
   "undef"     : true,
   "nonew"     : false,
-  "validthis" : true
+  "validthis" : true,
+  "esversion" : 6
 }
