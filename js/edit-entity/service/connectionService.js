@@ -42,7 +42,9 @@
         }
 
         function getFromAPI() {
-            return $http.get(config.apiHost + 'api/connections');
+            return $http.get(config.apiHost + 'api/connections').then(function(response){
+                return response.data;
+            });
             // var deferred = $q.defer();
             // deferred.resolve(
             //     {
