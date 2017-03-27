@@ -28,11 +28,13 @@
             'Network': true,
             'Map': false
         };
+        vm.switchView = switchView;
         vm.changeView = function (view) {
             _.forEach(_.keys(vm.showView), function (name) {
                 vm.showView[name] = view === name;
             });
-            $rootScope.$broadcast('viewChange');
+            console.log('this happened');
+            $rootScope.$broadcast('viewChange', vm.showView);
         };
         vm.showAbout = function () {
             $modal.open({
@@ -52,6 +54,12 @@
         vm.changeSizeBy = function () {
             $rootScope.$broadcast('changeSizeBy', vm.sizeBy);
         };
+        function switchView() {
+            vm.changeView(!vm.toggleNetwork ? 'Map' : 'Network');
+        }
+
+        vm.changeSizeBy();
+
     }
 
     angular.module('civic-graph')

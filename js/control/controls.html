@@ -40,11 +40,23 @@
 
         <h3>View</h3>
         <div class="switch switch-blue">
-            <input type="radio" class="switch-input" name="view2" ng-value="true"
-                   ng-model="toggleNetwork" id="week2" checked>
+            <input type="radio"
+                   class="switch-input"
+                   name="view2"
+                   ng-value="true"
+                   ng-model="toggleNetwork"
+                   ng-change="control.switchView()"
+                   id="week2"
+                   checked
+            >
             <label for="week2" class="switch-label switch-label-off">Network</label>
-            <input type="radio" class="switch-input" name="view2" ng-value="false"
-                   ng-model="toggleNetwork" id="month2">
+            <input type="radio"
+                   class="switch-input"
+                   name="view2"
+                   ng-value="false"
+                   ng-model="toggleNetwork"
+                   id="month2"
+            >
             <label for="month2" class="switch-label switch-label-on">Map</label>
             <span class="switch-selection"></span>
         </div>

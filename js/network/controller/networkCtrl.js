@@ -83,6 +83,10 @@
             });
         });
 
+        $scope.$on('viewChange', function (viewObj) {
+            console.log(viewObj);
+        });
+
         var drawNetworkMobile = function (entityArray) {
             var data        = {
                 nodes: $scope.entities,
