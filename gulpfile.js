@@ -10,29 +10,15 @@
         notify = require('gulp-notify'),
         sourceMaps = require('gulp-sourcemaps'),
         config = require('./gulpConfig.json'),
-        map = require('map-stream'),
         minifiedFile = 'app.min.js',
         concatConfig = {newLine: '\n;'},
         minifiedCss = 'app.min.css';
 
-    function customReporter() {
-        return map(function (file, cb) {
-            if (!file.jshint.success) {
-                file.jshint.results.forEach(function (err) {
-                    if (err) {
-                        console.log(' '+err.file + ':' + err.error.line + '\n\tReason: ' + err.error.reason + '\n\tEvidence: ' + err.error.evidence);
-                    }
-                });
-            }
-            cb(null, file);
-        });
-    }
-
     function compileJs(cfg) {
         return gulp.src(cfg.src.js)
             .pipe(jshint())
-            .pipe(customReporter())
-            // .on('error', notify.onError("JSHint Error: <%= error.message %>"))
+            .pipe(jshint.reporter('fail'))
+            .on('error', notify.onError("JSHint Error: <%= error.message %>"))
             .pipe(sourceMaps.init())
             .pipe(minify())
             .on('error', notify.onError("Error: <%= error.message %>"))
