@@ -13,7 +13,7 @@
     function directive() {
         return {
             "restrict": "E",
-            "templateUrl": "/js/network/network.html",
+            "templateUrl": "network/network.html",
             "controller": "networkCtrl"
         };
     }

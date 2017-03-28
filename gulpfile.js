@@ -10,6 +10,7 @@
         notify = require('gulp-notify'),
         sourceMaps = require('gulp-sourcemaps'),
         config = require('./gulpConfig.json'),
+        templateCache = require('gulp-angular-templatecache'),
         minifiedFile = 'app.min.js',
         concatConfig = {newLine: '\n;'},
         minifiedCss = 'app.min.css';
@@ -35,6 +36,16 @@
             .pipe(gulp.dest(cfg.folder));
     }
 
+    function compileTemplateCache(cfg) {
+        return gulp.src(cfg.src.templateCache)
+                   .pipe(templateCache('templateCache.js', {
+                     module: 'templateCache',
+                     moduleSystem: 'IIFE',
+                     standalone: true
+                   }))
+                   .pipe(gulp.dest(cfg.folder));
+    }
+
     gulp.task('js', function () {
         compileJs(config.dev);
     });
@@ -43,17 +54,22 @@
         compileCss(config.dev);
     });
 
+    gulp.task('templateCache', function () {
+        compileTemplateCache(config.dev);
+    });
+
     gulp.task('watch', function() {
         function callback(event) {
             console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
         }
 
         gulp.watch('civic-graph.module.js', ['js']).on('change', callback);
+        gulp.watch('js/**/*.html', ['templateCache']).on('change', callback);
         gulp.watch('js/**/*.js', ['js']).on('change', callback);
         gulp.watch('css/**/*.css', ['css']).on('change', callback);
     });
 
-    gulp.task('default', ['js', 'css'], function () {
+    gulp.task('default', ['js', 'css', 'templateCache'], function () {
 
     });
 })(require);

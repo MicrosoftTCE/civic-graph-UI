@@ -5,7 +5,8 @@
     var mainDependencies = [
         'ui.bootstrap',
         'leaflet-directive',
-        'ngAnimate'
+        'ngAnimate',
+        'templateCache'
     ];
 
     angular.module('civic-graph', mainDependencies);

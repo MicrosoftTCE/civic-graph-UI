@@ -13,7 +13,6 @@
     ];
 
     function homeCtrl($scope, $http, _, entityService, connectionService, config) {
-        $scope.random                   = new Date().getTime();
         $scope.entities                 = [];
         $scope.searchItems              = null;
         $scope.categories               = [];
@@ -136,7 +135,7 @@
                     //     // Set the entity to the ID in the URL if it exists.
                     //     $scope.setEntityID($scope.getURLID());
                     // }
-                    $scope.overviewUrl = 'js/overview/overview.html?i=' + $scope.random;
+                    $scope.overviewUrl = 'overview/overview.html';
                     $scope.$broadcast('entitiesLoaded');
                 });
         }, 100);

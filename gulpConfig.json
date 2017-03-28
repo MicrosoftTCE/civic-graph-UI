@@ -8,6 +8,9 @@
       ],
       "css":[
         "css/**/*.css"
+      ],
+      "templateCache": [
+        "js/**/*.html"
       ]
     }
   }
