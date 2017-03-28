@@ -41,6 +41,7 @@
                    .pipe(templateCache('templateCache.js', {
                      module: 'templateCache',
                      moduleSystem: 'IIFE',
+                     root: 'js/',
                      standalone: true
                    }))
                    .pipe(gulp.dest(cfg.folder));

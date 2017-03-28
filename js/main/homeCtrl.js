@@ -135,7 +135,7 @@
                     //     // Set the entity to the ID in the URL if it exists.
                     //     $scope.setEntityID($scope.getURLID());
                     // }
-                    $scope.overviewUrl = 'overview/overview.html';
+                    $scope.overviewUrl = 'js/overview/overview.html';
                     $scope.$broadcast('entitiesLoaded');
                 });
         }, 100);
