@@ -10,6 +10,10 @@
         notify = require('gulp-notify'),
         sourceMaps = require('gulp-sourcemaps'),
         config = require('./gulpConfig.json'),
+        ejs = require('gulp-ejs'),
+        ext_replace = require('gulp-ext-replace'),
+        dir = require('node-dir'),
+        hashFiles = require('hash-files'),
         templateCache = require('gulp-angular-templatecache'),
         minifiedFile = 'app.min.js',
         concatConfig = {newLine: '\n;'},
@@ -36,6 +40,23 @@
             .pipe(gulp.dest(cfg.folder));
     }
 
+    function compileEjs(cfg) {
+      var hashes = {};
+
+      dir.files(cfg.folder, function(err, files) {
+        if (err) throw err;
+
+        files.forEach(function(file) {
+          hashes[file] = hashFiles.sync({ files: file }).slice(0, 7);
+        });
+      });
+
+      return gulp.src(cfg.src.ejs)
+                 .pipe(ejs({ hashes: hashes }))
+                 .pipe(ext_replace('.html'))
+                 .pipe(gulp.dest('./'))
+    }
+
     function compileTemplateCache(cfg) {
         return gulp.src(cfg.src.templateCache)
                    .pipe(templateCache('templateCache.js', {
@@ -55,6 +76,10 @@
         compileCss(config.dev);
     });
 
+    gulp.task('ejs', function () {
+        compileEjs(config.dev);
+    });
+
     gulp.task('templateCache', function () {
         compileTemplateCache(config.dev);
     });
@@ -65,12 +90,13 @@
         }
 
         gulp.watch('civic-graph.module.js', ['js']).on('change', callback);
-        gulp.watch('js/**/*.html', ['templateCache']).on('change', callback);
         gulp.watch('js/**/*.js', ['js']).on('change', callback);
         gulp.watch('css/**/*.css', ['css']).on('change', callback);
+        gulp.watch('js/**/*.html', ['templateCache']).on('change', callback);
+        gulp.watch(['*.ejs', 'build/*'], ['ejs']).on('change', callback);
     });
 
-    gulp.task('default', ['js', 'css', 'templateCache'], function () {
+    gulp.task('default', ['js', 'css', 'templateCache', 'ejs'], function () {
 
     });
 })(require);
