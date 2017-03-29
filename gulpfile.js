@@ -85,15 +85,16 @@
     });
 
     gulp.task('watch', function() {
+        var cfg = config.dev;
+
         function callback(event) {
             console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
         }
 
-        gulp.watch('civic-graph.module.js', ['js']).on('change', callback);
-        gulp.watch('js/**/*.js', ['js']).on('change', callback);
-        gulp.watch('css/**/*.css', ['css']).on('change', callback);
-        gulp.watch('js/**/*.html', ['templateCache']).on('change', callback);
-        gulp.watch(['*.ejs', 'build/*'], ['ejs']).on('change', callback);
+        gulp.watch(cfg.src['js'], ['js']).on('change', callback);
+        gulp.watch(cfg.src['css'], ['css']).on('change', callback);
+        gulp.watch(cfg.src['templateCache'], ['templateCache']).on('change', callback);
+        gulp.watch(cfg.src['ejs'].concat([cfg.folder + '*']), ['ejs']).on('change', callback);
     });
 
     gulp.task('default', ['js', 'css', 'templateCache', 'ejs'], function () {
