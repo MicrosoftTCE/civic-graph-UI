@@ -2,12 +2,18 @@
   "dev": {
     "folder": "build/",
     "src": {
-      "js":[
+      "js": [
         "civic-graph.module.js",
         "js/**/*.js"
       ],
-      "css":[
+      "css": [
         "css/**/*.css"
+      ],
+      "ejs": [
+        "*.ejs"
+      ],
+      "templateCache": [
+        "js/**/*.html"
       ]
     }
   }
