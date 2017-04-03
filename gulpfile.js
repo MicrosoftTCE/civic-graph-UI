@@ -42,6 +42,7 @@
 
     function compileEjs(cfg) {
       var hashes = {};
+      var appInsightsInstrumentationKey = 'adbb5a4d-dfc8-420a-98ae-dbaa14eac296';
 
       dir.files(cfg.folder, function(err, files) {
         if (err) throw err;
@@ -52,7 +53,10 @@
       });
 
       return gulp.src(cfg.src.ejs)
-                 .pipe(ejs({ hashes: hashes }))
+                 .pipe(ejs({
+                   hashes,
+                   appInsightsInstrumentationKey
+                 }))
                  .pipe(ext_replace('.html'))
                  .pipe(gulp.dest('./'))
     }
