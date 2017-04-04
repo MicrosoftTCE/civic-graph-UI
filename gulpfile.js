@@ -42,7 +42,7 @@
 
     function compileEjs(cfg) {
       var hashes = {};
-      var appInsightsInstrumentationKey = 'adbb5a4d-dfc8-420a-98ae-dbaa14eac296';
+      var appInsightsInstrumentationKey = 'c9bdc879-9b86-4632-b37b-e37879cbc985';
 
       dir.files(cfg.folder, function(err, files) {
         if (err) throw err;
