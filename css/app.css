@@ -1196,20 +1196,18 @@ img {
 }
 
 .search {
-    /*opacity: 0.3;*/
-    background-color: rgba(241, 242, 242, 0.25);
     height: 6vh;
-    position: relative;
-    bottom: 0;
+    position: absolute;
+    top: 0;
     margin-left: 20%;
     font-size: 1.5em;
     width: 55.8%;
     margin-top: 1em;
-
+    z-index: 999;
 }
 
 .search input[type='text'] {
-    background-color: hsla(0, 0%, 100%, 0.2);
+    background-color: hsla(0, 0%, 100%, 0.8);
     height: 100%;
     margin: 0 30px;
     font-size: 1em;
@@ -1751,7 +1749,6 @@ input.ng-valid.ng-dirty {
 
 /*.dropdwon-menu{*/
 .search .dropdown-menu {
-    bottom: 100% !important;
     top: auto !important;
 }
 
