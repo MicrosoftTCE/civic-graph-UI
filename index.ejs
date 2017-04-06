@@ -118,13 +118,12 @@
                    ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>
         <div ng-hide="(!mobile) ||(showAnalytics)" class='bottomNavMb'>
             <div class="row">
-                <div class="col-xs-1">
-                    <p>
-                    <i class="fa fa-search"></i>Search
-                    </p>
-                </div>
+                <div class="col-xs-1"></div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': showsearchMB}"
                      ng-click='showSearch()'>
+                  <p>
+                    <i class="fa fa-search"></i>Search
+                  </p>
                 </div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': settingsEnabled}"
                      ng-click='toggleSettings()'>

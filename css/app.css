@@ -631,6 +631,7 @@ h5 {
     left: 0;
     display: block;
     z-index: 0;
+    height: 100vh;
 }
 
 .bbackground {
@@ -792,18 +793,28 @@ h5 {
 }
 
 .analyticsButton {
-    transition: opacity 0.1s linear;
-    /*margin-top: 35px;*/
-    background-color: #dddddd;
-    text-align: left;
-    vertical-align:center;
-    width: 100%;
-    z-index: 3;
-    height: 7vh;
-    border: 2px solid #dddddd;
-    font-size: 10pt;
-    font-weight: 300;
-    color: black;
+  background-color: #dddddd;
+  background-image: url(../img/powerBI.png);
+  background-origin: content-box;
+  background-position: -1.2em center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 2px solid #dddddd;
+  color: black;
+  font-size: .8em;
+  font-weight: 300;
+  height: 3em;
+  line-height: 1em;
+  padding: .5em .75em .5em 2em;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+}
+
+@media only screen and (min-width : 1224px) {
+  .analyticsButton {
+    font-size: 1em;
+  }
 }
 
 .btn-analytics {
@@ -1032,16 +1043,6 @@ hr {
     font-size: 32pt;
 }
 
-#canvas-force {
-    overflow: hidden;
-    width: 100%;
-}
-
-/*.mobile-details{
-    text-align: center;
-    margin-bottom: 20px;
-}*/
-
 .mobileLogo {
     float: left;
 }
@@ -1186,20 +1187,18 @@ img {
 }
 
 .search {
-    /*opacity: 0.3;*/
-    background-color: rgba(241, 242, 242, 0.25);
     height: 6vh;
-    position: relative;
-    bottom: 0;
+    position: absolute;
+    top: 0;
     margin-left: 20%;
     font-size: 1.5em;
     width: 55.8%;
     margin-top: 1em;
-
+    z-index: 999;
 }
 
 .search input[type='text'] {
-    background-color: hsla(0, 0%, 100%, 0.2);
+    background-color: hsla(0, 0%, 100%, 0.8);
     height: 100%;
     margin: 0 30px;
     font-size: 1em;
@@ -1225,42 +1224,8 @@ img {
     color: #636363;
 }
 
-input[type=range]{
-    -webkit-appearance: none;
-    height: 1.5em;
-    background-color: #f9f9f9 !important;
-    color: #000000;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 2em;
-    height: 5px;
-    background: #ddd;
-    border: none;
-    border-radius: 3px;
-    color: #000000;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    margin-top: -4px;
-    color: #000000;
-}
-
-input[type=range]:focus {
-    outline: none;
-    color: #000000;
-}
-
-input[type=range]:focus::-webkit-slider-runnable-track {
-}
-
 .slider {
-    padding-top: .5em !important;
+    margin: 2em 0;
 }
 
 .search .glyphicon {
@@ -1523,28 +1488,24 @@ input.ng-valid.ng-dirty {
 
 .bottomNavMb {
     overflow: hidden;
-    /*border: 1px solid red;*/
-    /*clear:both;*/
     z-index: 5;
     position: fixed;
-    /*margin-top: 90vh;*/
     bottom: 0;
-    /*border: 1px solid red;*/
+    border-top: 1px solid #CECECE;
     width: 100%;
     height: 50px;
     background-color: rgba(255, 255, 255, 1);
 }
 
 .bottomNavMb .bottomNavMbRow {
-    padding-top: .4em;
-    border-top: 1px solid #CECECE;
+    padding: .5em 0 0;
     text-align: center;
     font-size: 1.5em;
     color: #9E9E9E;
-    /*height: 100%;*/
-    /*width: 25%;*/
-    /*border: none;*/
-    /*float: left;*/
+}
+
+.bottomNavMb .bottomNavMbRow i {
+  display: block;
 }
 
 .bottomNavMb p {
@@ -1745,7 +1706,6 @@ input.ng-valid.ng-dirty {
 
 /*.dropdwon-menu{*/
 .search .dropdown-menu {
-    bottom: 100% !important;
     top: auto !important;
 }
 
