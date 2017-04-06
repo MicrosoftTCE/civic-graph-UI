@@ -631,6 +631,7 @@ h5 {
     left: 0;
     display: block;
     z-index: 0;
+    height: 100vh;
 }
 
 .bbackground {
@@ -1041,16 +1042,6 @@ hr {
 .error-symbol {
     font-size: 32pt;
 }
-
-#canvas-force {
-    overflow: hidden;
-    width: 100%;
-}
-
-/*.mobile-details{
-    text-align: center;
-    margin-bottom: 20px;
-}*/
 
 .mobileLogo {
     float: left;
