@@ -792,18 +792,28 @@ h5 {
 }
 
 .analyticsButton {
-    transition: opacity 0.1s linear;
-    /*margin-top: 35px;*/
-    background-color: #dddddd;
-    text-align: left;
-    vertical-align:center;
-    width: 100%;
-    z-index: 3;
-    height: 7vh;
-    border: 2px solid #dddddd;
-    font-size: 10pt;
-    font-weight: 300;
-    color: black;
+  background-color: #dddddd;
+  background-image: url(../img/powerBI.png);
+  background-origin: content-box;
+  background-position: -1.2em center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 2px solid #dddddd;
+  color: black;
+  font-size: .8em;
+  font-weight: 300;
+  height: 3em;
+  line-height: 1em;
+  padding: .5em .75em .5em 2em;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+}
+
+@media only screen and (min-width : 1224px) {
+  .analyticsButton {
+    font-size: 1em;
+  }
 }
 
 .btn-analytics {
