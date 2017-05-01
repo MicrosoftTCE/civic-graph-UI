@@ -71,7 +71,7 @@
 
         $scope.showSearch = function () {
             $scope.hydePartials("search");
-            $scope.showsearchMB   = $scope.showsearchMB ? false : true;
+            $scope.showsearchMB   = !$scope.showsearchMB;
             // $scope.$broadcast('hideLicense');
             $scope.status.license = false;
         };
@@ -90,7 +90,9 @@
         };
 
         $scope.switchView = function () {
-            $scope.changeView($scope.status.isNetworkShown ? 'Map' : 'Network');
+            // $scope.$broadcast('viewChange', !$scope.status.isNetworkShown ? 'Map' : 'Network');
+            // $scope.changeView(!$scope.status.isNetworkShown ? 'Map' : 'Network');
+            $scope.status.isNetworkShown = !$scope.status.isNetworkShown;
         };
 
         window.mobilecheck     = function () {
