@@ -20,6 +20,7 @@
         // entities[map[sourceid]] to get nodes. See http://stackoverflow.com/q/16824308
         $scope.isLoading   = true;
         $scope.connections = {};
+        startLoad();
 
         // See https://coderwall.com/p/ngisma/safe-apply-in-angular-js
         $scope.safeApply = function (fn) {
@@ -33,51 +34,7 @@
             }
         };
 
-        $scope.$on('entitiesLoaded', function (event) {
-            var targetScope = event.targetScope;
-            $http.get(config.apiHost + 'api/connections').success(function (data) {
-                var filteredEntities    = $filter('filter')($scope.entities,
-                                                            function (entity) {
-                                                                return entity.collaborations.length
-                                                                       >= $scope.minConnections;
-                                                            }
-                );
-                var filteredConnections = {};
-                _.forEach(_.keys(data.connections), function (type) {
-                    // $scope.connections[type] = [];
-                    filteredConnections[type] = [];
-                });
-                _.forEach(data.connections, function (connections, type) {
-                    _.forEach(connections, function (connection) {
-                        var sourceNode = _.find(filteredEntities, {'id': connection.source});
-                        var targetNode = _.find(filteredEntities, {'id': connection.target});
-                        if (!( isDef(sourceNode) && isDef(targetNode) )) {
-                            return;
-                        }
-
-                        filteredConnections[type].push(
-                            {'source': sourceNode, 'target': targetNode});
-                        // $scope.connections[type].push({'source': sourceNode, 'target':
-                        // targetNode});
-                    });
-                });
-                // Only show labels on top 5 most connected entities initially.
-                _.forEach(_.keys($scope.entityTypes), function (type) {
-                    // Find the top 5 most-connected entities.
-                    var top5 = _.takeRight(_.sortBy(_.filter($scope.entities, {'type': type}),
-                                                    'collaborations.length'), 5);
-                    _.forEach(top5, function (entity) {
-                        entity.wellconnected = true;
-                    });
-                });
-
-                filteredEntities = _.sortBy(filteredEntities, function (e) {
-                    return (e.wellconnected) ? 1 : 0;
-                });
-
-                drawNetwork(filteredEntities, filteredConnections);
-            });
-        });
+        $scope.$on('triggerNetworkDraw', startLoad);
 
         $scope.$on('viewChange', function (viewObj) {
             console.log(viewObj);
@@ -495,6 +452,51 @@
                 }
             });
         };
+
+        function startLoad (event) {
+            $http.get(config.apiHost + 'api/connections').success(function (data) {
+                var filteredEntities    = $filter('filter')($scope.entities,
+                    function (entity) {
+                        return entity.collaborations.length
+                            >= $scope.minConnections;
+                    }
+                );
+                var filteredConnections = {};
+                _.forEach(_.keys(data.connections), function (type) {
+                    // $scope.connections[type] = [];
+                    filteredConnections[type] = [];
+                });
+                _.forEach(data.connections, function (connections, type) {
+                    _.forEach(connections, function (connection) {
+                        var sourceNode = _.find(filteredEntities, {'id': connection.source});
+                        var targetNode = _.find(filteredEntities, {'id': connection.target});
+                        if (!( isDef(sourceNode) && isDef(targetNode) )) {
+                            return;
+                        }
+
+                        filteredConnections[type].push(
+                            {'source': sourceNode, 'target': targetNode});
+                        // $scope.connections[type].push({'source': sourceNode, 'target':
+                        // targetNode});
+                    });
+                });
+                // Only show labels on top 5 most connected entities initially.
+                _.forEach(_.keys($scope.entityTypes), function (type) {
+                    // Find the top 5 most-connected entities.
+                    var top5 = _.takeRight(_.sortBy(_.filter($scope.entities, {'type': type}),
+                        'collaborations.length'), 5);
+                    _.forEach(top5, function (entity) {
+                        entity.wellconnected = true;
+                    });
+                });
+
+                filteredEntities = _.sortBy(filteredEntities, function (e) {
+                    return (e.wellconnected) ? 1 : 0;
+                });
+
+                drawNetwork(filteredEntities, filteredConnections);
+            });
+        }
     }
 
     angular.module('civic-graph')

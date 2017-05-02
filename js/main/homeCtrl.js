@@ -41,14 +41,14 @@
         var self = this;
 
         $scope.$watch('minConnections', function() {
-            $scope.$broadcast('entitiesLoaded');
+            $scope.$broadcast('triggerNetworkDraw');
         });
 
 
         $scope.connectionChange = function () {
             console.log(self.minConnections);
             $scope.minConnections = self.minConnections;
-            $scope.$broadcast('entitiesLoaded');
+            $scope.$broadcast('triggerNetworkDraw');
         };
 
         $scope.hydePartials = function (except) {
@@ -93,6 +93,9 @@
             // $scope.$broadcast('viewChange', !$scope.status.isNetworkShown ? 'Map' : 'Network');
             // $scope.changeView(!$scope.status.isNetworkShown ? 'Map' : 'Network');
             $scope.status.isNetworkShown = !$scope.status.isNetworkShown;
+            if ($scope.status.isNetworkShown) {
+                $scope.$broadcast('triggerNetworkDraw');
+            }
         };
 
         window.mobilecheck     = function () {
@@ -138,7 +141,7 @@
                     //     $scope.setEntityID($scope.getURLID());
                     // }
                     $scope.overviewUrl = 'js/overview/overview.html';
-                    $scope.$broadcast('entitiesLoaded');
+                    $scope.$broadcast('triggerNetworkDraw');
                 });
         }, 100);
 
@@ -194,7 +197,7 @@
         $scope.$on("editEntitySuccess", function (response) {
             $scope.setEntities(response.nodes);
             // $scope.setEntityID($scope.currentEntity.id);
-            $scope.$broadcast('entitiesLoaded');
+            $scope.$broadcast('triggerNetworkDraw');
         });
 
         $scope.animationsEnabled = true;
