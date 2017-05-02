@@ -33,7 +33,6 @@
             _.forEach(_.keys(vm.showView), function (name) {
                 vm.showView[name] = view === name;
             });
-            console.log('this happened');
             $rootScope.$broadcast('viewChange', vm.showView);
         };
         vm.showAbout = function () {
