@@ -1253,6 +1253,7 @@ img {
 
 input.ng-invalid.ng-dirty {
     border-color: red;
+    border-width: 0.2em;
 }
 
 input.ng-valid.ng-dirty {
