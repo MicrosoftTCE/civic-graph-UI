@@ -78,11 +78,7 @@
             };
 
             leafletData.getMap().then(function (map) {
-                var filteredEntities = $filter('filter')($scope.entities,
-                    function(entity) {
-                        return entity.collaborations.length > 0;
-                    }
-                );
+                var filteredEntities = $scope.entities;
 
                 map.invalidateSize();
 

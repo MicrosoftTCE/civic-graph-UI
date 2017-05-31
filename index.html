@@ -25,21 +25,21 @@
     <link rel='stylesheet'
           href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css'>
 
-    <link rel='stylesheet' href='build/app.min.css?v=1f6d6e7'>
+    <link rel='stylesheet' href='build/app.min.css?v=ebe966e'>
     <link rel='icon' type='image/png' href='img/cgraphico.ico'>
 
     <link rel='apple-touch-icon' href='img/apple-touch-icon.png'>
 
-    <script type="text/javascript">
-      var appInsights=window.appInsights||function(config){
-        function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
-      }({
-        instrumentationKey:"c9bdc879-9b86-4632-b37b-e37879cbc985"
-      });
+    <!--<script type="text/javascript">-->
+      <!--var appInsights=window.appInsights||function(config){-->
+        <!--function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t-->
+      <!--}({-->
+        <!--instrumentationKey:"c9bdc879-9b86-4632-b37b-e37879cbc985"-->
+      <!--});-->
 
-      window.appInsights=appInsights;
-      appInsights.trackPageView();
-    </script>
+      <!--window.appInsights=appInsights;-->
+      <!--appInsights.trackPageView();-->
+    <!--</script>-->
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.14/angular.min.js'></script>
@@ -52,8 +52,8 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
     <script src='lib/angular-leaflet-directive-0.10.0.min.js'></script>
     <script src='lib/pinchzoom-60c285c.min.js'></script>
-    <script src='build/templateCache.js?v=1417abe'></script>
-    <script src='build/app.min.js?v=0c6472d'></script>
+    <script src='build/templateCache.js?v=0843e80'></script>
+    <script src='build/app.min.js?v=9328cf4'></script>
 </head>
 <body ng-controller='homeCtrl as homeCtrl'>
 <div ng-show="mobile" class="navLogoMobile">
@@ -114,8 +114,8 @@
                      ng-show="editing && !showAnalytics"
                      is-open="editing">
         </edit-entity>
-        <analytics ng-hide="!showAnalytics"
-                   ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>
+        <!--<analytics ng-hide="!showAnalytics"-->
+                   <!--ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>-->
         <div ng-hide="(!mobile) ||(showAnalytics)" class='bottomNavMb'>
             <div class="row">
                 <div class="col-xs-1"></div>
