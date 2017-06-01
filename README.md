@@ -7,7 +7,7 @@ UI for Civic Graph
 
 - Clone this GitHub repository:
 ```sh
-git clone git@github.com:MicrosoftTCE/civic-graph-UI.git
+git clone https://github.com/MicrosoftTCE/civic-graph-UI.git
 ```
 
 - Change directories to the cloned repository:
