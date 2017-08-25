@@ -6,9 +6,11 @@
         'ui.bootstrap',
         'leaflet-directive',
         'ngAnimate',
-        'templateCache'
+        'templateCache',
+        'civic-graph.api'
     ];
 
+    angular.module('civic-graph.api', []);
     angular.module('civic-graph', mainDependencies);
 
 })(angular);
