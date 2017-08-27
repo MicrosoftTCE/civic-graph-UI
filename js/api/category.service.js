@@ -6,30 +6,16 @@
 
     "use strict";
 
-    function isDefined(o) {
-        return !(typeof o === "undefined" || o === null);
-    }
+    function Service(apiCaller, utils) {
 
-    function getPropertyFromObj(obj) {
-        var defObj = isDefined(obj) ? obj : {};
+        function Category(obj) {
+            var getProperty = utils.getPropertyFromObj(obj);
 
-        return function (property, defaultValue) {
-            var value = isDefined(defaultValue) ? defaultValue : null;
-            return isDefined(defObj[property])
-                ? defObj[property]
-                : value;
-        };
-    }
+            this.id = getProperty("id");
+            this.name = getProperty("name");
+            this.enabled = getProperty("enable", true);
+        }
 
-    function Category(obj) {
-        var getProperty = getPropertyFromObj(obj);
-
-        this.id = getProperty("id");
-        this.name = getProperty("name");
-        this.enabled = getProperty("enable", true);
-    }
-
-    function Service(apiCaller) {
         function getCategoryModel(obj) {
             return new Category(obj);
         }
@@ -44,7 +30,7 @@
         };
     }
 
-    Service.$inject = ["cgApiCaller"];
+    Service.$inject = ["cgApiCaller", "cgUtilService"];
 
     angular
         .module("civic-graph.api")

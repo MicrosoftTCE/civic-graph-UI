@@ -2,11 +2,7 @@
 
     "use strict";
 
-    function isDefined(o) {
-        return !(typeof o === "undefined" || o === null);
-    }
-
-    function Controller($scope, $filter, _, connectionService) {
+    function Controller($scope, $filter, _, connectionService, utils) {
         // TODO: Make a hashmap on the backend of id -> position, then use source:
         // entities[map[sourceid]] to get nodes. See http://stackoverflow.com/q/16824308
         $scope.isLoading = true;
@@ -77,7 +73,7 @@
                     .data(connections)
                     .enter().append('line')
                     .attr('class', function (d) {
-                        if (!isDefined(d.source) || !isDefined(d.target)) {
+                        if (!utils.isDefined(d.source) || !utils.isDefined(d.target)) {
                             return "";
                         }
                         d.type = type;
@@ -307,8 +303,8 @@
             var click = function (entity) {
                 $scope.showLicense = false;
 
-                if (isDefined($scope.clickedLocation)) {
-                    if (isDefined($scope.clickedLocation.location)) {
+                if (utils.isDefined($scope.clickedLocation)) {
+                    if (utils.isDefined($scope.clickedLocation.location)) {
                         unfocusLocation($scope.clickedLocation.entity);
                         $scope.clickedLocation.location = null;
                     }
@@ -336,12 +332,12 @@
             };
 
             var backgroundclick = function () {
-                if (isDefined($scope.clickedLocation)) {
-                    if (isDefined($scope.clickedLocation.location)) {
+                if (utils.isDefined($scope.clickedLocation)) {
+                    if (utils.isDefined($scope.clickedLocation.location)) {
                         unfocus($scope.clickedLocation.location);
                         $scope.clickedLocation.location = null;
                     }
-                    if (isDefined($scope.clickedEntity.entity)) {
+                    if (utils.isDefined($scope.clickedEntity.entity)) {
                         unfocus($scope.clickedEntity.entity);
                         $scope.clickedEntity.entity = null;
                     }
@@ -461,7 +457,7 @@
                     _.forEach(connections, function (connection) {
                         var sourceNode = _.find(filteredEntities, { 'id': connection.source });
                         var targetNode = _.find(filteredEntities, { 'id': connection.target });
-                        if (!( isDefined(sourceNode) && isDefined(targetNode) )) {
+                        if (!( utils.isDefined(sourceNode) && utils.isDefined(targetNode) )) {
                             return;
                         }
 
@@ -494,7 +490,7 @@
         }
     }
 
-    Controller.$inject = ["$scope", "$filter", "_", "connectionService"];
+    Controller.$inject = ["$scope", "$filter", "_", "connectionService", "cgUtilService"];
 
     angular.module('civic-graph')
         .controller('networkCtrl', Controller);

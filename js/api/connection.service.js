@@ -7,10 +7,6 @@
 
     var url = "/connections";
 
-    function isDefined(o) {
-        return !(typeof o === "undefined" || o === null);
-    }
-
     function getConnectionTypes() {
         return {
             "Funding": true,
@@ -20,32 +16,22 @@
         };
     }
 
-    function getPropertyFromObj(obj) {
-        var defObj = isDefined(obj) ? obj : {};
+    function Service(apiCaller, utils) {
 
-        return function (property, defaultValue) {
-            var value = isDefined(defaultValue) ? defaultValue : null;
-            return isDefined(defObj[property])
-                ? defObj[property]
-                : value;
-        };
-    }
+        function Connection(obj) {
+            var getProperty = utils.getPropertyFromObj(obj);
 
-    function Connection(obj) {
-        var getProperty = getPropertyFromObj(obj);
+            this.id = getProperty("id");
+            this.name = getProperty("name");
+            this.details = getProperty("details");
+            this.entity = getProperty("entity");
+            this.entity_id = getProperty("entity_id");
+        }
 
-        this.id = getProperty("id");
-        this.name = getProperty("name");
-        this.details = getProperty("details");
-        this.entity = getProperty("entity");
-        this.entity_id = getProperty("entity_id");
-    }
+        function getConnectionModel(obj) {
+            return new Connection(obj);
+        }
 
-    function getConnectionModel(obj) {
-        return new Connection(obj);
-    }
-
-    function Service(apiCaller) {
         function getAll() {
             return apiCaller.get(url);
         }
@@ -57,7 +43,7 @@
         };
     }
 
-    Service.$inject = ["cgApiCaller"];
+    Service.$inject = ["cgApiCaller", "cgUtilService"];
 
     angular
         .module("civic-graph.api")

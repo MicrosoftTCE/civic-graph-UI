@@ -1,12 +1,8 @@
 (function (angular) {
 
-    'use strict';
+    "use strict";
 
-    function isDefined(o) {
-        return !(typeof o === "undefined" || o === null);
-    }
-
-    function Controller($scope, $http, $timeout, _, entityService, categoryService, locationService) {
+    function Controller($scope, $http, $timeout, _, entityService, categoryService, locationService, utils) {
         $scope.isEditing = false;
         $scope.editEntity = entityService.getEntityModel($scope.entity);
         $scope.entityTypes = entityService.getEntityTypes();
@@ -26,7 +22,7 @@
                 }
             })
                 .then(function (response) {
-                    if (isDefined(response.data.resourceSets) && response.data.resourceSets.length
+                    if (utils.isDefined(response.data.resourceSets) && response.data.resourceSets.length
                         > 0) {
                         return response.data.resourceSets[0].resources;
                     }
@@ -60,7 +56,7 @@
         $scope.setLocation = function (location, isLast) {
             $scope.addressSearch(location.formattedAddress)
                 .then(function (apiCallResult) {
-                    if(!isDefined(apiCallResult[0])) {
+                    if(!utils.isDefined(apiCallResult[0])) {
                         return;
                     }
                     var result = apiCallResult[0],
@@ -69,16 +65,16 @@
                     $scope.addLocation(isLast);
 
                     // Parses API call result
-                    location.address_line = isDefined(address.addressLine) ? address.addressLine : '';
-                    location.locality = isDefined(address.locality) ? address.locality : '';
+                    location.address_line = utils.isDefined(address.addressLine) ? address.addressLine : '';
+                    location.locality = utils.isDefined(address.locality) ? address.locality : '';
                     location.district =
-                        isDefined(address.adminDistrict) ? address.adminDistrict : '';
+                        utils.isDefined(address.adminDistrict) ? address.adminDistrict : '';
                     location.country =
-                        isDefined(address.countryRegion) ? address.countryRegion : null;
+                        utils.isDefined(address.countryRegion) ? address.countryRegion : null;
                     location.country_code =
-                        isDefined(address.countryRegionIso2) ? address.countryRegionIso2 : '';
-                    location.coordinates = isDefined(point.coordinates) ? point.coordinates : null;
-                    location.postal_code = isDefined(address.postalCode) ? address.postalCode : null;
+                        utils.isDefined(address.countryRegionIso2) ? address.countryRegionIso2 : '';
+                    location.coordinates = utils.isDefined(point.coordinates) ? point.coordinates : null;
+                    location.postal_code = utils.isDefined(address.postalCode) ? address.postalCode : null;
                 });
         };
 
@@ -166,7 +162,7 @@
 
             initCategoryArray();
 
-            $scope.isEditing = isDefined($scope.editEntity.id);
+            $scope.isEditing = utils.isDefined($scope.editEntity.id);
         });
 
         /**
@@ -214,17 +210,18 @@
     }
 
     Controller.$inject = [
-        '$scope',
-        '$http',
-        '$timeout',
-        '_',
-        'entityService',
-        'categoryService',
-        'locationService'
+        "$scope",
+        "$http",
+        "$timeout",
+        "_",
+        "entityService",
+        "categoryService",
+        "locationService",
+        "cgUtilService"
     ];
 
     angular
-        .module('civic-graph')
-        .controller('editCtrl', Controller);
+        .module("civic-graph")
+        .controller("editCtrl", Controller);
 
 })(angular);

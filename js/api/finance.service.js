@@ -5,38 +5,25 @@
 
     "use strict";
 
-    function isDefined(o) {
-        return !(typeof o === "undefined" || o === null);
-    }
+    function Service(utils) {
+        function Finance(obj) {
+            var getProperty = utils.getPropertyFromObj(obj);
 
-    function getPropertyFromObj(obj) {
-        var defObj = isDefined(obj) ? obj : {};
+            this.id = getProperty("id");
+            this.year = getProperty("year");
+            this.amount = getProperty("amount", 0);
+        }
 
-        return function (property, defaultValue) {
-            var value = isDefined(defaultValue) ? defaultValue : null;
-            return isDefined(defObj[property])
-                ? defObj[property]
-                : value;
-        };
-    }
+        function getFinanceModel(obj) {
+            return new Finance(obj);
+        }
 
-    function Finance(obj) {
-        var getProperty = getPropertyFromObj(obj);
-
-        this.id = getProperty("id");
-        this.year = getProperty("year");
-        this.amount = getProperty("amount", 0);
-    }
-
-    function getFinanceModel(obj) {
-        return new Finance(obj);
-    }
-
-    function Service() {
         return {
             "getFinanceModel": getFinanceModel
         };
     }
+
+    Service.$inject = ["cgUtilService"];
 
     angular
         .module("civic-graph.api")
