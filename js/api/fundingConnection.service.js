@@ -1,7 +1,7 @@
 /**
  * Created by brianavecchione on 6/27/16.
  */
-(function(angular){
+(function (angular) {
 
     "use strict";
 
@@ -16,7 +16,7 @@
             this.entity = getProperty("entity", "");
         }
 
-        function getFundingConnectionModel(obj){
+        function getFundingConnectionModel(obj) {
             return new FundingConnection(obj);
         }
 

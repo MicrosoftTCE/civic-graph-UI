@@ -13,7 +13,7 @@
 
             function buildFormattedAddress() {
                 var defObj = utils.isDefined(obj) ? obj : {};
-                var addressLine = (utils.isDefined(defObj.address_line) ? defObj.address_line +  ' ' : '');
+                var addressLine = (utils.isDefined(defObj.address_line) ? defObj.address_line + ' ' : '');
                 var locality = (utils.isDefined(defObj.locality) ? defObj.locality + ', ' : '');
                 var countryCode = (utils.isDefined(defObj.country_code) ? defObj.country_code + ' ' : '');
                 var postalCode = (utils.isDefined(defObj.postal_code) ? defObj.postal_code : '');
