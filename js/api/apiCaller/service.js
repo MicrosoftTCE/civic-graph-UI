@@ -2,8 +2,8 @@
 
     "use strict";
 
-    var apiUrl = "https://api.civicgraph.io/";
-    // var apiUrl = "http://localhost:8888/api";
+    // var apiUrl = "https://api.civicgraph.io/api";
+    var apiUrl = "/api";
 
     var defaultHeader = {
         // "Event-Name": "Test-Event"
@@ -25,8 +25,15 @@
                 .then(unwrapAngularHttp, logApiError);
         }
 
+        function post(url, data) {
+            return $http
+                .post(apiUrl + url, data, { "headers": defaultHeader })
+                .then(unwrapAngularHttp, logApiError);
+        }
+
         return {
-            "get": get
+            "get": get,
+            "post": post
         };
     }
 

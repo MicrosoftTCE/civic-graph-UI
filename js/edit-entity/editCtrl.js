@@ -2,22 +2,11 @@
 
     'use strict';
 
-    var editControllerDeps = [
-        '$scope',
-        '$http',
-        '$timeout',
-        '_',
-        'entityService',
-        'locationService',
-        'config',
-        editCtrl
-    ];
-
-    function isDef(obj) {
-        return obj !== undefined && obj !== null;
+    function isDefined(o) {
+        return !(typeof o === "undefined" || o === null);
     }
 
-    function editCtrl($scope, $http, $timeout, _, entityService, locationService, config) {
+    function Controller($scope, $http, $timeout, _, entityService, categoryService, locationService) {
         $scope.isEditing = false;
         $scope.editEntity = entityService.getEntityModel($scope.entity);
         $scope.entityTypes = entityService.getEntityTypes();
@@ -37,7 +26,7 @@
                 }
             })
                 .then(function (response) {
-                    if (isDef(response.data.resourceSets) && response.data.resourceSets.length
+                    if (isDefined(response.data.resourceSets) && response.data.resourceSets.length
                         > 0) {
                         return response.data.resourceSets[0].resources;
                     }
@@ -71,22 +60,25 @@
         $scope.setLocation = function (location, isLast) {
             $scope.addressSearch(location.formattedAddress)
                 .then(function (apiCallResult) {
+                    if(!isDefined(apiCallResult[0])) {
+                        return;
+                    }
                     var result = apiCallResult[0],
                         address = result.address,
                         point = result.point;
                     $scope.addLocation(isLast);
 
                     // Parses API call result
-                    location.address_line = isDef(address.addressLine) ? address.addressLine : '';
-                    location.locality = isDef(address.locality) ? address.locality : '';
+                    location.address_line = isDefined(address.addressLine) ? address.addressLine : '';
+                    location.locality = isDefined(address.locality) ? address.locality : '';
                     location.district =
-                        isDef(address.adminDistrict) ? address.adminDistrict : '';
+                        isDefined(address.adminDistrict) ? address.adminDistrict : '';
                     location.country =
-                        isDef(address.countryRegion) ? address.countryRegion : null;
+                        isDefined(address.countryRegion) ? address.countryRegion : null;
                     location.country_code =
-                        isDef(address.countryRegionIso2) ? address.countryRegionIso2 : '';
-                    location.coordinates = isDef(point.coordinates) ? point.coordinates : null;
-                    location.postal_code = isDef(address.postalCode) ? address.postalCode : null;
+                        isDefined(address.countryRegionIso2) ? address.countryRegionIso2 : '';
+                    location.coordinates = isDefined(point.coordinates) ? point.coordinates : null;
+                    location.postal_code = isDefined(address.postalCode) ? address.postalCode : null;
                 });
         };
 
@@ -139,22 +131,25 @@
 
         $scope.save = function () {
             $scope.isSaving = true;
-            console.log($scope.editEntity.generateDBModel());
 
-            $http.post(config.apiHost + 'api/save', {'entity': $scope.editEntity.generateDBModel()})
-                .success(function (response) {
-                    $scope.isSaving = false;
-                    $scope.$emit("editEntitySuccess", response);
-                    // Call to homeCtrl's parent stopEdit() to change view back and any other
-                    // high-level changes.
-                    $scope.cancelEdit();
-                })
-                .error(function () {
-                    $scope.isError = true;
-                    $timeout(function () {
-                        $scope.isError = false;
-                    }, 2000);
-                });
+            function success(response) {
+                $scope.isSaving = false;
+                $scope.$emit("editEntitySuccess", response);
+                // Call to homeCtrl's parent stopEdit() to change view back and any other
+                // high-level changes.
+                $scope.cancelEdit();
+            }
+
+            function error() {
+                $scope.isError = true;
+                $timeout(function () {
+                    $scope.isError = false;
+                }, 2000);
+            }
+
+            entityService
+                .saveEntity($scope.editEntity.generateDBModel())
+                .then(success, error);
         };
 
         $scope.cancelEdit = function () {
@@ -166,14 +161,12 @@
                 return;
             }
 
-            console.log($scope.entity);
-
             $scope.editEntity = entityService.getEntityModel(newVal);
             $scope.categories = angular.copy(categoryBackup);
 
             initCategoryArray();
 
-            $scope.isEditing = isDef($scope.editEntity.id);
+            $scope.isEditing = isDefined($scope.editEntity.id);
         });
 
         /**
@@ -209,8 +202,9 @@
         }
 
         // Retrieve Categories from DB
-        $http.get(config.apiHost + 'api/categories')
-            .success(function (data) {
+        categoryService
+            .getAll()
+            .then(function (data) {
                 categoryBackup = data.categories;
                 // Creates backup of data using Angular to prevent api data from being tampered
                 // directly
@@ -219,7 +213,18 @@
             });
     }
 
-    angular.module('civic-graph')
-        .controller('editCtrl', editControllerDeps);
+    Controller.$inject = [
+        '$scope',
+        '$http',
+        '$timeout',
+        '_',
+        'entityService',
+        'categoryService',
+        'locationService'
+    ];
+
+    angular
+        .module('civic-graph')
+        .controller('editCtrl', Controller);
 
 })(angular);

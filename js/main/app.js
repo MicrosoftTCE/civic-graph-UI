@@ -4,9 +4,6 @@
 
     angular.module('civic-graph')
         .constant('_', window._)
-        .constant('config', {
-            apiHost: 'https://api.civicgraph.io/'
-        })
         .config(['$locationProvider', '$compileProvider',
             function ($locationProvider, $compileProvider) {
                 $locationProvider.html5Mode(true);

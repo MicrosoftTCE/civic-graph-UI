@@ -4,13 +4,14 @@
 
     var homeDependencies = [
         '$scope',
+        '$timeout',
         '_',
         'entityService',
         'connectionService',
         homeCtrl
     ];
 
-    function homeCtrl($scope, _, entityService, connectionService) {
+    function homeCtrl($scope, $timeout, _, entityService, connectionService) {
         $scope.entities                 = [];
         $scope.searchItems              = null;
         $scope.categories               = [];
@@ -109,11 +110,10 @@
         $scope.mobile          = window.mobilecheck();
         $scope.settingsEnabled = !$scope.mobile;
 
-        setTimeout(function () {
+        $timeout(function () {
             entityService
                 .getAll()
                 .then(function (data) {
-                    console.log(data);
                     $scope.entities = data.nodes;
                     var locations   = _.uniq(
                         _.pluck(_.flatten(_.pluck($scope.entities, 'locations')), 'locality'));
