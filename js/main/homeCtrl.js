@@ -4,15 +4,14 @@
 
     var homeDependencies = [
         '$scope',
-        '$http',
+        '$timeout',
         '_',
         'entityService',
         'connectionService',
-        'config',
         homeCtrl
     ];
 
-    function homeCtrl($scope, $http, _, entityService, connectionService, config) {
+    function homeCtrl($scope, $timeout, _, entityService, connectionService) {
         $scope.entities                 = [];
         $scope.searchItems              = null;
         $scope.categories               = [];
@@ -43,7 +42,6 @@
         $scope.$watch('minConnections', function() {
             $scope.$broadcast('triggerNetworkDraw');
         });
-
 
         $scope.connectionChange = function () {
             console.log(self.minConnections);
@@ -112,9 +110,10 @@
         $scope.mobile          = window.mobilecheck();
         $scope.settingsEnabled = !$scope.mobile;
 
-        setTimeout(function () {
-            $http.get(config.apiHost + 'api/entities')
-                .success(function (data) {
+        $timeout(function () {
+            entityService
+                .getAll()
+                .then(function (data) {
                     $scope.entities = data.nodes;
                     var locations   = _.uniq(
                         _.pluck(_.flatten(_.pluck($scope.entities, 'locations')), 'locality'));

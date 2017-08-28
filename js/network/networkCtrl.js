@@ -1,24 +1,11 @@
-(function (angular, RTP) {
+(function (angular) {
 
-    'use strict';
+    "use strict";
 
-    var dependencies = [
-        '$scope',
-        '$http',
-        '_',
-        '$filter',
-        'config',
-        networkCtrl
-    ];
-
-    function isDef(o) {
-        return o !== undefined && o !== null;
-    }
-
-    function networkCtrl($scope, $http, _, $filter, config) {
+    function Controller($scope, $filter, _, connectionService, utils) {
         // TODO: Make a hashmap on the backend of id -> position, then use source:
         // entities[map[sourceid]] to get nodes. See http://stackoverflow.com/q/16824308
-        $scope.isLoading   = true;
+        $scope.isLoading = true;
         $scope.connections = {};
         startLoad();
 
@@ -45,33 +32,33 @@
 
             var svg = d3.select('#network');
             svg.selectAll("*").remove();
-            var bounds           = svg.node().getBoundingClientRect();
-            var height           = bounds.height;
-            var width            = bounds.width;
-            var offsetScale      = 6;
-            var defaultNodeSize  = 7;
-            var offsets          = {
-                'Individual': {'x': 1, 'y': 1},
-                'For-Profit': {'x': 1, 'y': -1},
-                'Non-Profit': {'x': -1, 'y': 1},
-                'Government': {'x': -1, 'y': -1}
+            var bounds = svg.node().getBoundingClientRect();
+            var height = bounds.height;
+            var width = bounds.width;
+            var offsetScale = 6;
+            var defaultNodeSize = 7;
+            var offsets = {
+                'Individual': { 'x': 1, 'y': 1 },
+                'For-Profit': { 'x': 1, 'y': -1 },
+                'Non-Profit': { 'x': -1, 'y': 1 },
+                'Government': { 'x': -1, 'y': -1 }
             };
             var lowerBoundRadius = 10;
             var upperBoundRadius = 50;
-            var maxEmployees     = d3.max(entityArray, function (el) {
+            var maxEmployees = d3.max(entityArray, function (el) {
                 return parseInt(el.employees);
             });
-            var maxFollowers     = d3.max(entityArray, function (el) {
+            var maxFollowers = d3.max(entityArray, function (el) {
                 return parseInt(el.followers);
             });
-            var scale            = {
+            var scale = {
                 'employees': d3.scale.sqrt().domain([10, maxEmployees])
                     .range([lowerBoundRadius, upperBoundRadius]),
                 'followers': d3.scale.sqrt().domain([10, maxFollowers])
                     .range([lowerBoundRadius, upperBoundRadius])
             };
-            var links            = {};
-            var force            = d3.layout.force()
+            var links = {};
+            var force = d3.layout.force()
                 .size([width, height])
                 .nodes(entityArray)
                 .links(_.flatten(_.values(connectionArray)))
@@ -86,12 +73,12 @@
                     .data(connections)
                     .enter().append('line')
                     .attr('class', function (d) {
-                        if (!isDef(d.source) || !isDef(d.target)) {
+                        if (!utils.isDefined(d.source) || !utils.isDefined(d.target)) {
                             return "";
                         }
                         d.type = type;
                         return 'link ' + type + '-link ' + d.source.type + '-link ' + d.target.type
-                               + '-link';
+                            + '-link';
                     });
             });
 
@@ -129,10 +116,10 @@
                         entity.y += offsets[entity.type].y * k;
                         entity.x =
                             Math.max(upperBoundRadius,
-                                     Math.min(width - upperBoundRadius, entity.x));
+                                Math.min(width - upperBoundRadius, entity.x));
                         entity.y =
                             Math.max(upperBoundRadius,
-                                     Math.min(height - upperBoundRadius, entity.y));
+                                Math.min(height - upperBoundRadius, entity.y));
                     }
                 });
 
@@ -177,8 +164,8 @@
             var linkedByIndex = {};
             _.forEach(links, function (l) {
                 _.forEach(l[0], function (connection) {
-                    var source                                       = connection.__data__.source;
-                    var target                                       = connection.__data__.target;
+                    var source = connection.__data__.source;
+                    var target = connection.__data__.target;
                     linkedByIndex[source.index + ',' + target.index] = true;
                     linkedByIndex[target.index + ',' + source.index] = true;
                 });
@@ -204,11 +191,11 @@
                     link
                         .classed('focused', function (o) {
                             return entity.index === o.source.index || entity.index
-                                                                      === o.target.index;
+                                === o.target.index;
                         })
                         .classed('unfocused', function (o) {
                             return !(entity.index === o.source.index || entity.index
-                                                                        === o.target.index);
+                            === o.target.index);
                         });
                 });
             };
@@ -221,7 +208,7 @@
                 focusneighbors(entity);
             };
 
-            var unfocus       = function (entity) {
+            var unfocus = function (entity) {
                 //var transitiondelay = 75;
                 node
                     .classed('focused', false)
@@ -239,7 +226,7 @@
                 //TODO: Show generic details and not individual entity details?
             };
             var hoverTimer;
-            var hover         = function (entity) {
+            var hover = function (entity) {
                 if (!$scope.clickedEntity.entity && !$scope.editing && !$scope.currentLocation) {
                     hoverTimer = setTimeout(function () {
                         focus(entity);
@@ -248,7 +235,7 @@
                 $scope.actions.interacted = true;
                 $scope.safeApply();
             };
-            var unhover       = function (entity) {
+            var unhover = function (entity) {
                 if (!$scope.clickedEntity.entity && !$scope.currentLocation) {
                     unfocus(entity);
                     clearTimeout(hoverTimer);
@@ -262,8 +249,8 @@
                 $scope.safeApply();
 
                 node.classed('focused', function (n) {
-                        return n.name in location.dict;
-                    })
+                    return n.name in location.dict;
+                })
                     .classed('unfocused', function (n) {
                         return !(n.name in location.dict);
                     });
@@ -272,11 +259,11 @@
                     link
                         .classed('focused', function (o) {
                             return (o.source.name in location.dict && o.target.name
-                                                                      in location.dict);
+                            in location.dict);
                         })
                         .classed('unfocused', function (o) {
                             return !(o.source.name in location.dict) || !(o.target.name
-                                                                          in location.dict);
+                                in location.dict);
                         });
                 });
             };
@@ -313,11 +300,11 @@
                 $scope.actions.interacted = true;
                 $scope.safeApply();
             };
-            var click             = function (entity) {
+            var click = function (entity) {
                 $scope.showLicense = false;
 
-                if (isDef($scope.clickedLocation)) {
-                    if (isDef($scope.clickedLocation.location)) {
+                if (utils.isDefined($scope.clickedLocation)) {
+                    if (utils.isDefined($scope.clickedLocation.location)) {
                         unfocusLocation($scope.clickedLocation.entity);
                         $scope.clickedLocation.location = null;
                     }
@@ -345,12 +332,12 @@
             };
 
             var backgroundclick = function () {
-                if (isDef($scope.clickedLocation)) {
-                    if (isDef($scope.clickedLocation.location)) {
+                if (utils.isDefined($scope.clickedLocation)) {
+                    if (utils.isDefined($scope.clickedLocation.location)) {
                         unfocus($scope.clickedLocation.location);
                         $scope.clickedLocation.location = null;
                     }
-                    if (isDef($scope.clickedEntity.entity)) {
+                    if (utils.isDefined($scope.clickedEntity.entity)) {
                         unfocus($scope.clickedEntity.entity);
                         $scope.clickedEntity.entity = null;
                     }
@@ -358,13 +345,13 @@
                 $scope.safeApply();
                 //TODO: Show generic details and not individual entity details.
             };
-            var dblclick        = function (entity) {
+            var dblclick = function (entity) {
                 if (!entity.fixed) {
-                    entity.x                    = width / 2;
-                    entity.y                    = height / 2;
-                    entity.px                   = width / 2;
-                    entity.py                   = height / 2;
-                    entity.fixed                = true;
+                    entity.x = width / 2;
+                    entity.y = height / 2;
+                    entity.px = width / 2;
+                    entity.py = height / 2;
+                    entity.fixed = true;
                     $scope.clickedEntity.entity = entity;
                 } else {
                     unfocus(entity);
@@ -399,47 +386,47 @@
                     svg
                         .selectAll('.' + key + '-link')
                         .classed({
-                                     'visible': function (l) {
-                                         // ConnectionType enabled, connection source entity type
-                                         // is enabled, connection target entity type is enabled.
-                                         return !$scope.connectionTypes[l.type]
-                                                || ($scope.entityTypes[l.source.type]
-                                                    && $scope.entityTypes[l.target.type]);
-                                     },
-                                     'hidden' : function (l) {
-                                         // If any of ConnectionType, source entity type, or target
-                                         // entity type are disabled.
-                                         return !$scope.connectionTypes[l.type]
-                                                || (!$scope.entityTypes[l.source.type]
-                                                || !$scope.entityTypes[l.target.type]);
-                                     }
-                                 });
+                            'visible': function (l) {
+                                // ConnectionType enabled, connection source entity type
+                                // is enabled, connection target entity type is enabled.
+                                return !$scope.connectionTypes[l.type]
+                                    || ($scope.entityTypes[l.source.type]
+                                    && $scope.entityTypes[l.target.type]);
+                            },
+                            'hidden': function (l) {
+                                // If any of ConnectionType, source entity type, or target
+                                // entity type are disabled.
+                                return !$scope.connectionTypes[l.type]
+                                    || (!$scope.entityTypes[l.source.type]
+                                    || !$scope.entityTypes[l.target.type]);
+                            }
+                        });
 
                 });
             });
             $scope.$on('toggleNode', function (event, type) {
                 svg
                     .selectAll('.' + type.name + '-node')
-                    .classed({'visible': type.enabled, 'hidden': !type.enabled});
+                    .classed({ 'visible': type.enabled, 'hidden': !type.enabled });
 
                 svg
                     .selectAll('.' + type.name + '-link')
                     .classed({
-                                 'visible': function (l) {
-                                     // ConnectionType enabled, connection source entity type is
-                                     // enabled, connection target entity type is enabled.
-                                     return $scope.connectionTypes[l.type]
-                                            && ($scope.entityTypes[l.source.type]
-                                            && $scope.entityTypes[l.target.type]);
-                                 },
-                                 'hidden' : function (l) {
-                                     // If any of ConnectionType, source entity type, or target
-                                     // entity type are disabled.
-                                     return !$scope.connectionTypes[l.type]
-                                            || (!$scope.entityTypes[l.source.type]
-                                            || !$scope.entityTypes[l.target.type]);
-                                 }
-                             });
+                        'visible': function (l) {
+                            // ConnectionType enabled, connection source entity type is
+                            // enabled, connection target entity type is enabled.
+                            return $scope.connectionTypes[l.type]
+                                && ($scope.entityTypes[l.source.type]
+                                && $scope.entityTypes[l.target.type]);
+                        },
+                        'hidden': function (l) {
+                            // If any of ConnectionType, source entity type, or target
+                            // entity type are disabled.
+                            return !$scope.connectionTypes[l.type]
+                                || (!$scope.entityTypes[l.source.type]
+                                || !$scope.entityTypes[l.target.type]);
+                        }
+                    });
 
             });
 
@@ -453,9 +440,9 @@
             });
         };
 
-        function startLoad (event) {
-            $http.get(config.apiHost + 'api/connections').success(function (data) {
-                var filteredEntities    = $filter('filter')($scope.entities,
+        function startLoad() {
+            function success(data) {
+                var filteredEntities = $filter('filter')($scope.entities,
                     function (entity) {
                         return entity.collaborations.length
                             >= $scope.minConnections;
@@ -468,14 +455,14 @@
                 });
                 _.forEach(data.connections, function (connections, type) {
                     _.forEach(connections, function (connection) {
-                        var sourceNode = _.find(filteredEntities, {'id': connection.source});
-                        var targetNode = _.find(filteredEntities, {'id': connection.target});
-                        if (!( isDef(sourceNode) && isDef(targetNode) )) {
+                        var sourceNode = _.find(filteredEntities, { 'id': connection.source });
+                        var targetNode = _.find(filteredEntities, { 'id': connection.target });
+                        if (!( utils.isDefined(sourceNode) && utils.isDefined(targetNode) )) {
                             return;
                         }
 
                         filteredConnections[type].push(
-                            {'source': sourceNode, 'target': targetNode});
+                            { 'source': sourceNode, 'target': targetNode });
                         // $scope.connections[type].push({'source': sourceNode, 'target':
                         // targetNode});
                     });
@@ -483,7 +470,7 @@
                 // Only show labels on top 5 most connected entities initially.
                 _.forEach(_.keys($scope.entityTypes), function (type) {
                     // Find the top 5 most-connected entities.
-                    var top5 = _.takeRight(_.sortBy(_.filter($scope.entities, {'type': type}),
+                    var top5 = _.takeRight(_.sortBy(_.filter($scope.entities, { 'type': type }),
                         'collaborations.length'), 5);
                     _.forEach(top5, function (entity) {
                         entity.wellconnected = true;
@@ -495,11 +482,17 @@
                 });
 
                 drawNetwork(filteredEntities, filteredConnections);
-            });
+            }
+
+            connectionService
+                .getAll()
+                .then(success);
         }
     }
 
+    Controller.$inject = ["$scope", "$filter", "_", "connectionService", "cgUtilService"];
+
     angular.module('civic-graph')
-        .controller('networkCtrl', dependencies);
+        .controller('networkCtrl', Controller);
 
 })(angular, RTP);
