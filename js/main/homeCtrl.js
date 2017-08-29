@@ -1,17 +1,8 @@
 (function (angular) {
 
-    'use strict';
+    "use strict";
 
-    var homeDependencies = [
-        '$scope',
-        '$timeout',
-        '_',
-        'entityService',
-        'connectionService',
-        homeCtrl
-    ];
-
-    function homeCtrl($scope, $timeout, _, entityService, connectionService) {
+    function Controller($scope, _, entityService) {
         var self = this;
 
         self.minConnections = $scope.minConnections = 2;
@@ -23,8 +14,6 @@
         $scope.editing = false;
         $scope.actions = { 'interacted': false };
         $scope.showsearchMB = false;
-        $scope.entityTypes = entityService.getEntityTypes();
-        $scope.connectionTypes = connectionService.getConnectionTypes();
         $scope.status = {
             "isNetworkShown": true,
             "license": true,
@@ -42,41 +31,36 @@
         $scope.setLocation = setLocation;
         $scope.selectItem = selectItem;
 
-        $scope.$watch('minConnections', watchMinConnection);
+        $scope.$watch("minConnections", watchMinConnection);
 
-        $scope.$on('setCurrentEntity', onSetCurrentEntity);
-        $scope.$on('setCurrentLocation', onSetCurrentLocation);
+        $scope.$on("setCurrentEntity", onSetCurrentEntity);
+        $scope.$on("setCurrentLocation", onSetCurrentLocation);
         $scope.$on("editEntitySuccess", onEditEntitySuccess);
 
-        $timeout(function () {
-            entityService
-                .getAll()
-                .then(function (data) {
-                    console.log(data);
-                    $scope.entities = data.nodes;
-                    var locations = _.uniq(
-                        _.pluck(_.flatten(_.pluck($scope.entities, 'locations')), 'locality'));
+        entityService
+            .getAll()
+            .then(function (data) {
+                $scope.entities = data.nodes;
+                var locations = _.uniq(_.pluck(_.flatten(_.pluck($scope.entities, "locations")), "locality"));
 
-                    var entitiesByLocation = _.map(locations, function (loc) {
-                        var findings = _.filter($scope.entities, _.flow(
-                            _.property('locations'),
-                            _.partialRight(_.any, { locality: loc })
-                        ));
+                var entitiesByLocation = _.map(locations, function (loc) {
+                    var findings = _.filter($scope.entities, _.flow(
+                        _.property("locations"),
+                        _.partialRight(_.any, { locality: loc })
+                    ));
 
-                        return {
-                            name: loc,
-                            type: 'location',
-                            entities: findings,
-                            dict: _.zipObject(_.pluck(findings, 'name'),
-                                _.pluck(findings, 'index'))
-                        };
-                    });
-
-                    $scope.searchItems = entitiesByLocation.concat($scope.entities);
-
-                    $scope.$broadcast('triggerNetworkDraw');
+                    return {
+                        name: loc,
+                        type: "location",
+                        entities: findings,
+                        dict: _.zipObject(_.pluck(findings, "name"), _.pluck(findings, "index"))
+                    };
                 });
-        }, 100);
+
+                $scope.searchItems = entitiesByLocation.concat($scope.entities);
+
+                $scope.$broadcast("triggerNetworkDraw");
+            });
 
         function watchMinConnection() {
             $scope.$broadcast('triggerNetworkDraw');
@@ -194,7 +178,13 @@
         }
     }
 
-    angular.module('civic-graph')
-        .controller('homeCtrl', homeDependencies);
+    Controller.$inject = [
+        "$scope",
+        "_",
+        "entityService"
+    ];
+
+    angular.module("civic-graph")
+        .controller("homeCtrl", Controller);
 
 })(angular);

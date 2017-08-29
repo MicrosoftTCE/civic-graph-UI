@@ -2,11 +2,13 @@
 
     "use strict";
 
-    function Controller($scope, $filter, _, connectionService, utils) {
+    function Controller($scope, $filter, _, entityService, connectionService, utils) {
         // TODO: Make a hashmap on the backend of id -> position, then use source:
         // entities[map[sourceid]] to get nodes. See http://stackoverflow.com/q/16824308
         $scope.isLoading = true;
         $scope.connections = {};
+        var entityTypes = entityService.getEntityTypes;
+        var connectionTypes = connectionService.getConnectionTypes();
         startLoad();
 
         // See https://coderwall.com/p/ngisma/safe-apply-in-angular-js
@@ -314,23 +316,25 @@
             $scope.$on('toggleLink', function (event, link) {
                 // links[link.name]
                 // .classed({'visible': link.enabled, 'hidden': !link.enabled});
-                _.map($scope.entityTypes, function (val, key) {
+                _.map(entityTypes, function (val, key) {
                     svg
                         .selectAll('.' + key + '-link')
                         .classed({
                             'visible': function (l) {
                                 // ConnectionType enabled, connection source entity type
                                 // is enabled, connection target entity type is enabled.
-                                return !$scope.connectionTypes[l.type]
-                                    || ($scope.entityTypes[l.source.type]
-                                    && $scope.entityTypes[l.target.type]);
+                                return !connectionTypes[l.type]
+                                    || (
+                                        entityTypes[l.source.type] && entityTypes[l.target.type]
+                                    );
                             },
                             'hidden': function (l) {
                                 // If any of ConnectionType, source entity type, or target
                                 // entity type are disabled.
-                                return !$scope.connectionTypes[l.type]
-                                    || (!$scope.entityTypes[l.source.type]
-                                    || !$scope.entityTypes[l.target.type]);
+                                return !connectionTypes[l.type]
+                                    || (
+                                        !entityTypes[l.source.type] || !entityTypes[l.target.type]
+                                    );
                             }
                         });
 
@@ -347,16 +351,18 @@
                         'visible': function (l) {
                             // ConnectionType enabled, connection source entity type is
                             // enabled, connection target entity type is enabled.
-                            return $scope.connectionTypes[l.type]
-                                && ($scope.entityTypes[l.source.type]
-                                && $scope.entityTypes[l.target.type]);
+                            return connectionTypes[l.type]
+                                && (
+                                    entityTypes[l.source.type] && entityTypes[l.target.type]
+                                );
                         },
                         'hidden': function (l) {
                             // If any of ConnectionType, source entity type, or target
                             // entity type are disabled.
-                            return !$scope.connectionTypes[l.type]
-                                || (!$scope.entityTypes[l.source.type]
-                                || !$scope.entityTypes[l.target.type]);
+                            return !connectionTypes[l.type]
+                                || (
+                                    !entityTypes[l.source.type] || !entityTypes[l.target.type]
+                                );
                         }
                     });
 
@@ -395,7 +401,7 @@
                     });
                 });
                 // Only show labels on top 5 most connected entities initially.
-                _.forEach(_.keys($scope.entityTypes), function (type) {
+                _.forEach(_.keys(entityTypes), function (type) {
                     // Find the top 5 most-connected entities.
                     var top5 = _.takeRight(_.sortBy(_.filter($scope.entities, { 'type': type }),
                         'collaborations.length'), 5);
@@ -417,7 +423,7 @@
         }
     }
 
-    Controller.$inject = ["$scope", "$filter", "_", "connectionService", "cgUtilService"];
+    Controller.$inject = ["$scope", "$filter", "_", "entityService", "connectionService", "cgUtilService"];
 
     angular.module('civic-graph')
         .controller('networkCtrl', Controller);
