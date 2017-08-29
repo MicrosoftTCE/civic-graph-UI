@@ -52,6 +52,7 @@
             entityService
                 .getAll()
                 .then(function (data) {
+                    console.log(data);
                     $scope.entities = data.nodes;
                     var locations = _.uniq(
                         _.pluck(_.flatten(_.pluck($scope.entities, 'locations')), 'locality'));

@@ -4,7 +4,12 @@
 </div>
 
 <div ng-class="mobile ? 'detailsMb' : 'details'">
-    <div ng-if='!actions.interacted && !mobile' ng-include="'js/overview/overview.html'"></div>
+
+    <div ng-if='!actions.interacted && !mobile'
+         ng-include="'js/overview/overview.html'"
+    >
+    </div>
+
     <!--MOBILE TOP VIEW-->
     <div class='mobile-details' ng-if='mobile'>
         <div class="topContainer">
@@ -61,6 +66,7 @@
         <br>
     </div>
     <!-- END MOBILE TOP VIEW-->
+
     <!--DESKTOP TOP VIEW-->
     <div ng-if='!mobile'>
         <div class='right_logo'>
@@ -292,7 +298,3 @@
     <!--<div ng-if="!mobile" class="gradientback">-->
 
     </div>
-<!--</div>-->
-<!--<div ng-if='!mobile' class='addInfoDesktopContainer' ng-click='startEdit()'>-->
-    <!--<button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New Info</button>-->
-<!--</div>-->

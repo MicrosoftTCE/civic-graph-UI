@@ -3,16 +3,40 @@
     "use strict";
 
     function Controller($scope, $http, $timeout, _, entityService, categoryService, locationService, utils) {
+        var categoryBackup;
+
         $scope.isEditing = false;
         $scope.editEntity = entityService.getEntityModel($scope.entity);
         $scope.entityTypes = entityService.getEntityTypes();
         $scope.influenceTypes = entityService.getInfluenceTypes();
-
-        var categoryBackup;
-
         $scope.categories = [];
 
-        $scope.addressSearch = function (search) {
+        $scope.addressSearch = addressSearch;
+        $scope.toggleCategory = toggleCategory;
+        $scope.setLocation = setLocation;
+        $scope.addLocation = addLocation;
+        $scope.addKeyPerson = addKeyPerson;
+        $scope.setFundingConnection = setFundingConnection;
+        $scope.addFundingConnection = addFundingConnection;
+        $scope.setConnection = setConnection;
+        $scope.addConnection = addConnection;
+        $scope.addFinance = addFinance;
+        $scope.save = save;
+        $scope.cancelEdit = cancelEdit;
+
+        $scope.$watch('entity', watchEntity);
+
+        // Retrieve Categories from DB
+        categoryService
+            .getAll()
+            .then(function (data) {
+                categoryBackup = data.categories;
+                // Creates backup of data using Angular to prevent api data from being tampered
+                // directly
+                $scope.categories = angular.copy(categoryBackup);
+            });
+
+        function addressSearch(search) {
             return $http.jsonp('https://dev.virtualearth.net/REST/v1/Locations', {
                 params: {
                     query: search,
@@ -27,9 +51,9 @@
                         return response.data.resourceSets[0].resources;
                     }
                 });
-        };
+        }
 
-        $scope.toggleCategory = function (category) {
+        function toggleCategory(category) {
             if ($scope.editEntity.categories.length === 0) {
                 $scope.editEntity.categories.push(category);
             }
@@ -51,10 +75,10 @@
                     $scope.editEntity.categories.push(category);
                 }
             }
-        };
+        }
 
-        $scope.setLocation = function (location, isLast) {
-            $scope.addressSearch(location.formattedAddress)
+        function setLocation(location, isLast) {
+            addressSearch(location.formattedAddress)
                 .then(function (apiCallResult) {
                     if(!utils.isDefined(apiCallResult[0])) {
                         return;
@@ -62,7 +86,7 @@
                     var result = apiCallResult[0],
                         address = result.address,
                         point = result.point;
-                    $scope.addLocation(isLast);
+                    addLocation(isLast);
 
                     // Parses API call result
                     location.address_line = utils.isDefined(address.addressLine) ? address.addressLine : '';
@@ -76,62 +100,62 @@
                     location.coordinates = utils.isDefined(point.coordinates) ? point.coordinates : null;
                     location.postal_code = utils.isDefined(address.postalCode) ? address.postalCode : null;
                 });
-        };
+        }
 
-        $scope.addLocation = function (isLast) {
+        function addLocation(isLast) {
             if (isLast) {
                 $scope.editEntity.locations.push(locationService.getLocationModel());
             }
-        };
+        }
 
-        $scope.addKeyPerson = function () {
+        function addKeyPerson() {
             // Add blank field to edit if there are none.
             // WATCH OUT! TODO: If someone deletes an old person, delete their id too.
             // i.e. make sure old/cleared form fields aren't being edited into new people.
             if (!(_.some($scope.editEntity.key_people, {'name': '', 'id': null}))) {
                 $scope.editEntity.key_people.push({'name': '', 'id': null});
             }
-        };
+        }
 
-        $scope.setFundingConnection = function (entity, funding) {
+        function setFundingConnection(entity, funding) {
             // Add other entity's id to this finance connection.
             funding.entity_id = entity.id;
-        };
+        }
 
-        $scope.addFundingConnection = function (funding) {
+        function addFundingConnection(funding) {
             if (!_.some(funding, {'entity': ''})) {
                 // Maybe set amount to 0 instead of null?
                 funding.push({'entity': '', 'amount': null, 'year': null, 'id': null});
             }
-        };
+        }
 
-        $scope.setConnection = function (entity, connection) {
+        function setConnection(entity, connection) {
             connection.entity_id = entity.id;
-        };
+        }
 
-        $scope.addConnection = function (connections) {
+        function addConnection(connections) {
             // Add an empty connection to edit if none exist.
             if (!_.some(connections, {'entity': '', 'id': null})) {
                 connections.push({'entity': '', 'id': null, 'details': null});
             }
-        };
+        }
 
-        $scope.addFinance = function (records) {
+        function addFinance(records) {
             // Add new finance field if all current fields are valid.
             if (_.every(records, function (r) {
                     return r.amount > 0 && r.year > 1750;
                 })) {
                 records.push({'amount': null, 'year': null, 'id': null});
             }
-        };
+        }
 
-        $scope.save = function () {
+        function save() {
             $scope.isSaving = true;
 
             function success(response) {
                 $scope.isSaving = false;
                 $scope.$emit("editEntitySuccess", response);
-                $scope.cancelEdit();
+                cancelEdit();
             }
 
             function error() {
@@ -144,13 +168,13 @@
             entityService
                 .saveEntity($scope.editEntity.generateDBModel())
                 .then(success, error);
-        };
+        }
 
-        $scope.cancelEdit = function () {
+        function cancelEdit() {
             $scope.isOpen = false;
-        };
+        }
 
-        $scope.$watch('entity', function (newVal, oldVal) {
+        function watchEntity(newVal, oldVal) {
             if (angular.equals(newVal, oldVal)) {
                 return;
             }
@@ -161,7 +185,7 @@
             initCategoryArray();
 
             $scope.isEditing = utils.isDefined($scope.editEntity.id);
-        });
+        }
 
         /**
          * Initializes category fields with entity values.
@@ -194,17 +218,6 @@
                 }
             }
         }
-
-        // Retrieve Categories from DB
-        categoryService
-            .getAll()
-            .then(function (data) {
-                categoryBackup = data.categories;
-                // Creates backup of data using Angular to prevent api data from being tampered
-                // directly
-                $scope.categories = angular.copy(categoryBackup);
-                // $scope.categories = data.categories;
-            });
     }
 
     Controller.$inject = [

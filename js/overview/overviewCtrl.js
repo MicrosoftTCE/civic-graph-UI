@@ -1,14 +1,33 @@
 (function (angular) {
 
-    'use strict';
+    "use strict";
 
-    function overviewCtrl($scope, _) {
-        $scope.categorizedEntities = {};
-        _.forEach(_.keys($scope.entityTypes), function (type) {
-            $scope.categorizedEntities[type] = _.filter($scope.entities, {'type': type});
-        });
+    function filterByProperty(key, value) {
+        return function (e) {
+            return e[key] === value;
+        };
     }
 
-    angular.module('civic-graph')
-        .controller('overviewCtrl', ['$scope', '_', overviewCtrl]);
+    function Controller($scope, entityService) {
+        var entityTypes = entityService.getEntityTypes();
+
+        $scope.categorizedEntities = {};
+
+        $scope.$watch("entities", watchEntityList);
+
+        function watchEntityList() {
+            $scope.categorizedEntities = {};
+            Object
+                .keys(entityTypes)
+                .forEach(function(type) {
+                    $scope.categorizedEntities[type] = $scope.entities.filter(filterByProperty("type", type));
+                });
+        }
+    }
+
+    Controller.$inject = ["$scope", "entityService"];
+
+    angular
+        .module("civic-graph")
+        .controller("overviewCtrl", Controller);
 })(angular);
