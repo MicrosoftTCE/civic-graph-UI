@@ -131,8 +131,6 @@
             function success(response) {
                 $scope.isSaving = false;
                 $scope.$emit("editEntitySuccess", response);
-                // Call to homeCtrl's parent stopEdit() to change view back and any other
-                // high-level changes.
                 $scope.cancelEdit();
             }
 

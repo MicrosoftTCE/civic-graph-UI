@@ -243,83 +243,21 @@
                 $scope.actions.interacted = true;
                 $scope.safeApply();
             };
-            var focusLocation = function (location) {
-                //  If the current entity is shown and it doesn't match the clicked node, then set
-                // the new node to clicked.
-                $scope.safeApply();
 
-                node.classed('focused', function (n) {
-                    return n.name in location.dict;
-                })
-                    .classed('unfocused', function (n) {
-                        return !(n.name in location.dict);
-                    });
-
-                _.forEach(links, function (link) {
-                    link
-                        .classed('focused', function (o) {
-                            return (o.source.name in location.dict && o.target.name
-                            in location.dict);
-                        })
-                        .classed('unfocused', function (o) {
-                            return !(o.source.name in location.dict) || !(o.target.name
-                                in location.dict);
-                        });
-                });
-            };
-
-            var unfocusLocation = function () {
-                node
-                    .classed('focused', false)
-                    .classed('unfocused', false);
-                _.forEach(links, function (link) {
-                    link
-                        .classed('focused', false)
-                        .classed('unfocused', false);
-                });
-
-                if ($scope.clickedLocation.location) {
-                    force.resume();
-                }
-            };
-
-            var highlightLocation = function (location) {
-                $scope.showLicense = false;
-                if ($scope.clickedEntity.entity) {
-                    unfocus($scope.clickedEntity.entity);
-                    $scope.clickedEntity.entity = null;
-                }
-                if ($scope.clickedLocation.location !== location) {
-                    unfocusLocation($scope.clickedLocation.location);
-                    $scope.clickedLocation.location = location;
-                    focusLocation(location);
-                }
-                if (d3.event) {
-                    d3.event.stopPropagation();
-                }
-                $scope.actions.interacted = true;
-                $scope.safeApply();
-            };
             var click = function (entity) {
                 $scope.showLicense = false;
 
-                if (utils.isDefined($scope.clickedLocation)) {
-                    if (utils.isDefined($scope.clickedLocation.location)) {
-                        unfocusLocation($scope.clickedLocation.entity);
-                        $scope.clickedLocation.location = null;
+                //  If the previous node is equal to the new node, do nothing.
+                if ($scope.clickedEntity.entity === entity) {
+                    $scope.clickedEntity.entity = null;
+                }
+                else {
+                    //  Unfocus on previous node and focus on new node.
+                    if ($scope.clickedEntity.entity) {
+                        unfocus($scope.clickedEntity.entity);
                     }
-                    //  If the previous node is equal to the new node, do nothing.
-                    if ($scope.clickedEntity.entity === entity) {
-                        $scope.clickedEntity.entity = null;
-                    }
-                    else {
-                        //  Unfocus on previous node and focus on new node.
-                        if ($scope.clickedEntity.entity) {
-                            unfocus($scope.clickedEntity.entity);
-                        }
-                        $scope.clickedEntity.entity = entity;
-                        focus(entity);
-                    }
+                    $scope.clickedEntity.entity = entity;
+                    focus(entity);
                 }
 
                 // Stop event so we don't detect a click on the background.
@@ -332,15 +270,9 @@
             };
 
             var backgroundclick = function () {
-                if (utils.isDefined($scope.clickedLocation)) {
-                    if (utils.isDefined($scope.clickedLocation.location)) {
-                        unfocus($scope.clickedLocation.location);
-                        $scope.clickedLocation.location = null;
-                    }
-                    if (utils.isDefined($scope.clickedEntity.entity)) {
-                        unfocus($scope.clickedEntity.entity);
-                        $scope.clickedEntity.entity = null;
-                    }
+                if (utils.isDefined($scope.clickedEntity.entity)) {
+                    unfocus($scope.clickedEntity.entity);
+                    $scope.clickedEntity.entity = null;
                 }
                 $scope.safeApply();
                 //TODO: Show generic details and not individual entity details.
@@ -430,13 +362,8 @@
 
             });
 
-            $scope.$on('selectItem', function (event, item) {
-                if (item.type === 'location') {
-                    highlightLocation($scope.currentLocation);
-                }
-                else {
-                    click($scope.currentEntity);
-                }
+            $scope.$on('selectItem', function () {
+                click($scope.currentEntity);
             });
         };
 

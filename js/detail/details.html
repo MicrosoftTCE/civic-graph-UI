@@ -4,7 +4,7 @@
 </div>
 
 <div ng-class="mobile ? 'detailsMb' : 'details'">
-    <div ng-if='!actions.interacted && !mobile' ng-include='overviewUrl'></div>
+    <div ng-if='!actions.interacted && !mobile' ng-include="'js/overview/overview.html'"></div>
     <!--MOBILE TOP VIEW-->
     <div class='mobile-details' ng-if='mobile'>
         <div class="topContainer">

@@ -167,7 +167,7 @@
                 }
 
                 map.on('locationerror', onLocationError);
-                // map.locate({setView: true, maxZoom: 11});
+
                 markers.on('click', function (marker) {
                     $scope.setEntityID(marker.layer.options.entity_id);
                     $scope.clickedEntity.entity = $scope.currentEntity;

@@ -18,12 +18,8 @@
 
         $scope.entities = [];
         $scope.searchItems = null;
-        $scope.categories = [];
         $scope.currentLocation = null;
-        $scope.clickedLocation = {};
-        $scope.clickedLocation.location = null;
-        $scope.clickedEntity = {};
-        $scope.clickedEntity.entity = null;
+        $scope.clickedEntity = { entity: null };
         $scope.editing = false;
         $scope.actions = { 'interacted': false };
         $scope.showsearchMB = false;
@@ -36,11 +32,7 @@
         };
         $scope.mobile = mobileCheck();
         $scope.settingsEnabled = !$scope.mobile;
-        $scope.overviewUrl = null;
-        $scope.animationsEnabled = true;
 
-        $scope.connectionChange = connectionChange;
-        $scope.hydePartials = hydePartials;
         $scope.showSearch = showSearch;
         $scope.toggleSettings = toggleSettings;
         $scope.startEdit = startEdit;
@@ -49,8 +41,6 @@
         $scope.setEntityID = setEntityID;
         $scope.setLocation = setLocation;
         $scope.selectItem = selectItem;
-        $scope.setEntities = setEntities;
-        $scope.stopEdit = stopEdit;
 
         $scope.$watch('minConnections', watchMinConnection);
 
@@ -83,22 +73,11 @@
 
                     $scope.searchItems = entitiesByLocation.concat($scope.entities);
 
-                    // if ($scope.getURLID()) {
-                    //     // Set the entity to the ID in the URL if it exists.
-                    //     $scope.setEntityID($scope.getURLID());
-                    // }
-                    $scope.overviewUrl = 'js/overview/overview.html';
                     $scope.$broadcast('triggerNetworkDraw');
                 });
         }, 100);
 
         function watchMinConnection() {
-            $scope.$broadcast('triggerNetworkDraw');
-        }
-
-        function connectionChange() {
-            console.log(self.minConnections);
-            $scope.minConnections = self.minConnections;
             $scope.$broadcast('triggerNetworkDraw');
         }
 
@@ -121,28 +100,26 @@
         }
 
         function showSearch() {
-            $scope.hydePartials("search");
+            hydePartials("search");
             $scope.showsearchMB = !$scope.showsearchMB;
             // $scope.$broadcast('hideLicense');
             $scope.status.license = false;
         }
 
         function toggleSettings() {
-            $scope.hydePartials("settings");
+            hydePartials("settings");
             $scope.settingsEnabled = !$scope.settingsEnabled;
         }
 
         function startEdit(entity) {
             $scope.currentEntity = entity;
             if ($scope.mobile) {
-                $scope.hydePartials("edit");
+                hydePartials("edit");
             }
             $scope.editing = true;
         }
 
         function switchView() {
-            // $scope.$broadcast('viewChange', !$scope.status.isNetworkShown ? 'Map' : 'Network');
-            // $scope.changeView(!$scope.status.isNetworkShown ? 'Map' : 'Network');
             $scope.status.isNetworkShown = !$scope.status.isNetworkShown;
             if ($scope.status.isNetworkShown) {
                 $scope.$broadcast('triggerNetworkDraw');
@@ -165,29 +142,31 @@
             $scope.currentLocation = null;
             $scope.currentEntity = entity;
             if ($scope.editing) {
-                $scope.stopEdit();
+                stopEdit();
             }
             $scope.$broadcast('entityChange');
         }
 
         function setEntityID(id) {
-            $scope.setEntity(_.find($scope.entities, { 'id': id }));
+            setEntity(_.find($scope.entities, { 'id': id }));
         }
 
         function setLocation(location) {
             $scope.currentLocation = location;
             if ($scope.editing) {
-                $scope.stopEdit();
+                stopEdit();
             }
             $scope.$broadcast('itemChange');
         }
 
         function selectItem(item) {
+            var fn = (item % 1 === 0 ? setEntityID : setEntity);
+
             if (item.type === 'location') {
-                $scope.setLocation(item);
+                setLocation(item);
             }
             else {
-                $scope[item % 1 === 0 ? 'setEntityID' : 'setEntity'](item);
+                fn(item);
             }
             $scope.$broadcast('selectItem', item);
         }
@@ -209,8 +188,7 @@
         }
 
         function onEditEntitySuccess(response) {
-            $scope.setEntities(response.nodes);
-            // $scope.setEntityID($scope.currentEntity.id);
+            setEntities(response.nodes);
             $scope.$broadcast('triggerNetworkDraw');
         }
     }
