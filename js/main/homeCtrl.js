@@ -27,7 +27,6 @@
         $scope.editing = false;
         $scope.actions = { 'interacted': false };
         $scope.showsearchMB = false;
-        $scope.showAnalytics = false;
         $scope.entityTypes = entityService.getEntityTypes();
         $scope.connectionTypes = connectionService.getConnectionTypes();
         $scope.status = {
@@ -40,9 +39,6 @@
         $scope.overviewUrl = null;
         $scope.animationsEnabled = true;
 
-        window.mobilecheck = mobileCheck;
-
-        $scope.toggleAnalytics = toggleAnalytics;
         $scope.connectionChange = connectionChange;
         $scope.hydePartials = hydePartials;
         $scope.showSearch = showSearch;
@@ -95,10 +91,6 @@
                     $scope.$broadcast('triggerNetworkDraw');
                 });
         }, 100);
-
-        function toggleAnalytics() {
-            $scope.showAnalytics = !$scope.showAnalytics;
-        }
 
         function watchMinConnection() {
             $scope.$broadcast('triggerNetworkDraw');
