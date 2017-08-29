@@ -11,7 +11,7 @@
         'connectionService',
         '$rootScope',
         '_',
-        '$modal',
+        '$uibModal',
         controlCtrl
     ];
 

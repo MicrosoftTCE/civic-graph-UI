@@ -45,9 +45,9 @@
                        ng-model='location.formattedAddress'
                        ng-change='addLocation($last); setLocation(location, $last, "")'
                        placeholder=''
-                       typeahead='loc.address.formattedAddress for loc in addressSearch($viewValue)'
-                       typeahead-on-select='setLocation(location, $last, $viewValue)'
-                       typeahead-editable=""
+                       uib-typeahead='loc.address.formattedAddress for loc in addressSearch($viewValue)'
+                       uib-typeahead-on-select='setLocation(location, $last, $viewValue)'
+                       uib-typeahead-editable=""
                 >
             </div>
             <!-- Entity Type -->
@@ -57,9 +57,9 @@
 
             <div ng-repeat='(type, enabled) in entityTypes'>
                 <label class="checkbox radio {{type+'-checkbox'}}"
+                       uib-btn-radio='type'
                        ng-class="{'unchecked': editEntity.type != type}"
                        ng-model='editEntity.type'
-                       btn-radio='type'
                        ng-required='true'
                 ></label>
                 <span class='caption'>{{type}}</span>
@@ -85,7 +85,7 @@
                 <label class='checkbox radio'
                        ng-class="{'unchecked': editEntity.influence != influenceType}"
                        ng-model='editEntity.influence'
-                       btn-radio='influenceType'
+                       uib-btn-radio='influenceType'
                 ></label>
                 <span class='caption'>{{influenceType}}</span>
             </div>
@@ -117,9 +117,10 @@
                 </h6>
                 <input type='text' class='form-control' ng-repeat='employment in editEntity.employments'
                        ng-model='employment.entity'
-                       typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                       typeahead-on-select='setConnection($item, employment)'
-                       ng-change='addConnection(editEntity.employments)' typeahead-editable='false'
+                       uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                       uib-typeahead-on-select='setConnection($item, employment)'
+                       uib-typeahead-editable='false'
+                       ng-change='addConnection(editEntity.employments)'
                        placeholder='Entity'>
             </div>
 
@@ -148,22 +149,16 @@
             <div><h6>Collaboration</h6>
                 <div ng-repeat='collaboration in editEntity.collaborations'>
                     <input type='text' class='form-control stacked' ng-model='collaboration.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setConnection($item, collaboration)'
-                           ng-change='addConnection(editEntity.collaborations)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setConnection($item, collaboration)'
+                           uib-typeahead-editable='false'
+                           ng-change='addConnection(editEntity.collaborations)'
                            placeholder='Collaborator'>
                     <input type='text' class='form-control details-field' ng-model='collaboration.details'
                            placeholder='Collaboration details'>
                 </div>
             </div>
 
-            <!--     <div><h6>Related to</h6>
-                    <div ng-repeat='relation in editEntity.relations'>
-                        <input type='text' class='form-control' ng-model='relation.entity' typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8' typeahead-on-select='setConnection($item, relation)' ng-change='addConnection(editEntity.relations)' typeahead-editable='false' placeholder='Related entity'>
-                        <input type='text' class='form-control details-field' ng-model='relation.details' placeholder='Relation details'>
-                    </div>
-                </div>
-             -->
             <hr>
 
             <!-- Entity Data Exchanges: Received -->
@@ -176,9 +171,10 @@
                 </h6>
                 <div ng-repeat='data in editEntity.data_received'>
                     <input type='text' class='form-control stacked' ng-model='data.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setConnection($item, data)'
-                           ng-change='addConnection(editEntity.data_received)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setConnection($item, data)'
+                           uib-typeahead-editable='false'
+                           ng-change='addConnection(editEntity.data_received)'
                            placeholder='Data Resource'>
                     <input type='text' class='form-control details-field' ng-model='data.details'
                            placeholder='Link to data'>
@@ -192,9 +188,10 @@
                 </h6>
                 <div ng-repeat='data in editEntity.data_given'>
                     <input type='text' class='form-control stacked' ng-model='data.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setConnection($item, data)'
-                           ng-change='addConnection(editEntity.data_given)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setConnection($item, data)'
+                           uib-typeahead-editable='false'
+                           ng-change='addConnection(editEntity.data_given)'
                            placeholder='Data Resource'>
                     <input type='text' class='form-control details-field' ng-model='data.details'
                            placeholder='Link to data'>
@@ -214,9 +211,10 @@
                 </h6>
                 <div ng-repeat='grant in editEntity.grants_received'>
                     <input type='text' ng-model='grant.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setFundingConnection($item, grant)'
-                           ng-change='addFundingConnection(editEntity.grants_received)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setFundingConnection($item, grant)'
+                           uib-typeahead-editable='false'
+                           ng-change='addFundingConnection(editEntity.grants_received)'
                            placeholder='Grantor' class='form-control stacked'>
                     <div class='input-group'>
                         <input type='text' class='finance-amount form-control' ng-model='grant.amount'
@@ -233,9 +231,10 @@
                 </h6>
                 <div ng-repeat='investment in editEntity.investments_received'>
                     <input type='text' ng-model='investment.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setFundingConnection($item, investment)'
-                           ng-change='addFundingConnection(editEntity.investments_received)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setFundingConnection($item, investment)'
+                           uib-typeahead-editable='false'
+                           ng-change='addFundingConnection(editEntity.investments_received)'
                            placeholder='Investor' class='form-control stacked'>
                     <div class='input-group'>
                         <input type='text' class='finance-amount form-control' ng-model='investment.amount'
@@ -253,9 +252,10 @@
                 </h6>
                 <div ng-repeat='grant in editEntity.grants_given'>
                     <input type='text' ng-model='grant.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setFundingConnection($item, grant)'
-                           ng-change='addFundingConnection(editEntity.grants_given)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setFundingConnection($item, grant)'
+                           uib-typeahead-editable='false'
+                           ng-change='addFundingConnection(editEntity.grants_given)'
                            placeholder='Grantee' class='form-control stacked'>
                     <div class='input-group'>
                         <input type='text' class='finance-amount form-control' ng-model='grant.amount'
@@ -272,9 +272,10 @@
                 </h6>
                 <div ng-repeat='investment in editEntity.investments_made'>
                     <input type='text' ng-model='investment.entity'
-                           typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
-                           typeahead-on-select='setFundingConnection($item, investment)'
-                           ng-change='addFundingConnection(editEntity.investments_made)' typeahead-editable='false'
+                           uib-typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
+                           uib-typeahead-on-select='setFundingConnection($item, investment)'
+                           uib-typeahead-editable='false'
+                           ng-change='addFundingConnection(editEntity.investments_made)'
                            placeholder='Investee' class='form-control stacked'>
                     <div class='input-group'>
                         <input type='text' class='finance-amount form-control' ng-model='investment.amount'

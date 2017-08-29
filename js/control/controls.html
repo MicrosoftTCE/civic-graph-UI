@@ -32,9 +32,12 @@
 
                             <h3>Size By</h3>
                     <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
-                        <label class='checkbox radio' ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
-                               ng-model='control.sizeBy' btn-radio='sizeBy.value'
-                               ng-change='control.changeSizeBy()'></label>
+                        <label class='checkbox radio'
+                               uib-btn-radio='sizeBy.value'
+                               ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
+                               ng-model='control.sizeBy'
+                               ng-change='control.changeSizeBy()'
+                        ></label>
                         <span class='caption'>{{sizeBy.name}}</span>
                     </div>
 
