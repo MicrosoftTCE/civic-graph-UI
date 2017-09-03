@@ -19,22 +19,27 @@
         };
     }
 
-    function Controller($scope) {
+    function Controller($scope, cgService) {
         $scope.itemsShownDefault = getItemsShownDefault();
         $scope.itemsShown = getItemsShownDefault();
 
         $scope.showMore = showMore;
         $scope.showLess = showLess;
 
-        $scope.$on("entityChange", onEntityChange);
-
-        function onEntityChange() {
-            // Reset items shown in details list.
-            $scope.itemsShown = getItemsShownDefault();
-        }
+        $scope.$watch(
+            function() {
+                return cgService.currentEntity();
+            },
+            function(n) {
+                $scope.currentEntity = n;
+                // Reset items shown in details list.
+                $scope.itemsShown = getItemsShownDefault();
+            },
+            true
+        );
 
         function showMore(type) {
-            $scope.itemsShown[type] = $scope.currentEntity[type].length;
+            $scope.itemsShown[type] = cgService.currentEntity()[type].length;
         }
 
         function showLess(type) {
@@ -42,7 +47,7 @@
         }
     }
 
-    Controller.$inject = ["$scope"];
+    Controller.$inject = ["$scope", "cgMainService"];
 
     angular
         .module("civic-graph")

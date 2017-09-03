@@ -5,24 +5,22 @@
 
 (function (angular) {
 
-    'use strict';
+    "use strict";
 
-    var editEntityDependencies = [editEntityDirective];
-
-    function editEntityDirective() {
+    function Directive() {
         return {
-            templateUrl: 'js/edit-entity/edit.html',
-            restrict   : 'E',
+            templateUrl: "js/edit-entity/edit.html",
+            restrict   : "E",
             scope      : {
-                'entity'  : "=",
-                'entities': "=",
-                'isOpen'  : "="
+                "entities": "=",
+                "isOpen"  : "="
             },
-            controller : 'editCtrl'
+            controller : "editCtrl"
         };
     }
 
-    angular.module('civic-graph')
-        .directive('editEntity', editEntityDependencies);
+    angular
+        .module("civic-graph")
+        .directive("editEntity", Directive);
 
 })(angular);

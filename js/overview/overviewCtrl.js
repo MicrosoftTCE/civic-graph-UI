@@ -8,7 +8,7 @@
         };
     }
 
-    function Controller($scope, entityService) {
+    function Controller($scope, entityService, cgService) {
         var entityTypes = entityService.getEntityTypes();
 
         $scope.categorizedEntities = {};
@@ -17,7 +17,7 @@
         $scope.$watch("entities", watchEntityList);
 
         function updateCurrentEntity(entity) {
-            $scope.$emit("setCurrentEntity", entity);
+            cgService.currentEntity(entity);
         }
 
         function watchEntityList() {
@@ -30,7 +30,7 @@
         }
     }
 
-    Controller.$inject = ["$scope", "entityService"];
+    Controller.$inject = ["$scope", "entityService", "cgMainService"];
 
     angular
         .module("civic-graph")

@@ -32,14 +32,15 @@
      * @param {object} _ - Lodash
      * @param {CgUtilService} utils
      * @param {CgEntityService} entityService
+     * @param {Object} connectionService
      * @constructor
      */
-    function Service(_, utils, entityService) {
+    function Service(_, utils, entityService, connectionService) {
         var self = this;
         var entityList = [];
         var connectionObj = {};
 
-        var _minConnection = 2;
+        var _minConnection = 0;
         var _sizeBy = "employees";
 
         function setEntityList(a) {
@@ -68,7 +69,7 @@
 
         function minConnection(o) {
             if(isFinite(o) && o >= 0) {
-                _minConnection = 0;
+                _minConnection = o;
             }
 
             return _minConnection;
@@ -89,29 +90,33 @@
             var nodeList = getGraphNodeList().map(function (d) { return d.value; });
 
             function buildConnectionObject(key) {
-                var obj = {};
-
                 var connections = connectionObj[key];
-                obj[key] = connections
+                return connections
                     .map(function (connection) {
-                        var sourceNode = nodeList.find(findById(connection.source));
-                        var targetNode = nodeList.find(findById(connection.target));
-                        if (!( utils.isDefined(sourceNode) && utils.isDefined(targetNode) )) {
-                            return null;
-                        }
-                        return { "source": sourceNode, "target": targetNode };
+                        var sourceNode = nodeList.findIndex(findById(connection.source));
+                        var targetNode = nodeList.findIndex(findById(connection.target));
+                        return { "source": sourceNode, "target": targetNode, type: key };
                     })
                     .filter(utils.isDefined);
+            }
 
-                return obj;
+            function filterConnectionWithMissingEntity(connection) {
+                function checkProperty(prop) {
+                    return utils.isDefined(connection[prop]) && connection[prop] !== -1;
+                }
+                return checkProperty("source") && checkProperty("target");
+            }
+
+            function reduceArrayOfArray(arr, d) {
+                return arr.concat(d);
             }
 
             return Object
                 .keys(connectionObj)
                 .map(buildConnectionObject)
-                .reduce(function (obj, c) {
-                    return Object.assign({}, obj, c);
-                }, {});
+                .reduce(reduceArrayOfArray, [])
+                .filter(filterConnectionWithMissingEntity)
+                .filter(filterByBooleanMap(connectionService.getConnectionTypes()));
         }
 
         self.setEntityList = setEntityList;
@@ -127,7 +132,8 @@
     Service.$inject = [
         "_",
         "cgUtilService",
-        "entityService"
+        "entityService",
+        "connectionService"
     ];
 
     angular

@@ -91,7 +91,7 @@
             <input type='text'
                    placeholder='Search'
                    class='form-control'
-                   ng-model='currentEntity'
+                   ng-model='homeCtrl.currentEntity'
                    uib-typeahead='item as item.name for item in searchItems | filter:{name: $viewValue} | limitTo:8'
                    uib-typeahead-on-select='selectItem($item)'
                    uib-typeahead-editable='false'
@@ -118,8 +118,7 @@
         </div>
 
         <!-- Right-Hand Edit Entity Panel -->
-        <edit-entity entity="currentEntity"
-                     entities="entities"
+        <edit-entity entities="entities"
                      ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
                      ng-show="editing"
                      is-open="editing">

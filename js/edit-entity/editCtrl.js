@@ -2,11 +2,11 @@
 
     "use strict";
 
-    function Controller($scope, $http, $timeout, _, entityService, categoryService, locationService, utils) {
+    function Controller($scope, $http, $timeout, _, cgService, entityService, categoryService, locationService, utils) {
         var categoryBackup;
 
         $scope.isEditing = false;
-        $scope.editEntity = entityService.getEntityModel($scope.entity);
+        $scope.editEntity = entityService.getEntityModel(cgService.currentEntity);
         $scope.entityTypes = entityService.getEntityTypes();
         $scope.influenceTypes = entityService.getInfluenceTypes();
         $scope.categories = [];
@@ -225,6 +225,7 @@
         "$http",
         "$timeout",
         "_",
+        "cgMainService",
         "entityService",
         "categoryService",
         "locationService",
