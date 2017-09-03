@@ -63,11 +63,10 @@
     <div class='row'>
 
         <!-- Desktop Left-Hand Control Panel -->
-        <control class='col-sm-2 control-panel-ctr hidden-xs'
-                 ng-show='settingsEnabled'
-                 id='settings'
+        <control id="settings"
+                 class="col-sm-2 control-panel-ctr hidden-xs"
+                 ng-show="settingsEnabled"
                  toggle-network="status.isNetworkShown"
-                 min-connections="minConnections"
         >
         </control>
 

@@ -1,11 +1,11 @@
 <!-- COLLABORATIONS -->
 <div ng-if='!mobile' class='addInfoDesktopContainer' ng-click='startEdit()'>
-  <button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New</button>
+    <button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New</button>
 </div>
 
 <div ng-class="mobile ? 'detailsMb' : 'details'">
 
-    <div ng-if='!actions.interacted && !mobile'
+    <div ng-if='!currentEntity'
          ng-include="'js/overview/overview.html'"
     >
     </div>
@@ -297,4 +297,4 @@
     <!--TODO: uncomment and fix css styling on this-->
     <!--<div ng-if="!mobile" class="gradientback">-->
 
-    </div>
+</div>

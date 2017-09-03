@@ -12,8 +12,13 @@
         var entityTypes = entityService.getEntityTypes();
 
         $scope.categorizedEntities = {};
+        $scope.updateCurrentEntity = updateCurrentEntity;
 
         $scope.$watch("entities", watchEntityList);
+
+        function updateCurrentEntity(entity) {
+            $scope.$emit("setCurrentEntity", entity);
+        }
 
         function watchEntityList() {
             $scope.categorizedEntities = {};

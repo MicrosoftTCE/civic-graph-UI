@@ -2,14 +2,9 @@
 
     "use strict";
 
-    function Controller($scope, _, entityService) {
-        var self = this;
-
-        self.minConnections = $scope.minConnections = 2;
-
+    function Controller($scope, _, entityService, networkService) {
         $scope.entities = [];
         $scope.searchItems = null;
-        $scope.currentLocation = null;
         $scope.clickedEntity = { entity: null };
         $scope.editing = false;
         $scope.actions = { 'interacted': false };
@@ -28,13 +23,9 @@
         $scope.switchView = switchView;
         $scope.setEntity = setEntity;
         $scope.setEntityID = setEntityID;
-        $scope.setLocation = setLocation;
         $scope.selectItem = selectItem;
 
-        $scope.$watch("minConnections", watchMinConnection);
-
         $scope.$on("setCurrentEntity", onSetCurrentEntity);
-        $scope.$on("setCurrentLocation", onSetCurrentLocation);
         $scope.$on("editEntitySuccess", onEditEntitySuccess);
 
         entityService
@@ -43,28 +34,28 @@
                 $scope.entities = data.nodes;
                 var locations = _.uniq(_.pluck(_.flatten(_.pluck($scope.entities, "locations")), "locality"));
 
-                var entitiesByLocation = _.map(locations, function (loc) {
-                    var findings = _.filter($scope.entities, _.flow(
-                        _.property("locations"),
-                        _.partialRight(_.any, { locality: loc })
-                    ));
+                // var entitiesByLocation = _.map(locations, function (loc) {
+                //     var findings = _.filter($scope.entities, _.flow(
+                //         _.property("locations"),
+                //         _.partialRight(_.any, { locality: loc })
+                //     ));
+                //
+                //     return {
+                //         name: loc,
+                //         type: "location",
+                //         entities: findings,
+                //         dict: _.zipObject(_.pluck(findings, "name"), _.pluck(findings, "index"))
+                //     };
+                // });
+                //
+                // $scope.searchItems = entitiesByLocation.concat($scope.entities);
 
-                    return {
-                        name: loc,
-                        type: "location",
-                        entities: findings,
-                        dict: _.zipObject(_.pluck(findings, "name"), _.pluck(findings, "index"))
-                    };
-                });
+                $scope.searchItems = $scope.entities;
 
-                $scope.searchItems = entitiesByLocation.concat($scope.entities);
+                networkService.setEntityList(data.nodes);
 
                 $scope.$broadcast("triggerNetworkDraw");
             });
-
-        function watchMinConnection() {
-            $scope.$broadcast('triggerNetworkDraw');
-        }
 
         function hydePartials(except) {
             if (except === "search") {
@@ -124,7 +115,6 @@
         }
 
         function setEntity(entity) {
-            $scope.currentLocation = null;
             $scope.currentEntity = entity;
             if ($scope.editing) {
                 stopEdit();
@@ -136,32 +126,15 @@
             setEntity(_.find($scope.entities, { 'id': id }));
         }
 
-        function setLocation(location) {
-            $scope.currentLocation = location;
-            if ($scope.editing) {
-                stopEdit();
-            }
-            $scope.$broadcast('itemChange');
-        }
-
         function selectItem(item) {
             var fn = (item % 1 === 0 ? setEntityID : setEntity);
 
-            if (item.type === 'location') {
-                setLocation(item);
-            }
-            else {
-                fn(item);
-            }
+            fn(item);
             $scope.$broadcast('selectItem', item);
         }
 
         function onSetCurrentEntity(event, args) {
-            $scope.currentEntity = args.value;
-        }
-
-        function onSetCurrentLocation(event, args) {
-            $scope.currentLocation = args.value;
+            $scope.currentEntity = args;
         }
 
         function setEntities(entities) {
@@ -181,7 +154,8 @@
     Controller.$inject = [
         "$scope",
         "_",
-        "entityService"
+        "entityService",
+        "cgNetworkService"
     ];
 
     angular.module("civic-graph")

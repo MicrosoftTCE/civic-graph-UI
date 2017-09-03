@@ -7,13 +7,15 @@
 
     var url = "/connections";
 
+    var connectionTypeObj = {
+        "Funding": true,
+        "Data": true,
+        "Employment": true,
+        "Collaboration": true
+    };
+
     function getConnectionTypes() {
-        return {
-            "Funding": true,
-            "Data": true,
-            "Employment": true,
-            "Collaboration": true
-        };
+        return connectionTypeObj;
     }
 
     function Service(apiCaller, utils) {

@@ -5,19 +5,46 @@
 
     "use strict";
 
-    function getEntityTypes() {
-        return {
-            "Government": true,
-            "For-Profit": true,
-            "Non-Profit": true,
-            "Individual": true
-        };
-    }
+    /**
+     * @typedef {Object} CgEntityService
+     * @property {Function} getEntityModel
+     * @property {Function} getInfluenceTypes
+     * @property {Function} getAll
+     * @property {Function} saveEntity
+     * @property {Function} getEntityTypes
+     */
+
+    /**
+     * @typedef {object} EntityTypeObj
+     * @property {boolean} Government
+     * @property {boolean} For-Profit
+     * @property {boolean} Non-Profit
+     * @property {boolean} Individual
+     */
+
+    /** @type {EntityTypeObj} */
+    var entityTypeObj = {
+        "Government": true,
+        "For-Profit": true,
+        "Non-Profit": true,
+        "Individual": true
+    };
 
     function getInfluenceTypes() {
         return ["Local", "National", "Global"];
     }
 
+    /**
+     * @param apiCaller
+     * @param funConnService
+     * @param connService
+     * @param financeService
+     * @param locationService
+     * @param categoryService
+     * @param utils
+     * @returns {CgEntityService}
+     * @constructor
+     */
     function Service(apiCaller, funConnService, connService, financeService, locationService, categoryService, utils) {
 
         function Entity(obj) {
@@ -98,10 +125,13 @@
 
         return {
             "getEntityModel": getEntityModel,
-            "getEntityTypes": getEntityTypes,
             "getInfluenceTypes": getInfluenceTypes,
             "getAll": getAll,
-            "saveEntity": saveEntity
+            "saveEntity": saveEntity,
+            /** @returns {EntityTypeObj} */
+            "getEntityTypes": function () {
+                return entityTypeObj;
+            }
         };
     }
 

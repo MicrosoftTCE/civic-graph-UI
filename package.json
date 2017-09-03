@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "gulp",
+    "build:watch": "gulp watch",
     "serve": "parallelshell \"gulp watch\" \"http-server .\""
   },
   "devDependencies": {
@@ -22,5 +23,9 @@
     "jshint": "^2.9.2",
     "node-dir": "^0.1.16",
     "parallelshell": "^2.0.0"
+  },
+  "dependencies": {
+    "angular": "^1.4.14",
+    "d3": "^3.5.17"
   }
 }
