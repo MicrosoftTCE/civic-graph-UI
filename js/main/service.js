@@ -7,9 +7,11 @@
      * @param utils
      * @constructor
      */
-    function Service($window) {
+    function Service($window, utils) {
         var self = this;
         var _currentEntity = null;
+        var entityList = [];
+        var connectionObj = {};
 
         function currentEntity(o) {
             if(typeof o !== "undefined") {
@@ -27,8 +29,32 @@
             return regex.test(agentCheck) || regex2.test(agentCheck.substr(0,4));
         }
 
+        function getEntityList() {
+            return entityList;
+        }
+
+        function setEntityList(a) {
+            if(Array.isArray(a)) {
+                entityList = a;
+            }
+        }
+
+        function getConnectionObj() {
+            return connectionObj;
+        }
+
+        function setConnectionObj(o) {
+            if(utils.isObject(o)) {
+                connectionObj = o;
+            }
+        }
+
         self.currentEntity = currentEntity;
         self.mobileCheck = mobileCheck;
+        self.getEntityList = getEntityList;
+        self.setEntityList = setEntityList;
+        self.getConnectionObj = getConnectionObj;
+        self.setConnectionObj = setConnectionObj;
     }
 
     Service.$inject = ["$window", "cgUtilService"];

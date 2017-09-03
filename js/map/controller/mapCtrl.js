@@ -156,9 +156,6 @@
                     _.forEach(entity.locations, innerLoop);
                 }
 
-                console.log("Original: %O", $scope.entities);
-                console.log("Filtered: %O", filteredEntities);
-
                 _.forEach(filteredEntities, outerLoop);
                 map.addLayer(markers);
 

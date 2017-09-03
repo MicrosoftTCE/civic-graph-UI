@@ -6,6 +6,7 @@
         var categoryBackup;
 
         $scope.isEditing = false;
+        $scope.entities = cgService.getEntityList();
         $scope.editEntity = entityService.getEntityModel(cgService.currentEntity);
         $scope.entityTypes = entityService.getEntityTypes();
         $scope.influenceTypes = entityService.getInfluenceTypes();
@@ -80,7 +81,7 @@
         function setLocation(location, isLast) {
             addressSearch(location.formattedAddress)
                 .then(function (apiCallResult) {
-                    if(!utils.isDefined(apiCallResult[0])) {
+                    if (!utils.isDefined(apiCallResult[0])) {
                         return;
                     }
                     var result = apiCallResult[0],
@@ -112,8 +113,8 @@
             // Add blank field to edit if there are none.
             // WATCH OUT! TODO: If someone deletes an old person, delete their id too.
             // i.e. make sure old/cleared form fields aren't being edited into new people.
-            if (!(_.some($scope.editEntity.key_people, {'name': '', 'id': null}))) {
-                $scope.editEntity.key_people.push({'name': '', 'id': null});
+            if (!(_.some($scope.editEntity.key_people, { 'name': '', 'id': null }))) {
+                $scope.editEntity.key_people.push({ 'name': '', 'id': null });
             }
         }
 
@@ -123,9 +124,9 @@
         }
 
         function addFundingConnection(funding) {
-            if (!_.some(funding, {'entity': ''})) {
+            if (!_.some(funding, { 'entity': '' })) {
                 // Maybe set amount to 0 instead of null?
-                funding.push({'entity': '', 'amount': null, 'year': null, 'id': null});
+                funding.push({ 'entity': '', 'amount': null, 'year': null, 'id': null });
             }
         }
 
@@ -135,8 +136,8 @@
 
         function addConnection(connections) {
             // Add an empty connection to edit if none exist.
-            if (!_.some(connections, {'entity': '', 'id': null})) {
-                connections.push({'entity': '', 'id': null, 'details': null});
+            if (!_.some(connections, { 'entity': '', 'id': null })) {
+                connections.push({ 'entity': '', 'id': null, 'details': null });
             }
         }
 
@@ -145,7 +146,7 @@
             if (_.every(records, function (r) {
                     return r.amount > 0 && r.year > 1750;
                 })) {
-                records.push({'amount': null, 'year': null, 'id': null});
+                records.push({ 'amount': null, 'year': null, 'id': null });
             }
         }
 
@@ -232,8 +233,19 @@
         "cgUtilService"
     ];
 
+    function Directive() {
+        return {
+            restrict: "E",
+            templateUrl: "js/edit-entity/editEntity.template.html",
+            controller: Controller,
+            scope: {
+                "isOpen": "="
+            }
+        };
+    }
+
     angular
         .module("civic-graph")
-        .controller("editCtrl", Controller);
+        .directive("editEntity", Directive);
 
 })(angular);

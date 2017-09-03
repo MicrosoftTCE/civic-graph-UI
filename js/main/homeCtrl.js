@@ -2,12 +2,15 @@
 
     "use strict";
 
-    function Controller($scope, _, cgService, entityService, networkService) {
+    function Controller($scope, $q, _, cgService, entityService, connectionService) {
+        function wait(ms) {
+            return $q(function(resolve) { setTimeout( resolve, ms ); });
+        }
+
         var vm = this;
 
         vm.currentEntity = null;
 
-        $scope.entities = [];
         $scope.searchItems = null;
         $scope.clickedEntity = { entity: null };
         $scope.editing = false;
@@ -39,12 +42,20 @@
         );
         $scope.$on("editEntitySuccess", onEditEntitySuccess);
 
-        entityService
-            .getAll()
-            .then(function (data) {
-                $scope.entities = data.nodes;
-                $scope.searchItems = data.nodes;
-                networkService.setEntityList(data.nodes);
+        // Leaving here for testing reasons.  The wait method isn't actually necessary, but useful
+        // if you don't have a lot of data in the database and need to simulate a large request.
+        // The $q.all() is necessary though, so if you remove wait(), leave the $q.all()
+        wait(0)
+            .then(function () {
+                return $q.all([entityService.getAll(), connectionService.getAll()]);
+            })
+            .then(function (responseList) {
+                cgService.setEntityList(responseList[0].nodes);
+                $scope.searchItems = responseList[0].nodes;
+
+                cgService.setConnectionObj(responseList[0].connections);
+
+                $scope.$broadcast("cg.data-loaded");
             });
 
         function hydePartials(except) {
@@ -101,7 +112,7 @@
         }
 
         function setEntityID(id) {
-            setEntity(_.find($scope.entities, { 'id': id }));
+            setEntity(_.find(cgService.getEntityList(), { 'id': id }));
         }
 
         function selectItem(item) {
@@ -127,10 +138,11 @@
 
     Controller.$inject = [
         "$scope",
+        "$q",
         "_",
         "cgMainService",
         "entityService",
-        "cgNetworkService"
+        "connectionService"
     ];
 
     angular.module("civic-graph")

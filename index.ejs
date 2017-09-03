@@ -77,12 +77,6 @@
              ng-include="'js/control/controlsmobile.html'">
         </div>
 
-        <!-- Middle Bubble Network Graph -->
-        <network ng-if="status.isNetworkShown || !(editing && mobile || showView.Map)"
-                 ng-class="mobile ? 'display-panelMb' : 'display-panel'"
-        >
-        </network>
-
         <!--Search Bar-->
         <div ng-if='!mobile || showsearchMB'
              ng-class="mobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
@@ -99,8 +93,14 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
+        <!-- Middle Bubble Network Graph -->
+        <network ng-if="status.isNetworkShown || !(editing && mobile)"
+                 ng-class="mobile ? 'display-panelMb' : 'display-panel'"
+        >
+        </network>
+
         <!-- Middle Map -->
-        <div ng-if='!status.isNetworkShown && !(editing && mobile)'
+        <div ng-if='!status.isNetworkShown || !(editing && mobile)'
              ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"
              ng-include="'js/map/map.html'"
         >
@@ -118,10 +118,10 @@
         </div>
 
         <!-- Right-Hand Edit Entity Panel -->
-        <edit-entity entities="entities"
-                     ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
+        <edit-entity ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
                      ng-show="editing"
-                     is-open="editing">
+                     is-open="editing"
+        >
         </edit-entity>
 
         <!-- Mobile Bottom Navigation Buttons -->

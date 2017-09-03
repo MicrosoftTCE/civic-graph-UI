@@ -28,36 +28,11 @@
         };
     }
 
-    /**
-     * @param {object} _ - Lodash
-     * @param {CgUtilService} utils
-     * @param {CgEntityService} entityService
-     * @param {Object} connectionService
-     * @constructor
-     */
-    function Service(_, utils, entityService, connectionService) {
+    function Service(utils, cgService, entityService, connectionService) {
         var self = this;
-        var entityList = [];
-        var connectionObj = {};
 
         var _minConnection = 0;
         var _sizeBy = "employees";
-
-        function setEntityList(a) {
-            if (Array.isArray(a)) {
-                entityList = a;
-            }
-
-            return self;
-        }
-
-        function setConnectionObj(a) {
-            if (utils.isObject(a)) {
-                connectionObj = a;
-            }
-
-            return self;
-        }
 
         function sizeBy(o) {
             if(utils.isString(o)) {
@@ -75,7 +50,7 @@
             return _minConnection;
         }
 
-        function getGraphNodeList() {
+        function getGraphNodeList(entityList) {
             if (!Array.isArray(entityList)) {
                 return [];
             }
@@ -86,9 +61,7 @@
                 .filter(filterByMinConnection(_minConnection));
         }
 
-        function getGraphLinkList() {
-            var nodeList = getGraphNodeList().map(function (d) { return d.value; });
-
+        function getGraphLinkList(nodeList, connectionObj) {
             function buildConnectionObject(key) {
                 var connections = connectionObj[key];
                 return connections
@@ -119,19 +92,22 @@
                 .filter(filterByBooleanMap(connectionService.getConnectionTypes()));
         }
 
-        self.setEntityList = setEntityList;
-        self.setConnectionObj = setConnectionObj;
+        function getGraphData() {
+            var connectionObj = cgService.getConnectionObj();
+            var nodeList = getGraphNodeList(cgService.getEntityList());
 
-        self.getGraphNodeList = getGraphNodeList;
-        self.getGraphLinkList = getGraphLinkList;
+            return { "nodeList": nodeList, "linkList": getGraphLinkList(nodeList, connectionObj) };
+        }
+
+        self.getGraphData = getGraphData;
 
         self.sizeBy = sizeBy;
         self.minConnection = minConnection;
     }
 
     Service.$inject = [
-        "_",
         "cgUtilService",
+        "cgMainService",
         "entityService",
         "connectionService"
     ];

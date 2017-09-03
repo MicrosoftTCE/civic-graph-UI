@@ -14,19 +14,20 @@
         $scope.categorizedEntities = {};
         $scope.updateCurrentEntity = updateCurrentEntity;
 
-        $scope.$watch("entities", watchEntityList);
+        $scope.$watch(cgService.getEntityList, watchEntityList);
 
         function updateCurrentEntity(entity) {
             cgService.currentEntity(entity);
         }
 
         function watchEntityList() {
-            $scope.categorizedEntities = {};
-            Object
+            $scope.categorizedEntities = Object
                 .keys(entityTypes)
-                .forEach(function(type) {
-                    $scope.categorizedEntities[type] = $scope.entities.filter(filterByProperty("type", type));
-                });
+                .reduce(function(result, type) {
+                    var obj = {};
+                    obj[type] = cgService.getEntityList().filter(filterByProperty("type", type));
+                    return Object.assign({}, result, obj);
+                }, {});
         }
     }
 

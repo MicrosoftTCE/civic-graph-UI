@@ -53,11 +53,8 @@
             });
         };
         vm.changeSizeBy = function () {
-            $rootScope.$broadcast('changeSizeBy', vm.sizeBy);
+            networkService.sizeBy(vm.sizeBy);
         };
-
-        // Necessary because we don't properly set defaults across the board
-        vm.changeSizeBy();
     }
 
     Controller.$inject = [

@@ -84,6 +84,12 @@
         };
     }
 
+    // This is cleaner in ES6 or if I had created actual getter/setters instead of merging
+    // them into a single method
+    function wrapFn(fn) {
+        return function () { return fn(); };
+    }
+
     function Directive($window, _, utils, cgService, networkService) {
         isDefined = utils.isDefined;
 
@@ -92,15 +98,17 @@
             var _buildScaleFunction;
             var _buildChargeFunction;
 
+
             $window.onresize = _.debounce(onWindowResize);
 
-            scope.$watch(networkService.sizeBy, watchSizeBy);
+            scope.$watch(wrapFn(networkService.sizeBy), watchSizeBy);
 
-            scope.$watchGroup([networkService.minConnection, networkService.sizeBy], run);
+            scope.$watchGroup([wrapFn(networkService.minConnection), wrapFn(networkService.sizeBy)], run);
 
             scope.$watchCollection(_.debounce(getWindowBox), run);
 
-            scope.$watchCollection(networkService.getGraphLinkList, run);
+            // This is kind of an expensive operation.  Probably something to look into optimizing later.
+            scope.$watch(networkService.getGraphData, run, true);
 
             function getWindowBox() {
                 // Returns the inner width of the browser window, for refreshing d3 graph
@@ -125,10 +133,7 @@
                     return;
                 }
 
-                var nodeList = networkService.getGraphNodeList();
-                var linkList = networkService.getGraphLinkList();
-
-                render({ nodeList: nodeList, linkList: linkList });
+                render(networkService.getGraphData());
             }
 
             /**
@@ -141,7 +146,7 @@
                 });
 
                 if (graphData.nodeList.length === 0) {
-                    console.log("Node list is empty, not drawing a graph");
+                    console.debug("Node list is empty, not drawing a graph");
                     return;
                 }
 
@@ -268,7 +273,6 @@
 
                     focusNeighbors(entity);
                     function focusNeighbors(entity) {
-                        console.log(entity);
                         function compareAgainstConnectionObj(d) {
                             return function (c) {
                                 return d.source === c.index || d.target === c.index;
@@ -323,7 +327,7 @@
                     }
 
                     // Restart d3 animations.
-                    if (utils.isDefined(cgService.currentEntity)) {
+                    if (utils.isDefined(cgService.currentEntity())) {
                         forceLayout.resume();
                     }
                 }
