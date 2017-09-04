@@ -2,7 +2,7 @@
 
     "use strict";
 
-    function Controller($scope, $q, _, cgService, entityService, connectionService) {
+    function Controller($scope, $q, _, utils, cgService, entityService, connectionService) {
         function wait(ms) {
             return $q(function(resolve) { setTimeout( resolve, ms ); });
         }
@@ -10,6 +10,7 @@
         var vm = this;
 
         vm.currentEntity = null;
+        vm.isMobile = cgService.mobileCheck();
 
         $scope.searchItems = null;
         $scope.clickedEntity = { entity: null };
@@ -21,8 +22,7 @@
             "license": true,
             "networkLoading": true
         };
-        $scope.mobile = cgService.mobileCheck();
-        $scope.settingsEnabled = !$scope.mobile;
+        $scope.settingsEnabled = !vm.isMobile;
 
         $scope.showSearch = showSearch;
         $scope.toggleSettings = toggleSettings;
@@ -37,6 +37,7 @@
                 return cgService.currentEntity();
             },
             function (n) {
+                console.log("Current entity in Home Controller updated!");
                 vm.currentEntity = n;
             }
         );
@@ -45,7 +46,7 @@
         // Leaving here for testing reasons.  The wait method isn't actually necessary, but useful
         // if you don't have a lot of data in the database and need to simulate a large request.
         // The $q.all() is necessary though, so if you remove wait(), leave the $q.all()
-        wait(0)
+        wait(1000)
             .then(function () {
                 return $q.all([entityService.getAll(), connectionService.getAll()]);
             })
@@ -90,7 +91,7 @@
 
         function startEdit(entity) {
             cgService.currentEntity(entity);
-            if ($scope.mobile) {
+            if (vm.isMobile) {
                 hydePartials("edit");
             }
             $scope.editing = true;
@@ -116,10 +117,7 @@
         }
 
         function selectItem(item) {
-            var fn = (item % 1 === 0 ? setEntityID : setEntity);
-
-            fn(item);
-            $scope.$broadcast('selectItem', item);
+            (utils.isObject(item) ? setEntity : setEntityID)(item);
         }
 
         function setEntities(entities) {
@@ -140,6 +138,7 @@
         "$scope",
         "$q",
         "_",
+        "cgUtilService",
         "cgMainService",
         "entityService",
         "connectionService"

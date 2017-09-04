@@ -7,6 +7,7 @@
 
         vm.isLoading = true;
         vm.getCurrentView = cgService.getCurrentView;
+        vm.isMobile = cgService.mobileCheck();
 
         scope.$on("cg.data-loaded", function () {
             vm.isLoading = false;
@@ -18,7 +19,7 @@
     function Directive() {
         return {
             "restrict": "E",
-            "templateUrl": "js/network/network.template.html",
+            "templateUrl": "js/centralColumn/centralColumn.template.html",
             "controller": Controller,
             "controllerAs": "central",
             "scope": {}
@@ -27,6 +28,6 @@
 
     angular
         .module("civic-graph")
-        .directive("network", Directive);
+        .directive("centralColumn", Directive);
 
 })(angular, d3);

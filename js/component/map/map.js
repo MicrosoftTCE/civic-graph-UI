@@ -1,5 +1,5 @@
 (function (angular, d3, L) {
-    'use strict';
+    "use strict";
 
     function Controller($scope, _, leafletData, cgService) {
 
@@ -208,7 +208,7 @@
     function Directive() {
         return {
             "restrict": "E",
-            "templateUrl": "js/map/map.template.html",
+            "templateUrl": "js/component/map/map.template.html",
             "controller": Controller
         };
     }

@@ -56,7 +56,7 @@
     <script src='build/app.min.js?v=<%= hashes['build/app.min.js'] %>'></script>
 </head>
 <body ng-controller='homeCtrl as homeCtrl'>
-<div ng-show="mobile" class="navLogoMobile">
+<div ng-show="homeCtrl.isMobile" class="navLogoMobile">
     <img class="logoMob" src="img/civicgraph.png">
 </div>
 <div class='container-fluid main-container'>
@@ -78,8 +78,8 @@
         </div>
 
         <!--Search Bar-->
-        <div ng-if='!mobile || showsearchMB'
-             ng-class="mobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
+        <div ng-if='!homeCtrl.isMobile || showsearchMB'
+             ng-class="homeCtrl.isMobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
              class="form-group has-feedback"
         >
             <input type='text'
@@ -87,45 +87,37 @@
                    class='form-control'
                    ng-model='homeCtrl.currentEntity'
                    uib-typeahead='item as item.name for item in searchItems | filter:{name: $viewValue} | limitTo:8'
-                   uib-typeahead-on-select='selectItem($item)'
-                   uib-typeahead-editable='false'
+                   typeahead-on-select='selectItem($item)'
+                   typeahead-editable='false'
             />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
-        <!-- Middle Bubble Network Graph -->
-        <network ng-if="status.isNetworkShown || !(editing && mobile)"
-                 ng-class="mobile ? 'display-panelMb' : 'display-panel'"
+        <central-column ng-if="!(editing && homeCtrl.isMobile)"
+                        ng-class="homeCtrl.isMobile ? 'display-panelMb' : 'display-panel'"
         >
-        </network>
-
-        <!-- Middle Map -->
-        <!--<div ng-if='!status.isNetworkShown || !(editing && mobile)'-->
-             <!--ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"-->
-             <!--ng-include="'js/map/map.template.html'"-->
-        <!--&gt;-->
-        <!--</div>-->
+        </central-column>
 
         <!-- Right-Hand Details Panel -->
         <div id='details-panel'
              add-mobile-events
              class='details-panel'
-             ng-if='!editing && !mobile'
-             ng-class="{'details-panelMb bottomPopUpMb': mobile}"
+             ng-if='!editing && !homeCtrl.isMobile'
+             ng-class="{'details-panelMb bottomPopUpMb': homeCtrl.isMobile}"
              ng-controller='detailsCtrl'
              ng-include="'js/detail/details.html'"
         >
         </div>
 
         <!-- Right-Hand Edit Entity Panel -->
-        <edit-entity ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
+        <edit-entity ng-class="homeCtrl.isMobile ? 'edit-panelMb' : 'edit-panel'"
                      ng-show="editing"
                      is-open="editing"
         >
         </edit-entity>
 
         <!-- Mobile Bottom Navigation Buttons -->
-        <div ng-if="mobile" class='bottomNavMb'>
+        <div ng-if="homeCtrl.isMobile" class='bottomNavMb'>
             <div class="row">
                 <div class="col-xs-1"></div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': showsearchMB}"

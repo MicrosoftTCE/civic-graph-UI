@@ -13,7 +13,7 @@
         var _currentEntity = null;
 
         var availableViews = ["network", "map"];
-        var currentView = "map";
+        var currentView = "network";
 
         var entityList = [];
         var connectionObj = {};
