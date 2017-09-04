@@ -11,7 +11,7 @@
     function directive() {
         return {
             "restrict": "E",
-            "templateUrl": "/map/map.html",
+            "templateUrl": "/map/map.template.html",
             "controller": "mapCtrl"
         };
     }

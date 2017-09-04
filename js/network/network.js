@@ -2,25 +2,31 @@
 
     "use strict";
 
-    function Controller(scope) {
-        scope.isLoading = true;
+    function Controller(scope, cgService) {
+        var vm = this;
 
-        scope.$on("cg.data-loaded", function () { scope.isLoading = false; });
+        vm.isLoading = true;
+        vm.getCurrentView = cgService.getCurrentView;
+
+        scope.$on("cg.data-loaded", function () {
+            vm.isLoading = false;
+        });
     }
 
-    Controller.$inject = ["$scope"];
+    Controller.$inject = ["$scope", "cgMainService"];
 
     function Directive() {
         return {
             "restrict": "E",
             "templateUrl": "js/network/network.template.html",
             "controller": Controller,
+            "controllerAs": "central",
             "scope": {}
         };
     }
 
     angular
-        .module("civic-graph.network")
+        .module("civic-graph")
         .directive("network", Directive);
 
 })(angular, d3);

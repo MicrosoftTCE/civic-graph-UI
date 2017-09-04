@@ -1,7 +1,9 @@
 <div class='network-container'>
-    <cg-network-graph></cg-network-graph>
 
-    <div id="loadingBlock" ng-if="isLoading">
+    <cg-network-graph ng-if="central.getCurrentView() === 'network'"></cg-network-graph>
+    <cg-map ng-if="central.getCurrentView() === 'map'"></cg-map>
+
+    <div id="loadingBlock" ng-if="central.isLoading">
         <div class="spinner">
             <div class="cube1"></div>
             <div class="cube2"></div>

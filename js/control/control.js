@@ -6,52 +6,43 @@
 
     "use strict";
 
-    function Controller($rootScope, $modal, _, networkService, entityService, connectionService) {
+    function Controller($rootScope, $modal, _, cgService, networkService, entityService, connectionService) {
         var vm = this;
 
         vm.entityTypes = entityService.getEntityTypes();
         vm.connectionTypes = connectionService.getConnectionTypes();
-        vm.sizeByList = [
-            { "name": "Employees", "value": "employees" },
-            { "name": "Twitter Followers", "value": "followers" }
-        ];
-        vm.showView = {
-            "Network": true,
-            "Map": false
-        };
+        vm.currentView = cgService.getCurrentView();
 
         vm.sizeBy = networkService.sizeBy();
         vm.minConnection = networkService.minConnection();
 
+        vm.sizeByList = [
+            { "name": "Employees", "value": "employees" },
+            { "name": "Twitter Followers", "value": "followers" }
+        ];
+
         vm.changeMinConnection = function () {
             networkService.minConnection(vm.minConnection);
         };
-        vm.switchView = function () {
-            vm.changeView(!vm.toggleNetwork ? 'Map' : 'Network');
+
+        vm.changeView = function () {
+            cgService.setCurrentView(vm.currentView);
         };
-        vm.changeView = function (view) {
-            _.forEach(_.keys(vm.showView), function (name) {
-                vm.showView[name] = view === name;
-            });
-            $rootScope.$broadcast('viewChange', vm.showView);
-        };
+
         vm.showAbout = function () {
             $modal.open({
                 animation: false,
-                templateUrl: 'control/about.html',
-                controller: 'modalCtrl'
+                templateUrl: "control/about.html",
+                controller: "modalCtrl"
             });
         };
-        vm.toggleNode = function (type) {
-            $rootScope.$broadcast('toggleNode', {
-                'name': type, 'enabled': vm.entityTypes[type]
-            });
-        };
+
         vm.toggleLink = function (type) {
-            $rootScope.$broadcast('toggleLink', {
-                'name': type, 'enabled': vm.connectionTypes[type]
+            $rootScope.$broadcast("toggleLink", {
+                "name": type, "enabled": vm.connectionTypes[type]
             });
         };
+
         vm.changeSizeBy = function () {
             networkService.sizeBy(vm.sizeBy);
         };
@@ -61,6 +52,7 @@
         "$rootScope",
         "$uibModal",
         "_",
+        "cgMainService",
         "cgNetworkService",
         "entityService",
         "connectionService"

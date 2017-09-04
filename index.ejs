@@ -100,11 +100,11 @@
         </network>
 
         <!-- Middle Map -->
-        <div ng-if='!status.isNetworkShown || !(editing && mobile)'
-             ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"
-             ng-include="'js/map/map.html'"
-        >
-        </div>
+        <!--<div ng-if='!status.isNetworkShown || !(editing && mobile)'-->
+             <!--ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"-->
+             <!--ng-include="'js/map/map.template.html'"-->
+        <!--&gt;-->
+        <!--</div>-->
 
         <!-- Right-Hand Details Panel -->
         <div id='details-panel'
@@ -140,7 +140,7 @@
                         <i class="fa fa-filter"></i>Filter
                     </p>
                 </div>
-                <div class="col-xs-2 bottomNavMbRow" ng-click='switchView()'>
+                <div class="col-xs-2 bottomNavMbRow" ng-click="changeView()">
                     <p ng-if="status.isNetworkShown">
                         <i class="fa fa-globe"></i>Map
                     </p>

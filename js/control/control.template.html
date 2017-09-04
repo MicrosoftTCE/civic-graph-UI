@@ -2,23 +2,25 @@
     <div class='logo'>
         <img src="../../img/civicgraph.png" width="85%">
     </div>
-    <div class="control-panel-content">
 
+    <div class="control-panel-content">
         <h3>Types</h3>
         <div class='control-input' ng-repeat='(type, enabled) in control.entityTypes'>
             <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
-                <input type='checkbox' ng-model='control.entityTypes[type]'
-                       ng-change='control.toggleNode(type)'></label>
+                <input type='checkbox' ng-model='control.entityTypes[type]' />
+            </label>
             <span class='caption'>{{type}}</span>
         </div>
 
         <h3>Connections: {{ control.minConnection }}</h3>
-
         <div class='control-input' ng-repeat='(type, enabled) in control.connectionTypes'>
+
             <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
-                <input type='checkbox' ng-model='control.connectionTypes[type]'
-                       ng-change='control.toggleLink(type)'></label>
+                <input type='checkbox' ng-model='control.connectionTypes[type]' />
+            </label>
+
             <span class='caption'>{{type}}</span>
+
         </div>
 
         <!--Number of Connections Slider-->
@@ -30,7 +32,6 @@
                ng-change="control.changeMinConnection()"
                min="0"
                max="25">
-
 
         <h3>Size By</h3>
         <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
@@ -46,21 +47,22 @@
         <h3>View</h3>
         <div class="switch switch-blue">
             <input type="radio"
+                   id="week2"
                    class="switch-input"
                    name="view2"
-                   ng-value="true"
-                   ng-model="toggleNetwork"
-                   ng-change="control.switchView()"
-                   id="week2"
-                   checked
+                   ng-value="'network'"
+                   ng-model="control.currentView"
+                   ng-change="control.changeView()"
             >
             <label for="week2" class="switch-label switch-label-off">Network</label>
+
             <input type="radio"
+                   id="month2"
                    class="switch-input"
                    name="view2"
-                   ng-value="false"
-                   ng-model="toggleNetwork"
-                   id="month2"
+                   ng-value="'map'"
+                   ng-model="control.currentView"
+                   ng-change="control.changeView()"
             >
             <label for="month2" class="switch-label switch-label-on">Map</label>
             <span class="switch-selection"></span>
