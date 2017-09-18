@@ -4,14 +4,9 @@
 
     angular.module('civic-graph')
         .constant('_', window._)
-        .constant('config', {
-            apiHost: 'https://api.civicgraph.io/'
-        })
-        .config(['$locationProvider', '$httpProvider', '$compileProvider',
-            function ($locationProvider, $httpProvider, $compileProvider) {
+        .config(['$locationProvider', '$compileProvider',
+            function ($locationProvider, $compileProvider) {
                 $locationProvider.html5Mode(true);
-                $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-                // $httpProvider.defaults.headers.common['Event-Name'] = 'Test_Event';
                 $compileProvider.debugInfoEnabled(true);
             }])
         .filter('thousandSuffix', function () {
