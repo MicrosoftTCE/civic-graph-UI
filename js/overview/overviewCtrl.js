@@ -1,39 +1,38 @@
 (function (angular) {
 
-    "use strict";
+    'use strict';
 
-    function filterByProperty(key, value) {
+    function filterByProperty (key, value) {
         return function (e) {
-            return e[key] === value;
+            return e[ key ] === value;
         };
     }
 
-    function Controller($scope, entityService, cgService) {
+    function Controller ($scope, entityService, cgService) {
         var entityTypes = entityService.getEntityTypes();
 
         $scope.categorizedEntities = {};
+
         $scope.updateCurrentEntity = updateCurrentEntity;
 
         $scope.$watch(cgService.getEntityList, watchEntityList);
 
-        function updateCurrentEntity(entity) {
-            cgService.currentEntity(entity);
-        }
+        function updateCurrentEntity (entity) { cgService.setCurrentEntity(entity); }
 
-        function watchEntityList() {
+        function watchEntityList () {
             $scope.categorizedEntities = Object
                 .keys(entityTypes)
-                .reduce(function(result, type) {
+                .reduce(function (result, type) {
                     var obj = {};
-                    obj[type] = cgService.getEntityList().filter(filterByProperty("type", type));
+                    obj[ type ] = cgService.getEntityList().filter(filterByProperty('type', type));
                     return Object.assign({}, result, obj);
                 }, {});
         }
     }
 
-    Controller.$inject = ["$scope", "entityService", "cgMainService"];
+    Controller.$inject = [ '$scope', 'entityService', 'cgMainService' ];
 
     angular
-        .module("civic-graph")
-        .controller("overviewCtrl", Controller);
+        .module('civic-graph')
+        .controller('overviewCtrl', Controller);
 })(angular);

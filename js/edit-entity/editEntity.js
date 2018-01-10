@@ -7,7 +7,7 @@
 
         $scope.isEditing = false;
         $scope.entities = cgService.getEntityList();
-        $scope.editEntity = entityService.getEntityModel(cgService.currentEntity);
+        $scope.editEntity = entityService.getEntityModel(cgService.getCurrentEntity());
         $scope.entityTypes = entityService.getEntityTypes();
         $scope.influenceTypes = entityService.getInfluenceTypes();
         $scope.categories = [];

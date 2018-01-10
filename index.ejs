@@ -25,7 +25,7 @@
     <link rel='stylesheet'
           href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css'>
 
-    <link rel='stylesheet' href='build/app.min.css?v=<%= hashes['build/app.min.css'] %>'>
+    <link rel='stylesheet' href='build/app.min.css?v=<%= hashes[ 'build/app.min.css' ] %>'>
     <link rel='icon' type='image/png' href='img/cgraphico.ico'>
 
     <link rel='apple-touch-icon' href='img/apple-touch-icon.png'>
@@ -52,13 +52,15 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
     <script src='lib/angular-leaflet-directive-0.10.0.min.js'></script>
     <script src='lib/pinchzoom-60c285c.min.js'></script>
-    <script src='build/templateCache.js?v=<%= hashes['build/templateCache.js'] %>'></script>
-    <script src='build/app.min.js?v=<%= hashes['build/app.min.js'] %>'></script>
+    <script src='build/templateCache.js?v=<%= hashes[ 'build/templateCache.js' ] %>'></script>
+    <script src='build/app.min.js?v=<%= hashes[ 'build/app.min.js' ] %>'></script>
 </head>
 <body ng-controller='homeCtrl as homeCtrl'>
-<div ng-show="homeCtrl.isMobile" class="navLogoMobile">
+
+<div ng-if="homeCtrl.isMobile" class="navLogoMobile">
     <img class="logoMob" src="img/civicgraph.png">
 </div>
+
 <div class='container-fluid main-container'>
     <div class='row'>
 
@@ -71,10 +73,11 @@
         </control>
 
         <!-- Mobile Control Panel -->
-        <div ng-if='settingsEnabled && !editing'
+        <div ng-if='homeCtrl.isMobile && !homeCtrl.isEdit()'
              class='col-sm-2 control-panel visible-xs-block settingsmobile scroll-up bottomPopUpMb'
              ng-class="{'mapView': template.name =='Map'}"
-             ng-include="'js/control/controlsmobile.html'">
+             ng-include="'js/control/controlsmobile.html'"
+        >
         </div>
 
         <!--Search Bar-->
@@ -93,7 +96,7 @@
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
-        <central-column ng-if="!(editing && homeCtrl.isMobile)"
+        <central-column ng-if="!homeCtrl.isMobile || !homeCtrl.isEdit()"
                         ng-class="homeCtrl.isMobile ? 'display-panelMb' : 'display-panel'"
         >
         </central-column>
@@ -102,7 +105,7 @@
         <div id='details-panel'
              add-mobile-events
              class='details-panel'
-             ng-if='!editing && !homeCtrl.isMobile'
+             ng-if='!(homeCtrl.isMobile || homeCtrl.isEdit())'
              ng-class="{'details-panelMb bottomPopUpMb': homeCtrl.isMobile}"
              ng-controller='detailsCtrl'
              ng-include="'js/detail/details.html'"
@@ -111,8 +114,8 @@
 
         <!-- Right-Hand Edit Entity Panel -->
         <edit-entity ng-class="homeCtrl.isMobile ? 'edit-panelMb' : 'edit-panel'"
-                     ng-show="editing"
-                     is-open="editing"
+                     ng-if="homeCtrl.isEdit()"
+                     is-open="homeCtrl.isEdit()"
         >
         </edit-entity>
 
@@ -148,7 +151,7 @@
                         </p>
                     </a>
                 </div>
-                <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': editing}"
+                <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': homeCtrl.isEdit()}"
                      ng-click='startEdit(null)'>
                     <p>
                         <i class="fa fa-plus-circle"></i>Add
@@ -159,5 +162,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

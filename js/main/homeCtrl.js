@@ -1,26 +1,28 @@
 (function (angular) {
 
-    "use strict";
+    'use strict';
 
-    function Controller($scope, $q, _, utils, cgService, entityService, connectionService) {
-        function wait(ms) {
-            return $q(function(resolve) { setTimeout( resolve, ms ); });
+    function Controller ($scope, $q, _, utils, cgService, entityService, connectionService) {
+        function wait (ms) {
+            return $q(function (resolve) { setTimeout(resolve, ms); });
         }
 
         var vm = this;
 
+        // For the search bar
         vm.currentEntity = null;
+
         vm.isMobile = cgService.mobileCheck();
+
+        vm.isEdit = cgService.getIsEdit;
 
         $scope.searchItems = null;
         $scope.clickedEntity = { entity: null };
-        $scope.editing = false;
-        $scope.actions = { 'interacted': false };
         $scope.showsearchMB = false;
         $scope.status = {
-            "isNetworkShown": true,
-            "license": true,
-            "networkLoading": true
+            'isNetworkShown': true,
+            'license': true,
+            'networkLoading': true
         };
         $scope.settingsEnabled = !vm.isMobile;
 
@@ -32,119 +34,118 @@
         $scope.setEntityID = setEntityID;
         $scope.selectItem = selectItem;
 
-        $scope.$watch(
-            function () {
-                return cgService.currentEntity();
-            },
-            function (n) {
-                console.log("Current entity in Home Controller updated!");
-                vm.currentEntity = n;
-            }
-        );
-        $scope.$on("editEntitySuccess", onEditEntitySuccess);
+        $scope.$on('cg.current-entity.update', function (event, args) { onCurrentEntityUpdate(args); });
+        $scope.$on('editEntitySuccess', onEditEntitySuccess);
+        $scope.$on('cg.start-edit', startEdit);
 
         // Leaving here for testing reasons.  The wait method isn't actually necessary, but useful
         // if you don't have a lot of data in the database and need to simulate a large request.
         // The $q.all() is necessary though, so if you remove wait(), leave the $q.all()
         wait(1000)
             .then(function () {
-                return $q.all([entityService.getAll(), connectionService.getAll()]);
+                return $q.all([ entityService.getAll(), connectionService.getAll() ]);
             })
             .then(function (responseList) {
-                cgService.setEntityList(responseList[0].nodes);
-                $scope.searchItems = responseList[0].nodes;
+                cgService.setEntityList(responseList[ 0 ].nodes);
+                $scope.searchItems = responseList[ 0 ].nodes;
 
-                cgService.setConnectionObj(responseList[0].connections);
+                cgService.setConnectionObj(responseList[ 0 ].connections);
 
-                $scope.$broadcast("cg.data-loaded");
+                $scope.$broadcast('cg.data-loaded');
             });
 
-        function hydePartials(except) {
-            if (except === "search") {
-                $scope.editing = false;
-                $scope.settingsEnabled = false;
-            } else if (except === "settings") {
-                $scope.editing = false;
-                $scope.showsearchMB = false;
-            } else if (except === "edit") {
-                $scope.settingsEnabled = false;
-                $scope.showsearchMB = false;
-            } else {
-                $scope.editing = false;
-                $scope.settingsEnabled = false;
-                $scope.showsearchMB = false;
+        function hydePartials (except) {
+            switch (except) {
+                case 'search':
+                    cgService.setIsEdit(false);
+                    $scope.settingsEnabled = false;
+                    break;
+                case 'settings':
+                    cgService.setIsEdit(false);
+                    $scope.showsearchMB = false;
+                    break;
+                case 'edit':
+                    $scope.settingsEnabled = false;
+                    $scope.showsearchMB = false;
+                    break;
+                default:
+                    cgService.setIsEdit(false);
+                    $scope.settingsEnabled = false;
+                    $scope.showsearchMB = false;
             }
 
         }
 
-        function showSearch() {
-            hydePartials("search");
+        function showSearch () {
+            hydePartials('search');
             $scope.showsearchMB = !$scope.showsearchMB;
             // $scope.$broadcast('hideLicense');
             $scope.status.license = false;
         }
 
-        function toggleSettings() {
-            hydePartials("settings");
+        function toggleSettings () {
+            hydePartials('settings');
             $scope.settingsEnabled = !$scope.settingsEnabled;
         }
 
-        function startEdit(entity) {
-            cgService.currentEntity(entity);
-            if (vm.isMobile) {
-                hydePartials("edit");
+        function startEdit (entity) {
+            cgService.setCurrentEntity(entity);
+            if ( vm.isMobile ) {
+                hydePartials('edit');
             }
-            $scope.editing = true;
+            cgService.setIsEdit(true);
         }
 
-        function switchView() {
+        function switchView () {
             $scope.status.isNetworkShown = !$scope.status.isNetworkShown;
-            if ($scope.status.isNetworkShown) {
+            if ( $scope.status.isNetworkShown ) {
                 $scope.$broadcast('triggerNetworkDraw');
             }
         }
 
-        function setEntity(entity) {
-            cgService.currentEntity(entity);
+        function setEntity (entity) {
+            cgService.setCurrentEntity(entity);
 
-            if ($scope.editing) {
+            if ( vm.isEdit() ) {
                 stopEdit();
             }
         }
 
-        function setEntityID(id) {
+        function setEntityID (id) {
             setEntity(_.find(cgService.getEntityList(), { 'id': id }));
         }
 
-        function selectItem(item) {
+        function selectItem (item) {
             (utils.isObject(item) ? setEntity : setEntityID)(item);
         }
 
-        function setEntities(entities) {
+        function setEntities (entities) {
             $scope.entities = entities;
         }
 
-        function stopEdit() {
-            $scope.editing = false;
-        }
+        function stopEdit () { cgService.setIsEdit(false); }
 
-        function onEditEntitySuccess(response) {
+        function onEditEntitySuccess (response) {
             setEntities(response.nodes);
             $scope.$broadcast('triggerNetworkDraw');
+        }
+
+        function onCurrentEntityUpdate (currentEntity) {
+            vm.currentEntity = currentEntity;
         }
     }
 
     Controller.$inject = [
-        "$scope",
-        "$q",
-        "_",
-        "cgUtilService",
-        "cgMainService",
-        "entityService",
-        "connectionService"
+        '$scope',
+        '$q',
+        '_',
+        'cgUtilService',
+        'cgMainService',
+        'entityService',
+        'connectionService'
     ];
 
-    angular.module("civic-graph")
-        .controller("homeCtrl", Controller);
+    angular.module('civic-graph')
+           .controller('homeCtrl', Controller);
 
 })(angular);

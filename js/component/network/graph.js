@@ -1,41 +1,41 @@
 (function (angular, d3) {
 
-    "use strict";
+    'use strict';
 
     var isDefined;
 
-    function buildSvgElement(root) {
+    function buildSvgElement (root) {
         // Delete the old graph
-        if (isDefined(root.select("svg"))) {
-            root.select("svg").remove();
+        if ( isDefined(root.select('svg')) ) {
+            root.select('svg').remove();
         }
 
         return root
-            .append("svg")
-            .attr("height", "100vh")
-            .attr("width", "100%");
+            .append('svg')
+            .attr('height', '100vh')
+            .attr('width', '100%');
     }
 
     // This is strange one that I have cleaned up a bit from the old graph.  In the
     // old graph, there was an object called scale that had a d3 sqrt function built
     // for employees and followers.  Instead of using theirs, I built this function
     // that builds the scale function based on the data and parameter to scale by.
-    function buildScaleFunction(sizeBy) {
+    function buildScaleFunction (sizeBy) {
         return function (nodeList) {
             var lowerBoundRadius = 10;
             var upperBoundRadius = 50;
             var maxNodeParam = d3.max(nodeList, getGraphObjParam);
 
-            function getGraphObjParam(d) {
-                var v = d.value[sizeBy];
+            function getGraphObjParam (d) {
+                var v = d.value[ sizeBy ];
                 return isFinite(v) && isDefined(v) ? v : 0;
             }
 
             return function (obj) {
                 return d3.scale
-                    .sqrt()
-                    .domain([0, maxNodeParam])
-                    .range([lowerBoundRadius, upperBoundRadius])(obj.value[sizeBy]);
+                         .sqrt()
+                         .domain([ 0, maxNodeParam ])
+                         .range([ lowerBoundRadius, upperBoundRadius ])(obj.value[ sizeBy ]);
             };
         };
     }
@@ -43,12 +43,12 @@
     // Used to describe the four corners of the graph.  By default, force layout
     // keeps the nodes focused on the center of the graph, but in our case, we want
     // the nodes separated to each corner.
-    function buildFoci(bounds) {
-        function twentyFivePercent(v) {
+    function buildFoci (bounds) {
+        function twentyFivePercent (v) {
             return v / 4;
         }
 
-        function seventyFivePercent(v) {
+        function seventyFivePercent (v) {
             return v - twentyFivePercent(v);
         }
 
@@ -72,12 +72,12 @@
         };
     }
 
-    function buildChargeFunction(sizeBy) {
+    function buildChargeFunction (sizeBy) {
         return function (nodeList) {
             var sizeByScale = buildScaleFunction(sizeBy)(nodeList);
 
             return function (d) {
-                return isDefined(d.value[sizeBy])
+                return isDefined(d.value[ sizeBy ])
                     ? -2 * sizeByScale(d)
                     : -20;
             };
@@ -86,51 +86,55 @@
 
     // This is cleaner in ES6 or if I had created actual getter/setters instead of merging
     // them into a single method
-    function wrapFn(fn) {
+    function wrapFn (fn) {
         return function () { return fn(); };
     }
 
-    function Directive($window, _, utils, cgService, networkService) {
+    function Directive ($window, _, utils, cgService, networkService) {
         isDefined = utils.isDefined;
 
-        function LinkFn(scope, element) {
-            var root = d3.select(element[0]);
+        function LinkFn (scope, element) {
+            var root = d3.select(element[ 0 ]);
             var _buildScaleFunction;
             var _buildChargeFunction;
-
+            var currentEntityListener;
 
             $window.onresize = _.debounce(onWindowResize);
 
             scope.$watch(wrapFn(networkService.sizeBy), watchSizeBy);
 
-            scope.$watchGroup([wrapFn(networkService.minConnection), wrapFn(networkService.sizeBy)], run);
+            scope.$watchGroup([ wrapFn(networkService.minConnection), wrapFn(networkService.sizeBy) ], run);
 
             scope.$watchCollection(_.debounce(getWindowBox), run);
 
             // This is kind of an expensive operation.  Probably something to look into optimizing later.
             scope.$watch(networkService.getGraphData, run, true);
 
-            function getWindowBox() {
+            function getWindowBox () {
                 // Returns the inner width of the browser window, for refreshing d3 graph
-                function getWindowWidth() {
-                    return angular.element($window)[0].innerWidth;
+                function getWindowWidth () {
+                    return angular.element($window)[ 0 ].innerWidth;
                 }
 
-                function getWindowHeight() {
-                    return angular.element($window)[0].innerHeight;
+                function getWindowHeight () {
+                    return angular.element($window)[ 0 ].innerHeight;
                 }
 
-                return [getWindowHeight(), getWindowWidth()];
+                return [ getWindowHeight(), getWindowWidth() ];
             }
 
             // Whenever the window is resized, then we need to re-run angular's compile chain.
-            function onWindowResize() {
+            function onWindowResize () {
                 scope.$apply();
             }
 
-            function run(n, o) {
-                if (n === o) {
+            function run (n, o) {
+                if ( n === o ) {
                     return;
+                }
+
+                if ( currentEntityListener ) {
+                    currentEntityListener();
                 }
 
                 render(networkService.getGraphData());
@@ -139,14 +143,14 @@
             /**
              * @param { { nodeList, linkList } } graphData
              */
-            function render(graphData) {
+            function render (graphData) {
                 var svg = buildSvgElement(root);
-                svg.on("click", function () {
+                svg.on('click', function () {
                     scope.$apply(backgroundClick);
                 });
 
-                if (graphData.nodeList.length === 0) {
-                    console.debug("Node list is empty, not drawing a graph");
+                if ( graphData.nodeList.length === 0 ) {
+                    console.debug('Node list is empty, not drawing a graph');
                     return;
                 }
 
@@ -164,60 +168,74 @@
                 // TODO: Build Connection List
                 var connection = drawConnection(graphData.linkList);
 
-                forceLayout.on("tick", function (event) {
-                    function tick() {
+                forceLayout.on('tick', function (event) {
+                    function tick () {
                         var k = 0.1 * event.alpha;
 
                         connection
-                            .attr("x1", function (d) {
+                            .attr('x1', function (d) {
                                 return d.source.x;
                             })
-                            .attr("y1", function (d) {
+                            .attr('y1', function (d) {
                                 return d.source.y;
                             })
-                            .attr("x2", function (d) {
+                            .attr('x2', function (d) {
                                 return d.target.x;
                             })
-                            .attr("y2", function (d) {
+                            .attr('y2', function (d) {
                                 return d.target.y;
                             });
 
                         graphData.nodeList.forEach(function (d) {
-                            d.y += (foci[d.value.type].y - d.y) * k;
-                            d.x += (foci[d.value.type].x - d.x) * k;
+                            d.y += (foci[ d.value.type ].y - d.y) * k;
+                            d.x += (foci[ d.value.type ].x - d.x) * k;
                         });
 
-                        node.attr("transform", function (d) {
-                            return "translate(" + d.x + "," + d.y + ")";
+                        node.attr('transform', function (d) {
+                            return 'translate(' + d.x + ',' + d.y + ')';
                         });
                     }
 
                     scope.$apply(tick);
                 });
 
-                function buildForceLayout(data, bounds) {
-                    return d3.layout
-                        .force()
-                        .size([bounds.width, bounds.height])
-                        .nodes(data.nodeList)
-                        .links(data.linkList)
-                        .linkStrength(0)
-                        .linkDistance(50)
-                        .gravity(0.01)
-                        .charge(calculateCharge)
-                        .start();
+                currentEntityListener = scope.$on(
+                    'cg.current-entity.update',
+                    function (event, args) { focusCurrentEntity(args); }
+                );
+
+                // Focus the current entity, if it exists
+                function focusCurrentEntity (currentEntity) {
+                    graphData
+                        .nodeList
+                        .map(function (obj) { return obj.value; })
+                        .filter(function (entity) { return _.isEqual(currentEntity, entity); })
+                        .forEach(focusNeighbors);
                 }
 
-                function drawNode(nodeList) {
+                function buildForceLayout (data, bounds) {
+                    return d3.layout
+                             .force()
+                             .size([ bounds.width, bounds.height ])
+                             .nodes(data.nodeList)
+                             .links(data.linkList)
+                             .linkStrength(0)
+                             .linkDistance(50)
+                             .gravity(0.01)
+                             .charge(calculateCharge)
+                             .start();
+                }
+
+                function drawNode (nodeList) {
                     var defaultSize = 10;
 
-                    function getCircleRadius(n) {
+                    function getCircleRadius (n) {
                         return isDefined(n) ? sizeByScale(n) : defaultSize;
                     }
 
-                    function clickEvent(obj) {
-                        function click() {
-                            if (utils.isDefined(d3.event)) {
+                    function clickEvent (obj) {
+                        function click () {
+                            if ( utils.isDefined(d3.event) ) {
                                 d3.event.preventDefault();
                                 d3.event.stopPropagation();
                             }
@@ -229,18 +247,18 @@
                     }
 
                     var node = svg
-                        .selectAll(".node")
+                        .selectAll('.node')
                         .data(nodeList)
-                        .enter().append("g")
-                        .attr("class", function (d) {
+                        .enter().append('g')
+                        .attr('class', function (d) {
                             return 'node ' + d.value.type + '-node';
                         })
-                        .on("click", clickEvent)
+                        .on('click', clickEvent)
                         .call(forceLayout.drag);
 
                     // Appends circles to each node
-                    node.append("circle")
-                        .attr("r", getCircleRadius);
+                    node.append('circle')
+                        .attr('r', getCircleRadius);
 
                     node.append('text')
                         .text(function (d) {
@@ -256,10 +274,36 @@
                     return node;
                 }
 
-                function focus(entity) {
-                    if (utils.isDefined(cgService.currentEntity())) {
+                function focusNeighbors (entity) {
+                    function compareAgainstConnectionObj (d) {
+                        return function (c) {
+                            return d.source === c.index || d.target === c.index;
+                        };
+                    }
+
+                    function neighboring (a) {
+                        return function (b) {
+                            return a.index === b.index
+                                   || utils.isDefined(graphData.linkList.find(compareAgainstConnectionObj(a)));
+                        };
+                    }
+
+                    // Apply 'unfocused' class to all non-neighbors.
+                    // Apply 'focused' class to all neighbors.
+                    // TODO: See if it can be done with just one class and :not(.focused) CSS selectors.
+                    node
+                        .classed('focused', neighboring(entity))
+                        .classed('unfocused', _.negate(neighboring(entity)));
+
+                    connection
+                        .classed('focused', compareAgainstConnectionObj(entity))
+                        .classed('unfocused', _.negate(compareAgainstConnectionObj));
+                }
+
+                function focus (entity) {
+                    if ( utils.isDefined(cgService.getCurrentEntity()) ) {
                         // If they are the same, then we don't need to do anything
-                        if (_.isEqual(cgService.currentEntity(), entity.value)) {
+                        if ( _.isEqual(cgService.getCurrentEntity(), entity.value) ) {
                             return;
                         }
                         // If not, then call unFocus to setup for new focused entity
@@ -268,47 +312,21 @@
                         }
                     }
 
-                    cgService.currentEntity(entity.value);
-                    // scope.$emit("setCurrentEntity", entity);
+                    cgService.setCurrentEntity(entity.value);
 
                     focusNeighbors(entity);
-                    function focusNeighbors(entity) {
-                        function compareAgainstConnectionObj(d) {
-                            return function (c) {
-                                return d.source === c.index || d.target === c.index;
-                            };
-                        }
-
-                        function neighboring(a) {
-                            return function (b) {
-                                return a.index === b.index
-                                    || utils.isDefined(graphData.linkList.find(compareAgainstConnectionObj(a)));
-                            };
-                        }
-
-                        // Apply 'unfocused' class to all non-neighbors.
-                        // Apply 'focused' class to all neighbors.
-                        // TODO: See if it can be done with just one class and :not(.focused) CSS selectors.
-                        node
-                            .classed('focused', neighboring(entity))
-                            .classed('unfocused', _.negate(neighboring(entity)));
-
-                        connection
-                            .classed('focused', compareAgainstConnectionObj(entity))
-                            .classed('unfocused', _.negate(compareAgainstConnectionObj));
-                    }
                 }
 
-                function backgroundClick() {
-                    if (!utils.isDefined(cgService.currentEntity())) {
+                function backgroundClick () {
+                    if ( !utils.isDefined(cgService.getCurrentEntity()) ) {
                         return;
                     }
 
                     unFocus();
-                    cgService.currentEntity(null);
+                    cgService.setCurrentEntity(null);
                 }
 
-                function unFocus(entity) {
+                function unFocus (entity) {
                     node
                         .classed('focused', false)
                         .classed('unfocused', false);
@@ -317,7 +335,7 @@
                         .classed('focused', false)
                         .classed('unfocused', false);
 
-                    if (utils.isDefined(entity)) {
+                    if ( utils.isDefined(entity) ) {
                         entity.fixed = false;
                     }
                     else {
@@ -327,24 +345,24 @@
                     }
 
                     // Restart d3 animations.
-                    if (utils.isDefined(cgService.currentEntity())) {
+                    if ( utils.isDefined(cgService.getCurrentEntity()) ) {
                         forceLayout.resume();
                     }
                 }
 
-                function drawConnection(connectionList) {
+                function drawConnection (connectionList) {
                     return svg
-                        .selectAll(".link")
+                        .selectAll('.link')
                         .data(connectionList)
-                        .enter().append("line")
-                        .attr("class", function (l) {
+                        .enter().append('line')
+                        .attr('class', function (l) {
                             return 'link ' + l.type + '-link ';
                         });
                 }
             }
 
-            function watchSizeBy(newSizeBy) {
-                if (!isDefined(newSizeBy)) {
+            function watchSizeBy (newSizeBy) {
+                if ( !isDefined(newSizeBy) ) {
                     return;
                 }
                 _buildScaleFunction = buildScaleFunction(newSizeBy);
@@ -353,21 +371,21 @@
         }
 
         return {
-            "restrict": "E",
-            "link": LinkFn
+            'restrict': 'E',
+            'link': LinkFn
         };
     }
 
     Directive.$inject = [
-        "$window",
-        "_",
-        "cgUtilService",
-        "cgMainService",
-        "cgNetworkService"
+        '$window',
+        '_',
+        'cgUtilService',
+        'cgMainService',
+        'cgNetworkService'
     ];
 
     angular
-        .module("civic-graph.network")
-        .directive("cgNetworkGraph", Directive);
+        .module('civic-graph.network')
+        .directive('cgNetworkGraph', Directive);
 
 })(angular, d3);
