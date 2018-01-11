@@ -1,0 +1,26 @@
+<div>
+    <div id='details-panel'
+         class="details-panel"
+         ng-class="{'details-panelMb bottomPopUpMb': right.isMobile}"
+         add-mobile-events
+         ng-if="!right.isEdit()"
+    >
+        <div ng-class="right.isMobile ? 'detailsMb' : 'details'">
+
+            <div ng-if='!right.isMobile' class='addInfoDesktopContainer' ng-click='right.emitStartCreateEntity()'>
+                <button class='addInfoDesktop'><span class="glyphicon glyphicon-plus-sign"></span>Add New</button>
+            </div>
+
+            <cg-overview-pane ng-if="!right.currentEntity"></cg-overview-pane>
+
+            <cg-detail-pane ng-if="right.currentEntity"></cg-detail-pane>
+
+            <!--TODO: uncomment and fix css styling on this-->
+            <!--<div ng-if="!mobile" class="gradientback">-->
+
+        </div>
+    </div>
+
+    <edit-entity ng-if="right.isEdit()" ng-class="right.isMobile ? 'edit-panelMb' : 'edit-panel'">
+    </edit-entity>
+</div>

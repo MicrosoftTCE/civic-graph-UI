@@ -7,9 +7,9 @@
 @font-face {
     font-family: 'icomoon';
     src: url("../fonts/icomoon/icomoon.svg") format('svg'),
-         url("../fonts/icomoon/icomoon.eot") format('embedded-opentype'),
-         url("../fonts/icomoon/icomoon.woff") format('woff'),
-         url("../fonts/icomoon/icomoon.ttf") format('truetype');
+    url("../fonts/icomoon/icomoon.eot") format('embedded-opentype'),
+    url("../fonts/icomoon/icomoon.woff") format('woff'),
+    url("../fonts/icomoon/icomoon.ttf") format('truetype');
     font-weight: normal;
 }
 
@@ -33,8 +33,8 @@ body {
     font-family: 'icomoon' !important;
     speak: none;
     font-style: normal;
-    font-weight:normal;
-    font-variant:normal;
+    font-weight: normal;
+    font-variant: normal;
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
@@ -70,8 +70,8 @@ p {
 
 .ng-scope.display-panel.col-sm-8 {
     position: relative;
-    padding-left:0;
-    padding-right:0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .display-analytics {
@@ -97,7 +97,7 @@ p {
 .logo {
     position: relative;
     text-align: center;
-    padding:1em;
+    padding: 1em;
 }
 
 /*.logo img{
@@ -151,7 +151,7 @@ h5 {
 }
 
 .col-xs-1 {
-    margin:0;
+    margin: 0;
     padding-left: 0;
 }
 
@@ -164,7 +164,7 @@ h5 {
 }
 
 .control-panel-content {
-    margin:0 10% !important;
+    margin: 0 10% !important;
 }
 
 .control-input {
@@ -766,7 +766,7 @@ h5 {
 .addInfoDesktop {
     transition: opacity 0.1s linear;
     margin-top: 0em;
-    padding-top:0em;
+    padding-top: 0em;
     background-color: rgb(242, 80, 34);
     text-align: center;
     vertical-align: middle;
@@ -779,8 +779,6 @@ h5 {
     color: white;
 }
 
-
-
 .analyticsDesktopContainer.ng-scope {
     text-align: center;
 }
@@ -792,28 +790,28 @@ h5 {
 }
 
 .analyticsButton {
-  background-color: #dddddd;
-  background-image: url(../img/powerBI.png);
-  background-origin: content-box;
-  background-position: -1.2em center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  border: 2px solid #dddddd;
-  color: black;
-  font-size: .8em;
-  font-weight: 300;
-  height: 3em;
-  line-height: 1em;
-  padding: .5em .75em .5em 2em;
-  text-align: center;
-  vertical-align: middle;
-  width: 100%;
+    background-color: #dddddd;
+    background-image: url(../img/powerBI.png);
+    background-origin: content-box;
+    background-position: -1.2em center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 2px solid #dddddd;
+    color: black;
+    font-size: .8em;
+    font-weight: 300;
+    height: 3em;
+    line-height: 1em;
+    padding: .5em .75em .5em 2em;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
 }
 
-@media only screen and (min-width : 1224px) {
-  .analyticsButton {
-    font-size: 1em;
-  }
+@media only screen and (min-width: 1224px) {
+    .analyticsButton {
+        font-size: 1em;
+    }
 }
 
 .btn-analytics {
@@ -848,16 +846,15 @@ h5 {
 }
 
 .details-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 1em 0 0 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1em 0 0 0;
     padding-bottom: 30px;
     height: 100vh;
     background-color: white;
     z-index: 2;
     border-left: 2px solid #CECECE;
-    /*background-color: #F9F9F9;*/
     width: 20% !important;
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
@@ -1177,7 +1174,7 @@ hr {
 }
 
 img {
-    margin-right:.5em;
+    margin-right: .5em;
 }
 
 .searchMobile {
@@ -1505,7 +1502,7 @@ input.ng-valid.ng-dirty {
 }
 
 .bottomNavMb .bottomNavMbRow i {
-  display: block;
+    display: block;
 }
 
 .bottomNavMb p {
@@ -1643,7 +1640,7 @@ input.ng-valid.ng-dirty {
 
 .switch-input {
     display: none;
-    font-size:0.9em;
+    font-size: 0.9em;
 }
 
 .switch-input:checked + .switch-label {

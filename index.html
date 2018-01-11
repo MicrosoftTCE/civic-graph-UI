@@ -25,7 +25,7 @@
     <link rel='stylesheet'
           href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css'>
 
-    <link rel='stylesheet' href='build/app.min.css?v=ebe966e'>
+    <link rel='stylesheet' href='build/app.min.css?v=bce30ff'>
     <link rel='icon' type='image/png' href='img/cgraphico.ico'>
 
     <link rel='apple-touch-icon' href='img/apple-touch-icon.png'>
@@ -52,8 +52,8 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
     <script src='lib/angular-leaflet-directive-0.10.0.min.js'></script>
     <script src='lib/pinchzoom-60c285c.min.js'></script>
-    <script src='build/templateCache.js?v=4b60220'></script>
-    <script src='build/app.min.js?v=72cc84c'></script>
+    <script src='build/templateCache.js?v=f8bcedb'></script>
+    <script src='build/app.min.js?v=f1352a0'></script>
 </head>
 <body ng-controller='homeCtrl as homeCtrl'>
 
@@ -102,22 +102,7 @@
         </central-column>
 
         <!-- Right-Hand Details Panel -->
-        <div id='details-panel'
-             add-mobile-events
-             class='details-panel'
-             ng-if='!(homeCtrl.isMobile || homeCtrl.isEdit())'
-             ng-class="{'details-panelMb bottomPopUpMb': homeCtrl.isMobile}"
-             ng-controller='detailsCtrl'
-             ng-include="'js/detail/details.html'"
-        >
-        </div>
-
-        <!-- Right-Hand Edit Entity Panel -->
-        <edit-entity ng-class="homeCtrl.isMobile ? 'edit-panelMb' : 'edit-panel'"
-                     ng-if="homeCtrl.isEdit()"
-                     is-open="homeCtrl.isEdit()"
-        >
-        </edit-entity>
+        <right-column></right-column>
 
         <!-- Mobile Bottom Navigation Buttons -->
         <div ng-if="homeCtrl.isMobile" class='bottomNavMb'>

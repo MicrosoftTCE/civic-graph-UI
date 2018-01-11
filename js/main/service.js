@@ -22,10 +22,7 @@
         var entityList = [];
         var connectionObj = {};
 
-        function getCurrentEntity () {
-            console.log('Current Entity in Service was called');
-            return _currentEntity;
-        }
+        function getCurrentEntity () { return _currentEntity; }
 
         function setCurrentEntity (o) {
             if ( !_.isEqual(_currentEntity, o) ) {
@@ -67,9 +64,24 @@
             }
         }
 
-        function getIsEdit () { return isEdit; }
+        function getIsEdit () {
+            return isEdit;
+        }
 
-        function setIsEdit (e) { isEdit = !!e; }
+        function startEdit(entity) {
+            if(!isEdit) {
+                isEdit = true;
+                setCurrentEntity(entity);
+                $rootScope.$broadcast("cg.start-edit");
+            }
+        }
+
+        function stopEdit() {
+            if(isEdit) {
+                isEdit = false;
+                $rootScope.$broadcast("cg.stop-edit");
+            }
+        }
 
         self.getCurrentEntity = getCurrentEntity;
         self.setCurrentEntity = setCurrentEntity;
@@ -81,7 +93,8 @@
         self.getCurrentView = getCurrentView;
         self.setCurrentView = setCurrentView;
         self.getIsEdit = getIsEdit;
-        self.setIsEdit = setIsEdit;
+        self.startEdit = startEdit;
+        self.stopEdit = stopEdit;
     }
 
     Service.$inject = [ '$rootScope', '$window', '_', 'cgUtilService' ];

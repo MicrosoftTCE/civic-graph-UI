@@ -30,11 +30,8 @@
         $scope.toggleSettings = toggleSettings;
         $scope.startEdit = startEdit;
         $scope.switchView = switchView;
-        $scope.setEntity = setEntity;
-        $scope.setEntityID = setEntityID;
-        $scope.selectItem = selectItem;
 
-        $scope.$on('cg.current-entity.update', function (event, args) { onCurrentEntityUpdate(args); });
+        $scope.$on('cg.current-entity.update', function (event, args) { vm.currentEntity = args; });
         $scope.$on('editEntitySuccess', onEditEntitySuccess);
         $scope.$on('cg.start-edit', startEdit);
 
@@ -57,11 +54,9 @@
         function hydePartials (except) {
             switch (except) {
                 case 'search':
-                    cgService.setIsEdit(false);
                     $scope.settingsEnabled = false;
                     break;
                 case 'settings':
-                    cgService.setIsEdit(false);
                     $scope.showsearchMB = false;
                     break;
                 case 'edit':
@@ -69,7 +64,6 @@
                     $scope.showsearchMB = false;
                     break;
                 default:
-                    cgService.setIsEdit(false);
                     $scope.settingsEnabled = false;
                     $scope.showsearchMB = false;
             }
@@ -88,12 +82,10 @@
             $scope.settingsEnabled = !$scope.settingsEnabled;
         }
 
-        function startEdit (entity) {
-            cgService.setCurrentEntity(entity);
+        function startEdit () {
             if ( vm.isMobile ) {
                 hydePartials('edit');
             }
-            cgService.setIsEdit(true);
         }
 
         function switchView () {
@@ -103,36 +95,15 @@
             }
         }
 
-        function setEntity (entity) {
-            cgService.setCurrentEntity(entity);
-
-            if ( vm.isEdit() ) {
-                stopEdit();
-            }
-        }
-
-        function setEntityID (id) {
-            setEntity(_.find(cgService.getEntityList(), { 'id': id }));
-        }
-
-        function selectItem (item) {
-            (utils.isObject(item) ? setEntity : setEntityID)(item);
-        }
-
         function setEntities (entities) {
             $scope.entities = entities;
         }
-
-        function stopEdit () { cgService.setIsEdit(false); }
 
         function onEditEntitySuccess (response) {
             setEntities(response.nodes);
             $scope.$broadcast('triggerNetworkDraw');
         }
 
-        function onCurrentEntityUpdate (currentEntity) {
-            vm.currentEntity = currentEntity;
-        }
     }
 
     Controller.$inject = [

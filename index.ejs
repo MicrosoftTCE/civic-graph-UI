@@ -102,22 +102,7 @@
         </central-column>
 
         <!-- Right-Hand Details Panel -->
-        <div id='details-panel'
-             add-mobile-events
-             class='details-panel'
-             ng-if='!(homeCtrl.isMobile || homeCtrl.isEdit())'
-             ng-class="{'details-panelMb bottomPopUpMb': homeCtrl.isMobile}"
-             ng-controller='detailsCtrl'
-             ng-include="'js/detail/details.html'"
-        >
-        </div>
-
-        <!-- Right-Hand Edit Entity Panel -->
-        <edit-entity ng-class="homeCtrl.isMobile ? 'edit-panelMb' : 'edit-panel'"
-                     ng-if="homeCtrl.isEdit()"
-                     is-open="homeCtrl.isEdit()"
-        >
-        </edit-entity>
+        <right-column></right-column>
 
         <!-- Mobile Bottom Navigation Buttons -->
         <div ng-if="homeCtrl.isMobile" class='bottomNavMb'>

@@ -19,19 +19,21 @@
         };
     }
 
-    function Controller ($scope, cgService) {
+    function Controller ($scope, cgService, utils, _) {
         $scope.isMobile = cgService.mobileCheck();
         $scope.itemsShownDefault = getItemsShownDefault();
         $scope.itemsShown = getItemsShownDefault();
+        $scope.currentEntity = cgService.getCurrentEntity();
 
         $scope.emitStartEditEvent = emitStartEditEvent;
         $scope.showMore = showMore;
         $scope.showLess = showLess;
+        $scope.selectItem = selectItem;
 
         $scope.$on('cg.current-entity.update', function (event, args) { onCurrentEntityUpdate(args); });
 
         function emitStartEditEvent (entity) {
-            $scope.$emit('cg.start-edit', entity);
+            cgService.startEdit(entity);
         }
 
         function showMore (type) {
@@ -47,11 +49,30 @@
             // Reset items shown in details list.
             $scope.itemsShown = getItemsShownDefault();
         }
+
+        function selectItem (item) {
+            cgService.setCurrentEntity(
+                utils.isObject(item)
+                    ? item
+                    : _.find(cgService.getEntityList(), { 'id': item })
+            );
+        }
+
     }
 
-    Controller.$inject = [ '$scope', 'cgMainService' ];
+    Controller.$inject = [ '$scope', 'cgMainService', 'cgUtilService', '_' ];
+
+    function Directive () {
+        return {
+            restrict: 'E',
+            templateUrl: 'js/detail/details.template.html',
+            controller: Controller
+        };
+    }
 
     angular
         .module('civic-graph')
-        .controller('detailsCtrl', Controller);
+        .directive('cgDetailPane', Directive);
+    // .controller("detailsCtrl", Controller);
+
 })(angular);

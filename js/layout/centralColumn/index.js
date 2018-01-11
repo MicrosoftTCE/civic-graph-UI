@@ -19,7 +19,7 @@
     function Directive() {
         return {
             "restrict": "E",
-            "templateUrl": "js/centralColumn/centralColumn.template.html",
+            "templateUrl": "js/layout/centralColumn/centralColumn.template.html",
             "controller": Controller,
             "controllerAs": "central",
             "scope": {}

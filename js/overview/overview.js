@@ -32,7 +32,17 @@
 
     Controller.$inject = [ '$scope', 'entityService', 'cgMainService' ];
 
+    function Directive() {
+        return {
+            restrict: 'E',
+            templateUrl: 'js/overview/overview.template.html',
+            controller: Controller
+        };
+    }
+
     angular
         .module('civic-graph')
-        .controller('overviewCtrl', Controller);
+        .directive('cgOverviewPane', Directive);
+        // .controller("overviewCtrl", Controller);
+
 })(angular);
