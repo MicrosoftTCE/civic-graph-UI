@@ -25,20 +25,20 @@
     <link rel='stylesheet'
           href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css'>
 
-    <link rel='stylesheet' href='build/app.min.css?v=ebe966e'>
+    <link rel='stylesheet' href='build/app.min.css?v=bce30ff'>
     <link rel='icon' type='image/png' href='img/cgraphico.ico'>
 
     <link rel='apple-touch-icon' href='img/apple-touch-icon.png'>
 
     <!--<script type="text/javascript">-->
-      <!--var appInsights=window.appInsights||function(config){-->
-        <!--function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t-->
-      <!--}({-->
-        <!--instrumentationKey:"c9bdc879-9b86-4632-b37b-e37879cbc985"-->
-      <!--});-->
+    <!--var appInsights=window.appInsights||function(config){-->
+    <!--function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t-->
+    <!--}({-->
+    <!--instrumentationKey:"c9bdc879-9b86-4632-b37b-e37879cbc985"-->
+    <!--});-->
 
-      <!--window.appInsights=appInsights;-->
-      <!--appInsights.trackPageView();-->
+    <!--window.appInsights=appInsights;-->
+    <!--appInsights.trackPageView();-->
     <!--</script>-->
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
@@ -52,78 +52,67 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
     <script src='lib/angular-leaflet-directive-0.10.0.min.js'></script>
     <script src='lib/pinchzoom-60c285c.min.js'></script>
-    <script src='build/templateCache.js?v=5a8bd45'></script>
-    <script src='build/app.min.js?v=17fa556'></script>
+    <script src='build/templateCache.js?v=f8bcedb'></script>
+    <script src='build/app.min.js?v=f1352a0'></script>
 </head>
 <body ng-controller='homeCtrl as homeCtrl'>
-<div ng-show="mobile" class="navLogoMobile">
+
+<div ng-if="homeCtrl.isMobile" class="navLogoMobile">
     <img class="logoMob" src="img/civicgraph.png">
 </div>
+
 <div class='container-fluid main-container'>
     <div class='row'>
-        <control class='col-sm-2 control-panel-ctr hidden-xs'
-                 ng-show='settingsEnabled'
-                 id='settings'
-                 toggle-network="status.isNetworkShown"
-                 min-connections="minConnections"
-        ></control>
 
-        <div ng-if='settingsEnabled && !editing'
+        <!-- Desktop Left-Hand Control Panel -->
+        <control id="settings"
+                 class="col-sm-2 control-panel-ctr hidden-xs"
+                 ng-show="settingsEnabled"
+                 toggle-network="status.isNetworkShown"
+        >
+        </control>
+
+        <!-- Mobile Control Panel -->
+        <div ng-if='homeCtrl.isMobile && !homeCtrl.isEdit()'
              class='col-sm-2 control-panel visible-xs-block settingsmobile scroll-up bottomPopUpMb'
              ng-class="{'mapView': template.name =='Map'}"
-             ng-hide="showAnalytics"
-             ng-include="'js/control/controlsmobile.html'">
+             ng-include="'js/control/controlsmobile.html'"
+        >
         </div>
-        <network ng-if="status.isNetworkShown"
-                 ng-hide="((editing && mobile || showView.Map) || (showAnalytics))"
-                 ng-class="mobile ? 'display-panelMb' : 'display-panel'">
-        </network>
 
         <!--Search Bar-->
-        <div ng-if='!mobile || showsearchMB'
-             ng-class="mobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
+        <div ng-if='!homeCtrl.isMobile || showsearchMB'
+             ng-class="homeCtrl.isMobile ? 'searchMB bottomPopUpMb animateUp' : 'search'"
              class="form-group has-feedback"
-             ng-hide="showAnalytics">
-
-            <input type='text' ng-model='currentEntity'
-                   typeahead='item as item.name for item in searchItems | filter:{name: $viewValue} | limitTo:8'
+        >
+            <input type='text'
+                   placeholder='Search'
+                   class='form-control'
+                   ng-model='homeCtrl.currentEntity'
+                   uib-typeahead='item as item.name for item in searchItems | filter:{name: $viewValue} | limitTo:8'
                    typeahead-on-select='selectItem($item)'
                    typeahead-editable='false'
-                   class='form-control'
-                   placeholder='Search'>
+            />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
         </div>
 
-        <div ng-if='!(status.isNetworkShown)'
-             ng-class="[mobile ? 'display-panelMb' : 'display-panel', settingsEnabled ? 'col-sm-8' : 'col-sm-10']"
-             ng-hide="(editing && mobile) || (showAnalytics)"
-             ng-include="'js/map/map.html'">
-        </div>
-        <div id='details-panel' add-mobile-events class='details-panel'
-             ng-if='!editing && (clickedEntity.entity ||!mobile)'
-             ng-class="{'details-panelMb bottomPopUpMb': mobile}"
-             ng-show='(!mobile || (clickedEntity.entity && (!editing && !settingsEnabled && !showsearchMB))) || (!showAnalytics)'
-             ng-controller='detailsCtrl'
-             ng-include="'js/detail/details.html'">
+        <central-column ng-if="!homeCtrl.isMobile || !homeCtrl.isEdit()"
+                        ng-class="homeCtrl.isMobile ? 'display-panelMb' : 'display-panel'"
+        >
+        </central-column>
 
-        </div>
+        <!-- Right-Hand Details Panel -->
+        <right-column></right-column>
 
-        <edit-entity entity="currentEntity"
-                     entities="entities"
-                     ng-class="mobile ? 'edit-panelMb' : 'edit-panel'"
-                     ng-show="editing && !showAnalytics"
-                     is-open="editing">
-        </edit-entity>
-        <!--<analytics ng-hide="!showAnalytics"-->
-                   <!--ng-class="mobile ? 'display-panelMb' : 'display-analytics'"></analytics>-->
-        <div ng-hide="(!mobile) ||(showAnalytics)" class='bottomNavMb'>
+        <!-- Mobile Bottom Navigation Buttons -->
+        <div ng-if="homeCtrl.isMobile" class='bottomNavMb'>
             <div class="row">
                 <div class="col-xs-1"></div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': showsearchMB}"
                      ng-click='showSearch()'>
-                  <p>
-                    <i class="fa fa-search"></i>Search
-                  </p>
+                    <p>
+                        <i class="fa fa-search"></i>Search
+                    </p>
                 </div>
                 <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': settingsEnabled}"
                      ng-click='toggleSettings()'>
@@ -131,7 +120,7 @@
                         <i class="fa fa-filter"></i>Filter
                     </p>
                 </div>
-                <div class="col-xs-2 bottomNavMbRow" ng-click='switchView()'>
+                <div class="col-xs-2 bottomNavMbRow" ng-click="changeView()">
                     <p ng-if="status.isNetworkShown">
                         <i class="fa fa-globe"></i>Map
                     </p>
@@ -147,7 +136,7 @@
                         </p>
                     </a>
                 </div>
-                <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': editing}"
+                <div class="col-xs-2 bottomNavMbRow" ng-class="{'clickedButtonMb': homeCtrl.isEdit()}"
                      ng-click='startEdit(null)'>
                     <p>
                         <i class="fa fa-plus-circle"></i>Add
@@ -158,5 +147,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>
