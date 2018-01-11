@@ -49,7 +49,7 @@
                 cgService.setEntityList(responseList[ 0 ].nodes);
                 $scope.searchItems = responseList[ 0 ].nodes;
 
-                cgService.setConnectionObj(responseList[ 0 ].connections);
+                cgService.setConnectionObj(responseList[ 1 ].connections);
 
                 $scope.$broadcast('cg.data-loaded');
             });

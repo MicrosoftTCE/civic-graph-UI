@@ -31,7 +31,7 @@
     function Service(utils, cgService, entityService, connectionService) {
         var self = this;
 
-        var _minConnection = 0;
+        var _minConnection = 5;
         var _sizeBy = "employees";
 
         function sizeBy(o) {
