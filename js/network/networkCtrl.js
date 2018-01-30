@@ -291,9 +291,18 @@
                 }
                 if ($scope.clickedLocation.location !== location) {
                     unfocusLocation($scope.clickedLocation.location);
-                    $scope.clickedLocation.location = location;
+                    // $scope.clickedLocation.location = location;
                     focusLocation(location);
                 }
+                // FIX FOR LOCATION NOT HIGHLIGHTING on search enter:
+                else {
+
+                    if ($scope.clickedLocation.location === location) {
+                        $scope.clickedLocation.location = location;
+                        focusLocation(location);
+                    }
+                }
+
                 if (d3.event) {
                     d3.event.stopPropagation();
                 }
@@ -311,6 +320,9 @@
                     //  If the previous node is equal to the new node, do nothing.
                     if ($scope.clickedEntity.entity === entity) {
                         $scope.clickedEntity.entity = null;
+                        // FIX FOR SEARCH NOT WORKING: entity was not focused
+                        // after switching to startload function for network graph
+                        focus(entity);
                     }
                     else {
                         //  Unfocus on previous node and focus on new node.
