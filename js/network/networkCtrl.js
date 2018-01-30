@@ -291,9 +291,18 @@
                 }
                 if ($scope.clickedLocation.location !== location) {
                     unfocusLocation($scope.clickedLocation.location);
-                    $scope.clickedLocation.location = location;
+                    // $scope.clickedLocation.location = location;
                     focusLocation(location);
                 }
+                // FIX FOR LOCATION NOT HIGHLIGHTING on search enter:
+                else {
+
+                    if ($scope.clickedLocation.location === location) {
+                        $scope.clickedLocation.location = location;
+                        focusLocation(location);
+                    }
+                }
+
                 if (d3.event) {
                     d3.event.stopPropagation();
                 }
