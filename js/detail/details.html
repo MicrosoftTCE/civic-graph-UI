@@ -7,10 +7,12 @@
     <div ng-if='!actions.interacted && !mobile' ng-include='overviewUrl'></div>
     <!--MOBILE TOP VIEW-->
     <div class='mobile-details' ng-if='mobile'>
+        <!-- Twitter profile_pic call no longer works. Use avatar.io to get pic. See https://stackoverflow.com/questions/18381710/building-twitter-profile-image-url-with-twitter-user-id -->
         <div class="topContainer">
             <div class='mobileLogo' style="display:inline-block">
                 <img class='entity-twitter-logo' ng-if='currentEntity.twitter_handle'
-                     ng-src='https://twitter.com/{{currentEntity.twitter_handle}}/profile_image?size=bigger'>
+                     ng-src='https://avatars.io/twitter/{{currentEntity.twitter_handle}}'
+                     style="height: 73px; width: 73px">
             </div>
             <div class="mdetails-top-right">
                 <div class='m-entity-name'>
