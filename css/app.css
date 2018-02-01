@@ -86,10 +86,6 @@ p {
     height: 100vh;
 }
 
-.network-container {
-    background-color: white;
-}
-
 .entity-twitter-logo {
     /*padding-left: 15pt;*/
     margin-bottom: 5px;
@@ -325,13 +321,6 @@ h5 {
 }
 
 .map-container {
-    margin-left: -15px;
-    /*margin-right: -15px;*/
-}
-
-.network-container {
-    height: 100%;
-    /*overflow:hidden;*/
     margin-left: -15px;
     /*margin-right: -15px;*/
 }
@@ -623,6 +612,10 @@ h5 {
 .network-container {
     text-align: center;
     overflow: hidden;
+    height: 100%;
+    /*overflow:hidden;*/
+    margin-left: -15px;
+    /*margin-right: -15px;*/
     /*display: inline-block;
     position: relative;
     width: 100%;
