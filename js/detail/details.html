@@ -143,7 +143,7 @@
 
     <!--<hr>-->
     <div ng-if='currentEntity.collaborations.length'>
-        <h5>Connections</h5>
+        <h5 class="details-panel-header">Connections</h5>
         <h6>Collaboration</h6>
         <a ng-class="currentEntity.type"
            ng-repeat='collaboration in currentEntity.collaborations | limitTo:itemsShown.collaborations'
