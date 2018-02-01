@@ -31,6 +31,11 @@
             $scope.isLoading = false;
 
             var svg = d3.select('#network');
+      //       .classed("network-container", true)
+      //       .attr("preserveAspectRatio", "xMinYMin meet")
+      // .attr("viewBox", "0 0 600 400" );
+   //class to make it responsive
+   // .classed("svg-content-responsive", true); 
             svg.selectAll("*").remove();
             var bounds = svg.node().getBoundingClientRect();
             var height = bounds.height;
