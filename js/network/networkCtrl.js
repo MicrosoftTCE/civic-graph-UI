@@ -159,9 +159,13 @@
                     }
                 });
             };
-            if (!$scope.mobile) {
-                speedAnimate(7);
-            }
+            // if (!$scope.mobile) {
+            //     speedAnimate(7);
+            // }
+
+            // speed up animation for mobile and desktop network graph rendering
+            speedAnimate(7);
+            
             force.start();
 
             // Hash linked neighbors for easy hovering effects.
