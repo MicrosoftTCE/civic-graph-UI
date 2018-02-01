@@ -39,9 +39,15 @@
         this.minConnections = $scope.minConnections = 2;
         var self = this;
 
-        $scope.$watch('minConnections', function() {
+        // $scope.$watch('minConnections', function() {
+        //     $scope.$broadcast('triggerNetworkDraw');
+        // });
+
+        $scope.$watch('minConnections', watchMinConnection);
+
+        function watchMinConnection() {
             $scope.$broadcast('triggerNetworkDraw');
-        });
+        }
 
         $scope.connectionChange = function () {
             console.log(self.minConnections);
