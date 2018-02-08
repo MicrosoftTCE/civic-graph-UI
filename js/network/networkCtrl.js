@@ -27,6 +27,10 @@
             console.log(viewObj);
         });
 
+        // make offset scale global variable
+        var offsetScale;
+
+
         var drawNetwork = function (entityArray, connectionArray) {
             $scope.isLoading = false;
 
@@ -40,7 +44,7 @@
             var bounds = svg.node().getBoundingClientRect();
             var height = bounds.height;
             var width = bounds.width;
-            var offsetScale = 2;
+            offsetScale = 6;
             var defaultNodeSize = 7;
             var offsets = {
                 'Individual': { 'x': 1, 'y': 1 },
@@ -162,6 +166,11 @@
             // if (!$scope.mobile) {
             //     speedAnimate(7);
             // }
+
+            // add check for mobile to change scale
+            if ($scope.mobile) {
+                offsetScale = 2;
+            }
 
             // speed up animation for mobile and desktop network graph rendering
             speedAnimate(7);
