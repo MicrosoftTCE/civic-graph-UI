@@ -29,6 +29,18 @@
             }
         };
 
+        // See https://coderwall.com/p/ngisma/safe-apply-in-angular-js
+        $scope.safeApply = function (fn) {
+            var phase = this.$root.$$phase;
+            if (phase === '$apply' || phase === '$digest') {
+                if (fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                this.$apply(fn);
+            }
+        };
+
         $timeout(function () {
             var createPieChart = function (options) {
                 var data   = options.data;
