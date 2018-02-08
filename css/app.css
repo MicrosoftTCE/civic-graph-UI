@@ -1723,8 +1723,7 @@ input.ng-valid.ng-dirty {
 }
 
 .searchMB .dropdown-menu {
-    /*Comment the below line to move search bar to top*/
-    /*bottom: 100% !important;*/
+    bottom: 100% !important;
     top: auto !important;
 }
 
