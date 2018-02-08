@@ -1824,6 +1824,8 @@ input.ng-valid.ng-dirty {
     border: 1px solid lightgrey;
     background: white;
     bottom: 10vh;
+    /*for details card - balances the margin-left 2% for the search bar*/
+    margin-right: 2%;
 }
 
 .searchMB {
