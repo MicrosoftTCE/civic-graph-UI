@@ -40,7 +40,7 @@
             var bounds = svg.node().getBoundingClientRect();
             var height = bounds.height;
             var width = bounds.width;
-            var offsetScale = 2;
+            var offsetScale = 6;
             var defaultNodeSize = 7;
             var offsets = {
                 'Individual': { 'x': 1, 'y': 1 },
@@ -159,9 +159,9 @@
                     }
                 });
             };
-            // if (!$scope.mobile) {
-            //     speedAnimate(7);
-            // }
+            if ($scope.mobile) {
+                var offsetScale = 2;
+            }
 
             // speed up animation for mobile and desktop network graph rendering
             speedAnimate(7);
