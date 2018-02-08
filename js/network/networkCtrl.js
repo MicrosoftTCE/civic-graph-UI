@@ -40,7 +40,7 @@
             var bounds = svg.node().getBoundingClientRect();
             var height = bounds.height;
             var width = bounds.width;
-            var offsetScale = 6;
+            var offsetScale = 2;
             var defaultNodeSize = 7;
             var offsets = {
                 'Individual': { 'x': 1, 'y': 1 },
