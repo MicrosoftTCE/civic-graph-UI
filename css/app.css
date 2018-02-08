@@ -1811,13 +1811,12 @@ input.ng-valid.ng-dirty {
 
 .bottomPopUpMb {
     position: fixed;
-    /*bottom: 5px;*/
-    /*switch position from bottom to top ^^^*/
-    top: 10vh;
+    bottom: 5px;
     padding-bottom: 10vh;
     z-index: 5;
     width: 96% !important;
     margin-left: 2%;
+    margin-top: 10vh;
     height: 260px;
 }
 
