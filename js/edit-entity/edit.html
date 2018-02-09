@@ -3,15 +3,16 @@
    class='glyphicon glyphicon-remove edit-marker f-right'>
 </i>
 <div ng-show='!(isSaving || isError)'>
-    <div class='edit-title'>
-        <h3>{{isEditing ? 'Edit' : 'Add'}} Information</h3>
-        <i title='Edit'
-           ng-click='cancelEdit()'
-           ng-hide="!(isError && mobile)"
-           class='glyphicon glyphicon-remove marker-mobile'></i>
-    </div>
+    
     <div class="form-ctr">
         <form class='edit-form' id="editEntityForm" name="editEntityForm">
+          <div class='edit-title'>
+          <h3>{{isEditing ? 'Edit' : 'Add'}} Information</h3>
+          <i title='Edit'
+             ng-click='cancelEdit()'
+             ng-hide="!(isError && mobile)"
+             class='glyphicon glyphicon-remove marker-mobile'></i>
+          </div>
 
             <!-- Entity Name/Nickname -->
             <div>

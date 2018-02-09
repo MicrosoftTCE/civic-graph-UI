@@ -401,7 +401,7 @@ h5 {
     margin-top: 18%;
     /* margin-bottom: 5vh; */
     color: #333333;
-    padding: 0 5% 20% 15px;
+    padding: 20% 5% 20% 15px;
 }
 
 .edit-panelMb h6 {
@@ -427,6 +427,8 @@ h5 {
 
 .edit-form {
     margin-left: 3px;
+    /*moves edit form underneath mobile*/
+    margin-top: 5vh;
 }
 
 .edit-form input[type="text"] {
@@ -455,6 +457,7 @@ h5 {
 
 .f-right {
     float: right;
+    margin-top: 8vh;
 }
 
 .marker-mobile {
