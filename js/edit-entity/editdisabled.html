@@ -1,0 +1,46 @@
+<i title='Edit'
+   ng-click='cancelEdit()'
+   class='glyphicon glyphicon-remove edit-marker f-right'>
+</i>
+<div ng-show='!(isSaving || isError)'>
+    
+    <div class="form-ctr">
+        <form class='edit-form' id="editEntityForm" name="editEntityForm">
+          <div class='edit-title'>
+          <h3>{{isEditing ? 'Edit' : 'Add'}} Information</h3>
+          <i title='Edit'
+             ng-click='cancelEdit()'
+             ng-hide="!(isError && mobile)"
+             class='glyphicon glyphicon-remove marker-mobile'></i>
+          </div>
+
+            <!-- Entity Name/Nickname -->
+            <div>
+                <h5>
+                    New entity additions are currently disabled. Please check back soon.
+                </h5>
+            </div>
+        </form>
+    </div><!-- 
+    <div class='save'>
+        <button ng-disabled='!editEntityForm.$valid || isSaving'
+                class='btn bluebtn'
+                ng-click='save()'
+        >
+            Save
+        </button>
+    </div> -->
+</div><!-- 
+<div ng-show='isSaving'>
+    <h2>Saving...</h2><br>
+    <h3>Thank you for submitting data to Civic Graph!</h3>
+    <div class="side-spinner">
+        <div class="cube1"></div>
+        <div class="cube2"></div>
+    </div>
+</div>
+<div ng-show='isError' class='error'>
+    <i class='glyphicon glyphicon-remove-sign error-symbol'></i>
+    <h3>Something went wrong.</h3>
+    <h6>Please check your submission and try again.</h6> -->
+<!-- </div> -->
