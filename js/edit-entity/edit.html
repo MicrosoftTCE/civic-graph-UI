@@ -35,10 +35,9 @@
                 <input type='text' class='form-control' ng-model='editEntity.nickname' placeholder=''>
             </div>
 
-            <div ng-show="editEntity.type==='Individual'">
                 <!-- Entity Location -->
                 <h5>
-                    City and State for Individual - Location(s)
+                    Location(s)
                     <span> * </span>
                 </h5>
                 <input type='text' class='form-control'
@@ -50,7 +49,6 @@
                        typeahead-on-select='setLocation(location, $last, $viewValue)'
                        typeahead-editable=""
                 >
-            </div>
             <!-- Entity Type -->
             <h5>
                 Type of entity <span> * </span>
