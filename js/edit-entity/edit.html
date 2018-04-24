@@ -35,10 +35,10 @@
                 <input type='text' class='form-control' ng-model='editEntity.nickname' placeholder=''>
             </div>
 
-            <div>
+            <div ng-show="editEntity.type==='Individual'">
                 <!-- Entity Location -->
                 <h5>
-                    Location(s)
+                    City and State for Individual - Location(s)
                     <span> * </span>
                 </h5>
                 <input type='text' class='form-control'
