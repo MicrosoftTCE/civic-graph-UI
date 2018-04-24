@@ -427,8 +427,8 @@
                                 // If any of ConnectionType, source entity type, or target
                                 // entity type are disabled.
                                 return !$scope.connectionTypes[l.type]
-                                    && (!$scope.entityTypes[l.source.type]
-                                    && !$scope.entityTypes[l.target.type]);
+                                    || (!$scope.entityTypes[l.source.type]
+                                    || !$scope.entityTypes[l.target.type]);
                             }
                         });
 
@@ -453,8 +453,8 @@
                             // If any of ConnectionType, source entity type, or target
                             // entity type are disabled.
                             return !$scope.connectionTypes[l.type]
-                                && (!$scope.entityTypes[l.source.type]
-                                && !$scope.entityTypes[l.target.type]);
+                                || (!$scope.entityTypes[l.source.type]
+                                || !$scope.entityTypes[l.target.type]);
                         }
                     });
 
