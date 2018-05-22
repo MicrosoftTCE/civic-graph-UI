@@ -412,29 +412,35 @@
             $scope.$on('toggleLink', function (event, link) {
                 // links[link.name]
                 // .classed({'visible': link.enabled, 'hidden': !link.enabled});
+                // This next line updates a dictionary with keys of the connection types and values that are True/False corresponding to Check/Uncheck
+                $scope.connectionTypes[link.name] = link.enabled;
                 _.map($scope.entityTypes, function (val, key) {
                     svg
-                        .selectAll('.' + key + '-link')
+                        .selectAll('.' + key + '-link') 
                         .classed({
                             'visible': function (l) {
                                 // ConnectionType enabled, connection source entity type
                                 // is enabled, connection target entity type is enabled.
-                                return !$scope.connectionTypes[l.type]
-                                    || ($scope.entityTypes[l.source.type]
-                                    && $scope.entityTypes[l.target.type]);
+
+                                return $scope.connectionTypes[l.type]
+                                && ($scope.entityTypes[l.source.type]
+                                && $scope.entityTypes[l.target.type]);
                             },
                             'hidden': function (l) {
                                 // If any of ConnectionType, source entity type, or target
                                 // entity type are disabled.
                                 return !$scope.connectionTypes[l.type]
-                                    || (!$scope.entityTypes[l.source.type]
-                                    || !$scope.entityTypes[l.target.type]);
+                                || (!$scope.entityTypes[l.source.type]
+                                || !$scope.entityTypes[l.target.type]);
+                                    
                             }
                         });
 
                 });
             });
             $scope.$on('toggleNode', function (event, type) {
+                // This next line updates a dictionary with keys of the entities and values that are True/False corresponding to Check/Uncheck
+                $scope.entityTypes[type.name] = type.enabled; 
                 svg
                     .selectAll('.' + type.name + '-node')
                     .classed({ 'visible': type.enabled, 'hidden': !type.enabled });

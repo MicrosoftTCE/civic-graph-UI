@@ -22,5 +22,9 @@
     "jshint": "^2.9.2",
     "node-dir": "^0.1.16",
     "parallelshell": "^2.0.0"
+  },
+  "dependencies": {
+    "daemon": "github:zipang/daemon.node#48d0977c26fb3a6a44ae99aae3471b9d5a761085",
+    "gulp-watch": "^5.0.0"
   }
 }
