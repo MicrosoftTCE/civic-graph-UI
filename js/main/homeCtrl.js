@@ -206,6 +206,16 @@
         });
 
         $scope.animationsEnabled = true;
+		
+		$scope.toggleNode = function (type) {
+			console.log("Inside the controlCtrl toggleNode");
+            $scope.$broadcast('toggleNode', {'name': type, 'enabled': $scope.entityTypes[type]
+            });
+        };
+        $scope.toggleLink = function (type) {
+            $scope.$broadcast('toggleLink', {'name': type, 'enabled': $scope.connectionTypes[type]
+            });
+        };
     }
 
     angular.module('civic-graph')
