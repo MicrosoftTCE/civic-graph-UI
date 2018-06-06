@@ -170,6 +170,7 @@
             // add check for mobile to change scale
             if ($scope.mobile) {
                 offsetScale = 2;
+				console.log("in mobile");
             }
 
             // speed up animation for mobile and desktop network graph rendering
@@ -389,6 +390,11 @@
                 $scope.actions.interacted = true;
                 $scope.safeApply();
             };
+			
+			var toggleLink = function (event){
+				console.log("Yo, this works!");
+				
+			};
 
             node.on('mouseover', hover);
             node.on('mouseout', unhover);
@@ -467,6 +473,7 @@
             });
 
             $scope.$on('selectItem', function (event, item) {
+				console.log("Select Item");
                 if (item.type === 'location') {
                     highlightLocation($scope.currentLocation);
                 }
