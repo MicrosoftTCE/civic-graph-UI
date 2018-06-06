@@ -4,7 +4,7 @@
     </div>
     <div class="control-panel-content">
 
-        <h3>Types</h3>
+        <h3>Types:</h3>
                     <div class='control-input' ng-repeat='(type, enabled) in control.entityTypes'>
                         <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">
                             <input type='checkbox' ng-model='control.entityTypes[type]'
@@ -12,7 +12,7 @@
                         <span class='caption'>{{type}}</span>
                     </div>
 
-        <h3>Connections: {{ control.minConnections }}</h3>
+        <h3>Connections:</h3>
 
                     <div class='control-input' ng-repeat='(type, enabled) in control.connectionTypes'>
                         <label class="checkbox {{type+'-checkbox'}}" ng-class="{'unchecked': !enabled}">

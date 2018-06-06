@@ -30,12 +30,15 @@
         };
         vm.switchView = switchView;
         vm.changeView = function (view) {
+					console.log("inside controlCtrl changeview");
+
             _.forEach(_.keys(vm.showView), function (name) {
                 vm.showView[name] = view === name;
             });
             $rootScope.$broadcast('viewChange', vm.showView);
         };
         vm.showAbout = function () {
+			console.log("Inside the controlCtrl showAbout");
             $modal.open({
                 animation: false,
                 templateUrl: 'control/about.html',
@@ -43,10 +46,12 @@
             });
         };
         vm.toggleNode = function (type) {
+			console.log("Inside the controlCtrl toggleNode");
             $rootScope.$broadcast('toggleNode', {'name': type, 'enabled': vm.entityTypes[type]
             });
         };
         vm.toggleLink = function (type) {
+			console.log("Inside the controlCtrl toggleLink");
             $rootScope.$broadcast('toggleLink', {'name': type, 'enabled': vm.connectionTypes[type]
             });
         };
@@ -54,6 +59,7 @@
             $rootScope.$broadcast('changeSizeBy', vm.sizeBy);
         };
         function switchView() {
+			console.log("inside controlCtrl switch view");
             vm.changeView(!vm.toggleNetwork ? 'Map' : 'Network');
         }
 
