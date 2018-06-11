@@ -49,8 +49,13 @@
 
         files.forEach(function(file) {
           hashes[file] = hashFiles.sync({ files: file }).slice(0, 7);
-		  console.log(hashes[file]);
+          var newfile = file.replace("\\","/");
+          hashes[newfile] = hashes[file]
+		  console.log("original");
+          console.log(hashes[file]);
 		  console.log(file);
+          console.log("new");
+          console.log(hashes[newfile]);
         });
       });
 
