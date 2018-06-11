@@ -3,7 +3,7 @@ UI for Civic Graph
 
 ## Developing
 
-- Install node.js on your development environment: https://nodejs.org/
+- Install node.js version 6.11.1 on your development environment: https://nodejs.org/
 
 - Clone this GitHub repository:
 ```sh
