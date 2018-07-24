@@ -215,9 +215,7 @@
             $scope.$broadcast('toggleLink', {'name': type, 'enabled': $scope.connectionTypes[type]
             });
         };
-        $scope.changeSizeBy = function () {
-            $scope.$broadcast('changeSizeBy', $scope.sizeBy);
-        };
+      
 
     }
 
