@@ -22,21 +22,22 @@
                     </div>
 
         <!--Number of Connections Slider-->
-        <input class="slider"
+		<h3>Connectedness: {{control.minConnections}}</h3>
+        <input class="mat-slider"
                type="range"
                title="Minimum Number of Connections"
                ng-model="control.minConnections"
                min="0"
-               max="25">
+               max="25"
+			   >
 
-
-                            <h3>Size By</h3>
-                    <div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
-                        <label class='checkbox radio' ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
-                               ng-model='control.sizeBy' btn-radio='sizeBy.value'
-                               ng-change='control.changeSizeBy()'></label>
-                        <span class='caption'>{{sizeBy.name}}</span>
-                    </div>
+		<h3>Size By</h3>
+		<div class='control-input' ng-repeat='sizeBy in control.sizeByList'>
+			<label class='checkbox radio' ng-class="{'unchecked': control.sizeBy != sizeBy.value}"
+				   ng-model='control.sizeBy' btn-radio='sizeBy.value'
+				   ng-change='control.changeSizeBy()'></label>
+			<span class='caption'>{{sizeBy.name}}</span>
+		</div>
 
         <h3>View</h3>
         <div class="switch switch-blue">
