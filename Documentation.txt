@@ -1,0 +1,9 @@
+Introductory Documentation for Civic Graph:
+ This will hopefully be a comprehensive guide for any new fellows working on Civic Graph, as it explains some of the details you could previously only figure out through experience.
+ Formatting:
+Civic Graph has two key parts: civic-graph-UI and civic-graph-API
+ Civic-Graph-UI:
+ Civic-Graph-API:
+ Random things to note:
+1. For the API, everytime you want to test a script or run python in Azure, note that you can only run it inside a virtual environment on Azure. This means that there is a specific folder in the Azure console where you are allowed to run python files. To acces this, navigate to Azure, find the Advanced Settings area of Civic-Graph-API (Web Service), and navigate to "Kudu". From Kudu, head to powershell. Inside the site/wwwroot folder, there is another folder called "env". This is where all of the modules you put in the requirement.txt file get installed, and it also contains the "python.exe" file. Use that that python.exe file to run any scripts you need to. For example, to run twitterupdate.py, you would do something like env/scripts/python.exe twitterupdate.py. 
+ 2. On that same note, twitterupdate.py is not actually used at all. The file that is used is called "twitterupdateAUTO.py" and it is scheduled as a "webjob" in Azure. It runs at 3am every day. If you want to edit that file, you have to edit it, delete the webjob, and reupload it as a new webjob on Azure. Committing it to git wont do anything.
