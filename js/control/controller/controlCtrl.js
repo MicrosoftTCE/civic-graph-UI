@@ -41,7 +41,7 @@
 			console.log("Inside the controlCtrl showAbout");
             $modal.open({
                 animation: false,
-                templateUrl: 'control/about.html',
+                templateUrl: 'js/control/about.html',
                 controller: 'modalCtrl'
             });
         };
