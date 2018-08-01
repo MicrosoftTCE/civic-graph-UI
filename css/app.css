@@ -1852,3 +1852,32 @@ input.ng-valid.ng-dirty {
 .green-asterisc {
     color: green;
 }
+.mat-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 2px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.8;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.mat-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%; 
+    background: #000000;
+    cursor: pointer;
+}
+
+.mat-slider::-moz-range-thumb {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: #000000;
+    cursor: pointer;
+}
