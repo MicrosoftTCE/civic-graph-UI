@@ -149,8 +149,10 @@
                     <input type='text' class='form-control stacked' ng-model='collaboration.entity'
                            typeahead='entity.name as entity.name for entity in entities | filter:{name: $viewValue} | limitTo:8'
                            typeahead-on-select='setConnection($item, collaboration)'
-                           ng-change='addConnection(editEntity.collaborations)' typeahead-editable='false' placeholder='Collaborator'> <!-- change this to true for ghost entering-->
-                    <input type='text' class='form-control details-field' ng-model='collaboration.details' placeholder='Collaboration details'>
+                           ng-change='addConnection(editEntity.collaborations)' typeahead-editable='false' <!-- change this to true for ghost entering-->
+                           placeholder='Collaborator'>
+                    <input type='text' class='form-control details-field' ng-model='collaboration.details'
+                           placeholder='Collaboration details'>
                 </div>
             </div>
 
