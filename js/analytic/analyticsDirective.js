@@ -11,7 +11,7 @@
 
     function analyticsDirective(){
         return {
-            templateUrl: 'https://msit.powerbi.com/view?r=eyJrIjoiNDRmNzc4NjYtMWM2OS00NGFkLWI1MDctY2FhY2IwNzcyN2I5IiwidCI6IjcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0NyIsImMiOjV9',
+            templateUrl: 'js/analytic/analytics.html',
             restrict   : 'E',
             scope      : {},
             controller   : 'analyticsCtrl'
